@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="872.545" height="956.16" viewBox="0 0 872.545 956.16">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#14ecec"/>
+      <stop offset="0.241" stop-color="#13bbdd"/>
+      <stop offset="0.517" stop-color="#13a2d6"/>
+      <stop offset="0.764" stop-color="#1270c7"/>
+      <stop offset="1" stop-color="#192afc"/>
+    </linearGradient>
+    <radialGradient id="radial-gradient" cx="0" cy="0.398" r="0.931" gradientTransform="matrix(0.63, 0.776, -0.821, 0.666, 0.327, 0.133)" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#192afc"/>
+      <stop offset="1" stop-color="#14ecec"/>
+    </radialGradient>
+    <radialGradient id="radial-gradient-2" cx="0.447" cy="1" r="1.003" gradientTransform="matrix(0.035, -0.999, 1.312, 0.046, -0.881, 1.4)" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#14ecec"/>
+      <stop offset="1" stop-color="#192afc"/>
+    </radialGradient>
+  </defs>
+  <g id="Group_312" data-name="Group 312" transform="translate(-990 89.158)" opacity="0.473" style="isolation: isolate">
+    <path id="Vector" d="M570.064,390.441c-14.408,84.719-67.8,158.573-140.567,204.365-75.87,47.748-174.429,84.047-254.884,44.5C98.7,601.994,104.032,496.234,70.786,418.493,44.212,356.353-11.533,302.136,2.12,235.952,16.256,167.421,80.991,126.563,139.069,87.477c64.711-43.55,132.824-101.993,208.783-84.2,77.066,18.052,114.113,100.442,153.5,169.06C540.8,241.068,583.35,312.325,570.064,390.441Z" transform="translate(1140 60.842)" fill-rule="evenodd" fill="url(#linear-gradient)"/>
+    <path id="Vector-2" data-name="Vector" d="M570.064,390.441c-14.408,84.719-67.8,158.573-140.567,204.365-75.87,47.748-174.429,84.047-254.884,44.5C98.7,601.994,104.032,496.234,70.786,418.493,44.212,356.353-11.533,302.136,2.12,235.952,16.256,167.421,80.991,126.563,139.069,87.477c64.711-43.55,132.824-101.993,208.783-84.2,77.066,18.052,114.113,100.442,153.5,169.06C540.8,241.068,583.35,312.325,570.064,390.441Z" transform="translate(1140 60.842)" fill-rule="evenodd" opacity="0.299" fill="url(#radial-gradient)"/>
+    <path id="Vector-3" data-name="Vector" d="M570.064,390.441c-14.408,84.719-67.8,158.573-140.567,204.365-75.87,47.748-174.429,84.047-254.884,44.5C98.7,601.994,104.032,496.234,70.786,418.493,44.212,356.353-11.533,302.136,2.12,235.952,16.256,167.421,80.991,126.563,139.069,87.477c64.711-43.55,132.824-101.993,208.783-84.2,77.066,18.052,114.113,100.442,153.5,169.06C540.8,241.068,583.35,312.325,570.064,390.441Z" transform="translate(1140 60.842)" fill-rule="evenodd" opacity="0.305" fill="url(#radial-gradient-2)"/>
+  </g>
+</svg>
