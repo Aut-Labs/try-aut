@@ -1,16 +1,16 @@
 version: '3.9'
 services:
-  aut_landing_web: 
-    container_name: aut_landing_web
-    image: aut_landing_web
+  try_aut_web: 
+    container_name: try_aut_web
+    image: try_aut_web
     build: ./
 
-  aut_landing_nginx:
-    container_name: aut_landing_nginx
-    image: aut_landing_nginx
+  try_aut_nginx:
+    container_name: try_aut_nginx
+    image: try_aut_nginx
     build: ./nginx
     ports:
       - 3001:9080
 
 networks:
-  aut_landing:
+  try_aut:
