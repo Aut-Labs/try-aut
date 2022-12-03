@@ -17,6 +17,7 @@ import {
   fontWeight,
   letterSpacing,
   borderRadius,
+  display,
 } from "styled-system";
 
 const StyledImage = styled(Image)`
@@ -32,6 +33,7 @@ const StyledImage = styled(Image)`
   ${fontFamily}
   ${fontWeight}
   ${borderRadius}
+  ${display}
 `;
 
 const Logo = forwardRef(

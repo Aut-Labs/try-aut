@@ -37,6 +37,10 @@ const TryAut = () => {
         <Typography
           textAlign="center"
           mt="0"
+          px={{
+            _: "12px",
+            sm: "0",
+          }}
           mb={{
             _: "60px",
           }}

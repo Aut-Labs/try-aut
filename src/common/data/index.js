@@ -29,11 +29,6 @@ export const FooterData = {
       title: "Quick Links",
       list: [
         {
-          id: 1,
-          title: "About Aut",
-          link: "/about",
-        },
-        {
           id: 3,
           title: "Github",
           target: "_blank",
@@ -44,80 +39,7 @@ export const FooterData = {
           title: "Docs",
           target: "_blank",
           link: "https://docs.aut.id",
-        },
-        {
-          id: 4,
-          title: "Product Suite",
-          link: "/products",
-        },
-        // {
-        //   id: 2,
-        //   title: "Manifesto",
-        //   link: "/manifesto",
-        // },
-        // {
-        //   id: 4,
-        //   title: "Ask Āut",
-        //   link: "/qa",
-        // },
-        // {
-        //   id: 5,
-        //   title: "RoadMap",
-        //   link: "/roadmap",
-        // },
-      ],
-    },
-    // {
-    //   id: 3,
-    //   title: "Āut Products",
-    //   list: [
-    //     {
-    //       id: 1,
-    //       title: "Āut Expander",
-    //       target:"_blank",
-    //       link: "https://docs.aut.id/v2/product-suite/aut-exp.",
-    //     },
-    //     {
-    //       id: 2,
-    //       title: "dĀut",
-    //       target:"_blank",
-    //       link: "https://docs.aut.id/v2/product-suite/daut",
-    //     },
-    //     {
-    //       id: 3,
-    //       title: "Āut ID",
-    //       target:"_blank",
-    //       link: "https://docs.aut.id/v2/product-suite/my-autid",
-    //     },
-    //     // {
-    //     //   id: 4,
-    //     //   title: "Dashboard",
-    //     //   link: "/products/aut-dashboard",
-    //     // },
-    //   ],
-    // },
-  ],
-  compactWidgets: [
-    {
-      id: 2,
-      title: "Quick Links",
-      list: [
-        {
-          id: 1,
-          title: "About Aut",
-          link: "/about",
-        },
-        {
-          id: 2,
-          title: "Docs",
-          target: "_blank",
-          link: "https://docs.aut.id",
-        },
-        {
-          id: 3,
-          title: "Product Suite",
-          link: "/products",
-        },
+        }
       ],
     },
   ],
@@ -137,10 +59,6 @@ export const FooterData = {
       icon: footerDiscord,
       name: "Discord",
     },
-    // {
-    //   link: "https://blog.skillwallet.id",
-    //   icon: footerMedium,
-    // },
   ],
 };
 
