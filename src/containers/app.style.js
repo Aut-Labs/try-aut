@@ -1,6 +1,7 @@
 import { themeGet } from "@styled-system/theme-get";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import AutLogo from "common/assets/image/noise.svg";
+import BubbleImage from "common/assets/image/bubble.svg";
 
 const Wobble_Vertical = keyframes`
   16.65% {
@@ -60,12 +61,12 @@ const GlobalStyle = createGlobalStyle`
 
   html {
     background-color: ${themeGet("colors.nightBlack")};
-    overflow-x: hidden;
+    overflow: hidden;
 
     &:before {
       content: ' ';
       display: block;
-      position: fixed;
+      position: absolute;
       left: 0;
       top: 0;
       width: 100%;
@@ -77,6 +78,10 @@ const GlobalStyle = createGlobalStyle`
       background-position: center;
       background-size: cover;
     }
+  }
+
+  .ps__rail-y {
+    z-index: 99999;
   }
 
   body {
@@ -101,6 +106,24 @@ const GlobalStyle = createGlobalStyle`
 
   button {
     font-family: ${themeGet("fonts.primary")};
+  }
+
+  .scrollbar-container {
+    ${themeGet("mediaQueries.md")} {
+      &:before {
+        content: " ";
+        display: block;
+        position: absolute;
+        filter: blur(50px);
+        -webkit-filter: blur(50px);
+        right: 0;
+        z-index: 9999;
+        top: -500px;
+        width: 600px;
+        height: 800px;
+        background-image: url(${BubbleImage.src});
+      }
+    }
   }
 
   section {

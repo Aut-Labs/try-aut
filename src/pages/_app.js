@@ -46,11 +46,6 @@ export default function CustomApp({ Component, pageProps }) {
               <Navbar />
             </DrawerProvider>
           </Sticky>
-          <Bubble
-            position="top right"
-            src={BubbleImage.src}
-            zIndex="999"
-          />
           <Component {...pageProps} />
         </Modal>
       </>

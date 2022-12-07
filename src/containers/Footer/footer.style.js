@@ -10,10 +10,29 @@ import {
   gridTemplateColumns,
   justifyContent,
 } from "styled-system";
+import BubbleImage from "common/assets/image/bubble.svg";
 
 export const FooterSection = styled(Section)`
   position: relative;
   margin-top: 100px;
+  width: 100%;
+  overflow: hidden;
+  ${themeGet("mediaQueries.md")} {
+    &:before {
+      content: " ";
+      display: block;
+      position: absolute;
+      filter: blur(50px);
+      -webkit-filter: blur(50px);
+      transform: rotate(-57deg);
+      z-index: -1;
+      bottom: -750px;
+      left: -100px;
+      width: 1000px;
+      height: 1000px;
+      background-image: url(${BubbleImage.src});
+    }
+  }
 `;
 
 export const Grid = styled("div")`

@@ -20,8 +20,6 @@ import Logo from "common/components/UIElements/Logo";
 import Typography from "common/components/Typography";
 import Button from "common/components/Button";
 import Image from "common/components/Image";
-import BubbleImage from "common/assets/image/bubble.svg";
-import Bubble from "common/components/Bubble";
 
 const logoStyles = {
   color: "#262626",
@@ -83,7 +81,6 @@ const Footer = () => {
   const { logo, copyright, widgets, mailchimpUrl } = FooterData;
   return (
     <FooterSection as="footer">
-      <Bubble src={BubbleImage.src} />
       <Container
         noGutter
         maxWidth={{

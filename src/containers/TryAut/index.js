@@ -54,7 +54,13 @@ const TryAut = () => {
               key={`item-${index}`}
               className={`item-${index + 1}`}
             >
-              <BubbleImageWrapper className="image-wrapper">
+              <BubbleImageWrapper
+                display={{
+                  _: "none",
+                  md: "inherit",
+                }}
+                className="image-wrapper"
+              >
                 <Image alt="black-hole" src={BlackHoleImage.src} />
               </BubbleImageWrapper>
               <div className="content">
@@ -62,11 +68,10 @@ const TryAut = () => {
                   {item.title}
                 </Typography>
                 <Typography
-                  mt={{
-                    _: "8px",
-                    sm: "16px",
+                  mb={{
+                    _: "35px",
+                    md: 0,
                   }}
-                  mb="0"
                   color="white"
                   as="subtitle2"
                 >
@@ -91,11 +96,6 @@ const TryAut = () => {
                       })}
                       color="white"
                       as="body2"
-                      fontSize={{
-                        _: "12px",
-                        sm: "16px",
-                        xxl: "18px",
-                      }}
                     >
                       {desc}
                     </Typography>
@@ -110,6 +110,19 @@ const TryAut = () => {
                   href={item.button.link}
                   as="a"
                   size="normal"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  minWidth={{
+                    _: "160px",
+                  }}
+                  minHeight={{
+                    _: "60px",
+                  }}
+                  mt={{
+                    _: "20px",
+                    md: "unset",
+                  }}
                   fontSize={{
                     xxl: "16px",
                   }}

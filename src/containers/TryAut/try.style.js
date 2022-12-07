@@ -57,51 +57,43 @@ export const BubbleImageWrapper = styled("div")`
 export const BlackHoleWrapper = styled("div")`
   flex: 1;
   position: relative;
-  .content {
-    transform: translateX(-50%);
-    left: 50%;
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
   ${base}
 `;
 
 export const Grid = styled("div")`
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-gap: 60px;
 
   .content {
-    top: -8px;
-    width: 315px;
-    height: 315px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 25px 30px;
+    width: 315px;
   }
 
   @media screen and (min-width: 420px) {
     .content {
-      top: 8px;
       width: 365px;
-      height: 365px;
     }
   }
 
   ${themeGet("mediaQueries.sm")} {
     .content {
-      top: 8px;
       width: 445px;
-      height: 445px;
-      padding: 50px;
     }
   }
 
   ${themeGet("mediaQueries.md")} {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 80px;
     .content {
+      transform: translateX(-50%);
+      position: absolute;
+      left: 50%;
+      top: 20px;
       width: 460px;
       height: 460px;
       padding: 60px;
