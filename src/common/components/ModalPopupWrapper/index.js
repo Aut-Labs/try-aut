@@ -5,12 +5,25 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import Text from "common/components/Text";
 
 export const Loading = () => (
-  <Player
-    autoplay
-    loop
-    src={animationData}
-    style={{ height: "300px", width: "300px" }}
-  />
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      position: "absolute",
+      left: "50%",
+      top: "50%",
+      transform: `translate(-50%, -50%)`,
+    }}
+  >
+    <Player
+      loop
+      autoplay
+      rendererSettings={{ preserveAspectRatio: "xMidYMid slice" }}
+      src={animationData}
+      style={{ height: "400px", width: "400px" }}
+    />
+  </div>
 );
 
 const ModalPopupWrapper = ({ children }) => {

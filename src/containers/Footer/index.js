@@ -2,7 +2,6 @@ import React from "react";
 import { FooterData } from "common/data";
 import NewsletterForm from "common/components/NewsletterForm/NewsletterForm";
 import MailchimpSubscribe from "react-mailchimp-subscribe";
-import NextLink from "next/link";
 import Container from "common/components/Container";
 import {
   AboutUs,
@@ -13,6 +12,7 @@ import {
   FooterSection,
   FooterWidgetItem,
   SocialLinks,
+  ColumnWrapper,
 } from "./footer.style";
 import Tooltip from "rc-tooltip";
 import "rc-tooltip/assets/bootstrap.css";
@@ -20,12 +20,13 @@ import Logo from "common/components/UIElements/Logo";
 import Typography from "common/components/Typography";
 import Button from "common/components/Button";
 import Image from "common/components/Image";
+import Link from "common/components/Link";
 
 const logoStyles = {
   color: "#262626",
   display: {
     _: "none",
-    md: "inherit"
+    md: "inherit",
   },
   height: {
     _: "42px",
@@ -54,7 +55,7 @@ const SocialWrapper = ({ socialStyles, socialLinksStyles }) => {
             key={`footer-social-key-${index}`}
             overlay={name}
           >
-            <a href={link} target="_blank">
+            <a href={link} target="_blank" rel="noreferrer">
               <Image
                 height={{
                   _: "25px",
@@ -81,6 +82,7 @@ const Footer = () => {
   const { logo, copyright, widgets, mailchimpUrl } = FooterData;
   return (
     <FooterSection as="footer">
+      {/* <Bubble src={BubbleImage.src} /> */}
       <Container
         noGutter
         maxWidth={{
@@ -92,69 +94,73 @@ const Footer = () => {
         <Grid
           gridTemplateColumns={{
             _: "1fr",
-            // sm: "1fr 1fr",
-            md: "repeat(3, 1fr)",
-            lg: "1fr 1fr 1fr 0.5fr",
+            md: "1fr 1fr 1fr",
           }}
           py={{
             _: "30px",
             xs: "35px",
             md: "40px",
-            xxl: "52px",
           }}
         >
-          <AboutUs
-            alignItems={{
-              _: "center",
-              md: "start",
-              // sm: "start",
-            }}
-          >
-            <NextLink href="/" shallow>
-              <Logo logoSrc={logo} alt="Aut Logo" logoStyle={logoStyles} />
-            </NextLink>
-            <SocialWrapper
-              socialStyles={{
-                display: {
+          <ColumnWrapper>
+            <AboutUs
+              alignItems={{
+                _: "center",
+                // sm: "start",
+              }}
+            >
+              <Logo
+                as="span"
+                href="/"
+                logoSrc={logo}
+                alt="Aut Logo"
+                logoStyle={logoStyles}
+              />
+              <SocialWrapper
+                socialStyles={{
+                  display: {
+                    _: "none",
+                    md: "inherit",
+                  },
+                  alignItems: "center",
+                }}
+                socialLinksStyles={{
+                  gridGap: {
+                    _: "20px",
+                    md: "40px",
+                    xxl: "56px",
+                  },
+                  flexDirection: {
+                    _: "row",
+                  },
+                }}
+              />
+              <Typography
+                display={{
                   _: "none",
                   md: "inherit",
-                  lg: "none",
-                },
-                alignItems: "center",
-              }}
-              socialLinksStyles={{
-                gridGap: {
-                  _: "20px",
-                  md: "40px",
-                  xxl: "56px",
-                },
-                flexDirection: {
-                  _: "row",
-                },
-              }}
-            />
-            <Typography
-              display={{
-                _: "none",
-                md: "inherit",
-              }}
-              m="0"
-              color="offWhite"
-              as="caption"
-            >
-              {copyright}
-            </Typography>
-          </AboutUs>
-          {widgets.map((item) => (
-            <FooterWidget
-              key={item.id}
-              display={{
-                _: "none",
-                md: "flex",
+                }}
+                m="0"
+                color="offWhite"
+                as="caption"
+              >
+                {copyright}
+              </Typography>
+            </AboutUs>
+          </ColumnWrapper>
+          <ColumnWrapper>
+            {" "}
+            <ContactInfo
+              alignItems={{
+                _: "center",
+                md: "flex-start",
               }}
             >
               <Typography
-                mt="0"
+                mt={{
+                  _: "30px",
+                  md: "0",
+                }}
                 mb={{
                   _: "12px",
                   md: "24px",
@@ -167,83 +173,89 @@ const Footer = () => {
                   WebkitTextStroke: "1px #707070",
                 }}
               >
-                {item.title}
+                Stay in touch
               </Typography>
-              <ul>
-                {item.list.map((item) => (
-                  <FooterWidgetItem
-                    key={item.id}
-                    mb={{
-                      _: "12px",
-                      md: "16px",
-                      lg: "20px",
-                      xxl: "24px",
-                    }}
-                  >
-                    <NextLink href={item.link} shallow>
-                      <Button
-                        title={item.title}
-                        variant="text"
-                        colors="nav"
-                        as="a"
-                        target={item.target}
-                        href={item.link}
-                      />
-                    </NextLink>
-                  </FooterWidgetItem>
-                ))}
-              </ul>
-            </FooterWidget>
-          ))}
-          <ContactInfo
-            alignItems={{
-              _: "center",
-              md: "flex-start",
-            }}
-          >
-            <Typography
-              mt={{
-                _: "30px",
-                md: "0",
-              }}
-              mb={{
-                _: "12px",
-                md: "24px",
-                lg: "26px",
-                xxl: "28px",
-              }}
-              color="offWhite"
-              as="subtitle1"
-              style={{
-                WebkitTextStroke: "1px #707070",
-              }}
-            >
-              Stay in touch
-            </Typography>
-            <MailchimpSubscribe
-              url={mailchimpUrl}
-              render={(props) => {
-                const { subscribe, status, message } = props || {};
-                return (
-                  <NewsletterForm
-                    status={status}
-                    message={message}
-                    onValidated={(formData) => subscribe(formData)}
-                  />
-                );
-              }}
-            />
-          </ContactInfo>
+              <MailchimpSubscribe
+                url={mailchimpUrl}
+                render={(props) => {
+                  const { subscribe, status, message } = props || {};
+                  return (
+                    <NewsletterForm
+                      status={status}
+                      message={message}
+                      onValidated={(formData) => subscribe(formData)}
+                    />
+                  );
+                }}
+              />
+            </ContactInfo>
+          </ColumnWrapper>
+
+          <ColumnWrapper>
+            {widgets.map((item) => (
+              <FooterWidget
+                key={item.id}
+                display={{
+                  _: "none",
+                  md: "inherit",
+                }}
+              >
+                <Typography
+                  mt="0"
+                  mb={{
+                    _: "12px",
+                    md: "24px",
+                    lg: "26px",
+                    xxl: "28px",
+                  }}
+                  color="offWhite"
+                  as="subtitle1"
+                  style={{
+                    WebkitTextStroke: "1px #707070",
+                  }}
+                >
+                  {item.title}
+                </Typography>
+                <ul>
+                  {item.list.map((item) => (
+                    <FooterWidgetItem
+                      key={item.id}
+                      mb={{
+                        _: "12px",
+                        md: "16px",
+                        lg: "20px",
+                        xxl: "24px",
+                      }}
+                    >
+                      <Link legacyBehavior href={item.link}>
+                        <Button
+                          title={item.title}
+                          variant="text"
+                          colors="nav"
+                          as="a"
+                          target={item.target}
+                          href={item.link}
+                        />
+                      </Link>
+                    </FooterWidgetItem>
+                  ))}
+                </ul>
+              </FooterWidget>
+            ))}
+          </ColumnWrapper>
 
           <SocialWrapper
             socialStyles={{
               display: {
                 _: "inherit",
                 md: "none",
-                lg: "inherit",
               },
               mt: {
-                _: "75px",
+                _: "40px",
+                md: "0px",
+              },
+              width: {
+                _: "unset",
                 md: "0px",
               },
               justifyContent: "center",
@@ -252,12 +264,10 @@ const Footer = () => {
               gridGap: {
                 _: "20px",
                 md: "40px",
-                xxl: "56px",
               },
               alignItems: "center",
               flexDirection: {
                 _: "row",
-                lg: "column",
               },
             }}
           />

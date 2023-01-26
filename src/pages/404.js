@@ -8,6 +8,7 @@ export default function Custom404() {
         height: '100vh',
         color: 'white',
         fontFamily: 'Lato',
+        margin: "0"
       }}
     >
       404 - Page Not Found!

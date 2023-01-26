@@ -15,10 +15,13 @@ import {
   borderRadius,
   display,
   textAlign,
+  maxWidth,
+  zIndex,
 } from "styled-system";
 
 const StyledDynamicComponent = styled("p")`
   ${space}
+  ${maxWidth}
   ${fontSize}
   ${fontStyle}
   ${color}
@@ -32,6 +35,7 @@ const StyledDynamicComponent = styled("p")`
   ${borderRadius}
   ${display}
   ${textAlign}
+  ${zIndex}
 `;
 
 const DynamicComponent = ({ children, ...props }) => {

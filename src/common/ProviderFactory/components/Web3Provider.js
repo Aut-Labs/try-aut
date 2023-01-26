@@ -1,14 +1,8 @@
-import { Web3ReactProvider } from '@web3-react/core';
-import { metaMaskConnector, walletConnectConnector } from '../web3.connectors';
+import { Web3ReactProvider } from "@web3-react/core";
 
-const [metamask, metaMaskHooks] = metaMaskConnector;
-const [walletConnect, walletConnectHooks] = walletConnectConnector;
-
-const connectors = [
-  [metamask, metaMaskHooks],
-  [walletConnect, walletConnectHooks],
-];
-
-export default function Web3AutProvider({ children }) {
-  return <Web3ReactProvider connectors={connectors}>{children}</Web3ReactProvider>;
+export default function Web3AutProvider({ children, connectors }) {
+  // const connectors = useSelector(NetworkConnectors);
+  return (
+    <Web3ReactProvider connectors={connectors}>{children}</Web3ReactProvider>
+  );
 }

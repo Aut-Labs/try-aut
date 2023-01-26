@@ -1,22 +1,7 @@
 import axios from "axios";
-import { environment } from "./environment";
 
-export const getAllSignees = () => {
+export const getAppConfig = () => {
   return axios
-    .get(`${environment.manifestApi}/manifesto/signees?part=1`)
-    .then(({ data }) => data?.signees || []);
-};
-
-export const verifyTweetRequest = (
-  signerAddress,
-  signature,
-  tweetID,
-  part = 1
-) => {
-  return axios.post(`${environment.manifestApi}/manifesto/sign`, {
-    signerAddress,
-    signature,
-    tweetID,
-    part,
-  });
+    .get(`https://api.skillwallet.id/api/autid/config/network/testing`)
+    .then((r) => r.data);
 };

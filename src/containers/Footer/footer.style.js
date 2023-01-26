@@ -13,10 +13,11 @@ import {
 import BubbleImage from "common/assets/image/bubble.svg";
 
 export const FooterSection = styled(Section)`
-  position: relative;
-  margin-top: 100px;
-  width: 100%;
   overflow: hidden;
+  position: relative;
+  margin-top: 120px;
+  width: 100%;
+
   ${themeGet("mediaQueries.md")} {
     &:before {
       content: " ";
@@ -37,6 +38,7 @@ export const FooterSection = styled(Section)`
 
 export const Grid = styled("div")`
   display: grid;
+  width: 100%;
   border-top: 2px solid ${themeGet("color.offWhite")};
   ${base}
   ${gridTemplateColumns}
@@ -46,6 +48,7 @@ export const AboutUs = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 100%;
   ${alignItems}
 `;
 
@@ -76,6 +79,15 @@ export const ContactInfo = styled.div`
   display: flex;
   flex-direction: column;
   ${alignItems}
+`;
+
+export const ColumnWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  display: flex;
 `;
 
 export const Social = styled("div")`

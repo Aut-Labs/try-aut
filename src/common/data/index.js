@@ -16,6 +16,7 @@ export const NavbarData = {
 import footerDiscord from "common/assets/image/discord-social.svg";
 import footerTwitter from "common/assets/image/twitter-social.svg";
 import footerDocs from "common/assets/image/docs.svg";
+import footerMirror from "common/assets/image/mirror-logo.svg";
 
 export const FooterData = {
   menu: [],
@@ -39,20 +40,20 @@ export const FooterData = {
           title: "Docs",
           target: "_blank",
           link: "https://docs.aut.id",
-        }
+        },
       ],
     },
   ],
   social: [
     {
-      link: "https://docs.aut.id",
-      icon: footerDocs,
-      name: "Docs",
-    },
-    {
       link: "https://twitter.com/opt_aut",
       icon: footerTwitter,
       name: "Twitter",
+    },
+    {
+      link: "https://aut.mirror.xyz",
+      icon: footerMirror,
+      name: "Mirror",
     },
     {
       link: "http://discord.gg/aXJFGgcvUk",
@@ -68,68 +69,138 @@ export const FooterData = {
 import expand from "common/assets/image/expand.svg";
 import invite from "common/assets/image/invite.svg";
 import fingerprint from "common/assets/image/fingerprint.svg";
-import Button from "common/components/Button";
 
 export const TryOutData = {
   title: "Try Āut",
   subtitle: "Join the Coordination Renaissance - and expand your DAO.",
-
-  items: [
+  ownerItems: [
     {
-      title: "Step 1",
-      subtitle: "Expand your DAO",
-      icon: expand.src,
-      descriptions: [
-        "Give superpowers to your community with native Roles 👥 & role-based membership directly at contract level ✍.",
-        "Once expanded, your DAO will know magic things such as Roles, Interactions & Commitment.",
-      ],
       button: {
         text: "Try it",
         link: "https://playground.aut.id",
       },
+      front: {
+        title: "Expand",
+        icon: expand.src,
+        subtitle: (
+          <>
+            Do more with <br /> your DAO
+          </>
+        ),
+      },
+      back: {
+        description:
+          "Expand your community by importing an existing DAO Contract, adding 3 member Roles and verifying your Ownership.",
+      },
+      complete: false,
+      validation: "CheckDAO",
     },
     {
-      title: "Step 2",
-      subtitle: "Invite your Members",
-      icon: invite.src,
-      descriptions: [
-        "Think of dĀut as Google-Auth, just decentralized - as a bond between DAO & Members ⛓",
-        `Your invitees will create an account, pick a Role, and claim their ĀutID ✍ 
-        Then they’ll always have a bond with your magic DAO. After all, it was their first ✨`,
-      ],
       button: {
         text: "Try it",
         link: "https://playground.aut.id",
       },
+      front: {
+        title: "Invite",
+        icon: invite.src,
+        subtitle: (
+          <>
+            A native Bound between <br /> DAOs & Members
+          </>
+        ),
+      },
+      back: {
+        description:
+          "Integrate dĀut to any website or DApp and invite members to signup or login to your DAO - Just like Google-Auth, but decentralized.",
+      },
+      complete: false,
+      validation: "CheckTwitter",
     },
     {
-      title: "Step 3",
-      subtitle: "Customize your ĀutID",
-      icon: fingerprint.src,
-      descriptions: [
-        "ĀutID is the first Identity you can truly own. It’s a non-transferable NFT, and a portable account to login in all your DAOs. ",
-        `You may say it’s the first Social Network for DAO Contributors - and it keeps track of all DAOs, Roles, and Commitments you choose.`,
-        <>
-          Join your first DAO & claim your ĀutID - you’ll get a page that looks{" "}
-          <Button
-            color="offWhite"
-            style={{
-              fontWeight: "bold",
-              textTransform: "inherit",
-            }}
-            as="a"
-            target="_blank"
-            href="https://my.aut.id/"
-            variant="link"
-            title="like this[link]"
-          />{" "}
-          😎
-        </>,
-      ],
       button: {
         text: "Try it",
         link: "https://my.aut.id/",
       },
+      front: {
+        title: "Participate",
+        icon: fingerprint.src,
+        subtitle: (
+          <>
+            Own your <br /> own Identity
+          </>
+        ),
+      },
+      back: {
+        description:
+          "Customize your ĀutID - This is your Social Profile which keeps track of all your DAOs, tasks, Roles, and Commitments across the DAO eco-system.",
+      },
+      complete: false,
+      validation: "CheckAut",
+    },
+  ],
+  memberItems: [
+    {
+      button: {
+        text: "Try it",
+        link: "https://playground.aut.id",
+      },
+      front: {
+        title: "Join",
+        icon: expand.src,
+        subtitle: (
+          <>
+            Join the invitation <br /> from your DAO{" "}
+          </>
+        ),
+      },
+      back: {
+        description:
+          "Expand your community by importing an existing DAO Contract, adding 3 member Roles and verifying your Ownership.",
+      },
+      complete: false,
+      validation: "CheckDAO",
+    },
+    {
+      button: {
+        text: "Try it",
+        link: "https://playground.aut.id",
+      },
+      front: {
+        title: "Invite",
+        icon: invite.src,
+        subtitle: (
+          <>
+            Participate in 1 or various <br /> onboarding quests
+          </>
+        ),
+      },
+      back: {
+        description:
+          "Integrate dĀut to any website or DApp and invite members to signup or login to your DAO - Just like Google-Auth, but decentralized.",
+      },
+      complete: false,
+      validation: "CheckDAO",
+    },
+    {
+      button: {
+        text: "Try it",
+        link: "https://my.aut.id/",
+      },
+      front: {
+        title: "Participate",
+        icon: fingerprint.src,
+        subtitle: (
+          <>
+            Claim your āutID, <br /> explore your dashboard
+          </>
+        ),
+      },
+      back: {
+        description:
+          "Customize your ĀutID - This is your Social Profile which keeps track of all your DAOs, tasks, Roles, and Commitments across the DAO eco-system.",
+      },
+      complete: false,
+      validation: "CheckDAO",
     },
   ],
 };

@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import WalletConnectLogo from "common/assets/image/wallet-connect.svg";
 import MetamaskLogo from "common/assets/image/metamask.svg";
-import { metaMaskConnector, walletConnectConnector } from "../web3.connectors";
 import Text from "common/components/Text";
 import Button from "common/components/Button";
 import Image from "common/components/Image";
@@ -10,11 +8,6 @@ import styled from "styled-components";
 export const ConnectorTypes = {
   WalletConnect: "walletConnect",
   Metamask: "metamask",
-};
-
-const wallets = {
-  [ConnectorTypes.Metamask]: metaMaskConnector,
-  [ConnectorTypes.WalletConnect]: walletConnectConnector,
 };
 
 const btnConfig = {
@@ -50,17 +43,16 @@ const AutButtonTxt = styled(Text)({
   margin: 0,
 });
 
-const getConnector = (type) => {
-  return wallets[type];
-};
-
 export default function ConnectorBtn({ connectorType, setConnector }) {
-  const [connector] = getConnector(connectorType);
+  // const [connector] = getConnector(connectorType);
+  const dispatch = useAppDispatch();
+  const [connector] = useSelector(NetworkConnector(connectorType));
 
   return (
     <AutButton
       onClick={async () => {
-        await connector.activate();
+        await connector.connectEagerly();
+        dispatch(setWallet(connectorType));
         setConnector(connector);
       }}
       title={

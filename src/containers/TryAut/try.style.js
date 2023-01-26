@@ -5,50 +5,65 @@ import styled from "styled-components";
 export const BubbleImageWrapper = styled("div")`
   position: relative;
   margin: 0 auto;
-  width: 300px;
-  height: 300px;
-  figure {
-    position: absolute;
+
+  .inner-content {
     transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
-    width: 500px;
-    height: 500px;
-  }
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  @media screen and (min-width: 420px) {
-    width: 380px;
-    height: 380px;
-    figure {
-      width: 580px;
-      height: 580px;
+    img {
+      width: 100%;
+    }
+    .aut-card-flip {
+      display: flex;
+      position: absolute;
+      border-radius: 50%;
     }
   }
 
-  ${themeGet("mediaQueries.sm")} {
-    width: 450px;
-    height: 450px;
-    figure {
-      width: 700px;
-      height: 700px;
+  ${themeGet("mediaQueries.md")} {
+    width: 300px;
+    height: 300px;
+    .inner-content {
+      width: 480px;
+      height: 480px;
+
+      .aut-card-flip {
+        width: 347px;
+        height: 347px;
+      }
     }
   }
 
   ${themeGet("mediaQueries.lg")} {
-    width: 500px;
-    height: 500px;
-    figure {
-      width: 730px;
-      height: 730px;
+    width: 350px;
+    height: 350px;
+    .inner-content {
+      width: 550px;
+      height: 550px;
+
+      .aut-card-flip {
+        width: 347px;
+        height: 347px;
+      }
     }
   }
 
   ${themeGet("mediaQueries.xxl")} {
     width: 620px;
     height: 620px;
-    figure {
+    .inner-content {
       width: 800px;
       height: 800px;
+
+      .aut-card-flip {
+        width: 506px;
+        height: 506px;
+      }
     }
   }
   ${base}
@@ -56,7 +71,13 @@ export const BubbleImageWrapper = styled("div")`
 
 export const BlackHoleWrapper = styled("div")`
   flex: 1;
+  width: 100%;
+  height: 100%;
   position: relative;
+
+  &:not(.complete):not(.current) {
+    opacity: 0.5;
+  }
   ${base}
 `;
 
@@ -66,38 +87,10 @@ export const Grid = styled("div")`
   align-items: center;
   grid-gap: 60px;
 
-  .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 315px;
-  }
-
-  @media screen and (min-width: 420px) {
-    .content {
-      width: 365px;
-    }
-  }
-
-  ${themeGet("mediaQueries.sm")} {
-    .content {
-      width: 445px;
-    }
-  }
-
   ${themeGet("mediaQueries.md")} {
     display: grid;
     grid-template-columns: 1fr;
     grid-gap: 80px;
-    .content {
-      transform: translateX(-50%);
-      position: absolute;
-      left: 50%;
-      top: 20px;
-      width: 460px;
-      height: 460px;
-      padding: 60px;
-    }
 
     grid-template-areas:
       "first first first first"
@@ -121,19 +114,8 @@ export const Grid = styled("div")`
     grid-gap: 40px;
   }
 
-  ${themeGet("mediaQueries.xxl")} {
+  ${themeGet("mediaQueries.xs")} {
     grid-gap: 0;
-    .content {
-      top: 55px;
-      width: 505px;
-      height: 505px;
-      padding: 50px;
-    }
-
-    .item-2 {
-      margin-top: 100px;
-    }
-
     grid-template-areas: "first second third";
     grid-template-columns: repeat(3, 1fr);
   }
