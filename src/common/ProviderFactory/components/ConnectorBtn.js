@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import WalletConnectLogo from "common/assets/image/wallet-connect.svg";
 import MetamaskLogo from "common/assets/image/metamask.svg";
 import Text from "common/components/Text";

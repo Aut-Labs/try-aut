@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from "common/components/Image";
 import Flipcard from "common/components/FlipCard/FlipCard";
 import styled from "styled-components";
