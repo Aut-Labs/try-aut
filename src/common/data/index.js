@@ -109,7 +109,8 @@ export const TryOutData = {
     },
     {
       button: {
-        link: "https://dashboard.aut.id",
+        link: "http://176.34.149.248:3333",
+        cacheParams: ["daoAddress"],
       },
       success: {
         icon: check.src,
