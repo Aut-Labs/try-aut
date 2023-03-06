@@ -59,14 +59,13 @@ const Navbar = ({ row }) => {
             sm: "space-between",
           }}
         >
-          <Link href="/" shallow>
-            <Logo
-              logoSrc={logo}
-              alt="Aut Logo"
-              logoStyle={logoStyles}
-              className="sticky-logo nav-logo"
-            />
-          </Link>
+          <Logo
+            logoSrc={logo}
+            href="/"
+            alt="Aut Logo"
+            logoStyle={logoStyles}
+            className="sticky-logo nav-logo"
+          />
         </Box>
       </Container>
     </NavbarWrapper>

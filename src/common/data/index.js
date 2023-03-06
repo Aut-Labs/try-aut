@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import AutLogo from "common/assets/image/logo.svg";
 
 /* ------------------------------------ */
@@ -69,138 +70,187 @@ export const FooterData = {
 import expand from "common/assets/image/expand.svg";
 import invite from "common/assets/image/invite.svg";
 import fingerprint from "common/assets/image/fingerprint.svg";
+import setup from "common/assets/image/setup.svg";
+import check from "common/assets/image/check.svg";
 
 export const TryOutData = {
   title: "Try Āut",
-  subtitle: "Join the Coordination Renaissance - and expand your DAO.",
+  mainSubtitle: "Join the Coordination Renaissance",
+  ownerSubtitle: "Join the Coordination Renaissance - and expand your DAO.",
+  memberSubtitle: "Join the Coordination Renaissance - and participate in a DAO.",
   ownerItems: [
     {
       button: {
-        text: "Try it",
         link: "https://playground.aut.id",
+      },
+      success: {
+        icon: check.src,
+        title: "Expanded",
+        subtitle: (
+          <>
+            Your DAO was expanded
+          </>
+        ),
       },
       front: {
         title: "Expand",
         icon: expand.src,
         subtitle: (
           <>
-            Do more with <br /> your DAO
+            Expand your <br /> DAO's capabilities <br /> with Āut protocol.
           </>
         ),
       },
       back: {
         description:
-          "Expand your community by importing an existing DAO Contract, adding 3 member Roles and verifying your Ownership.",
+          "With Āut protocol, you can expand your DAO's capabilities add roles and streamline your community management on the dashboard",
       },
       complete: false,
-      validation: "CheckDAO",
     },
     {
       button: {
-        text: "Try it",
-        link: "https://playground.aut.id",
+        link: "https://dashboard.aut.id",
+      },
+      success: {
+        icon: check.src,
+        title: "Setup Complete",
+        subtitle: (
+          <>
+            Your Āut Dashboard <br /> is ready
+          </>
+        ),
       },
       front: {
-        title: "Invite",
+        title: "Setup Dashboard",
+        icon: setup.src,
+        subtitle: (
+          <>
+            Set up your <br /> dashboard to manage <br /> quests and tasks.
+          </>
+        ),
+      },
+      back: {
+        description:
+          "Create and manage quest for each community role, and create tasks for for each quest for members to complete their onboarding",
+      },
+      complete: false,
+    },
+    {
+      button: {
+        link: "https://my.aut.id/",
+      },
+      success: {
+        icon: check.src,
+        title: "Invited",
+        subtitle: (
+          <>
+            Invitation was sent
+          </>
+        ),
+      },
+      front: {
+        title: "Send Invites",
         icon: invite.src,
         subtitle: (
           <>
-            A native Bound between <br /> DAOs & Members
+            Invite members to <br /> join and participate <br /> in a quest
           </>
         ),
       },
       back: {
         description:
-          "Integrate dĀut to any website or DApp and invite members to signup or login to your DAO - Just like Google-Auth, but decentralized.",
+          "Invite members to join your DAO, and to complete onboarding quest.",
       },
       complete: false,
-      validation: "CheckTwitter",
-    },
-    {
-      button: {
-        text: "Try it",
-        link: "https://my.aut.id/",
-      },
-      front: {
-        title: "Participate",
-        icon: fingerprint.src,
-        subtitle: (
-          <>
-            Own your <br /> own Identity
-          </>
-        ),
-      },
-      back: {
-        description:
-          "Customize your ĀutID - This is your Social Profile which keeps track of all your DAOs, tasks, Roles, and Commitments across the DAO eco-system.",
-      },
-      complete: false,
-      validation: "CheckAut",
     },
   ],
   memberItems: [
     {
       button: {
-        text: "Try it",
-        link: "https://playground.aut.id",
+        link: "https://showcase.aut.id",
+        queryParams: ["daoAddress"],
+      },
+      success: {
+        icon: check.src,
+        title: "Joined",
+        subtitle: (
+          <>
+            You have applied <br /> for a DAO quest
+          </>
+        ),
       },
       front: {
         title: "Join",
-        icon: expand.src,
-        subtitle: (
-          <>
-            Join the invitation <br /> from your DAO{" "}
-          </>
-        ),
-      },
-      back: {
-        description:
-          "Expand your community by importing an existing DAO Contract, adding 3 member Roles and verifying your Ownership.",
-      },
-      complete: false,
-      validation: "CheckDAO",
-    },
-    {
-      button: {
-        text: "Try it",
-        link: "https://playground.aut.id",
-      },
-      front: {
-        title: "Invite",
         icon: invite.src,
         subtitle: (
           <>
-            Participate in 1 or various <br /> onboarding quests
+            Apply for a quest to <br />  accept the invitation <br /> from your DAO.
           </>
         ),
       },
       back: {
         description:
-          "Integrate dĀut to any website or DApp and invite members to signup or login to your DAO - Just like Google-Auth, but decentralized.",
+          "Click on the Start to access Nova Showcase, where you can explore all the available DAOs and choose to apply for any quest of a given DAO.",
       },
       complete: false,
-      validation: "CheckDAO",
     },
     {
       button: {
-        text: "Try it",
-        link: "https://my.aut.id/",
+        link: "http://localhost:3001/quest",
+        cacheParams: ["daoAddress", "onboardingQuestAddress", "questId"],
       },
-      front: {
-        title: "Participate",
-        icon: fingerprint.src,
+      success: {
+        icon: check.src,
+        title: "Onboarded",
         subtitle: (
           <>
-            Claim your āutID, <br /> explore your dashboard
+            You have completed <br /> the onboarding quest
+          </>
+        ),
+      },
+      front: {
+        title: "Onboard",
+        icon: invite.src,
+        subtitle: (
+          <>
+            Complete all tasks to <br /> complete onboarding quest
           </>
         ),
       },
       back: {
         description:
-          "Customize your ĀutID - This is your Social Profile which keeps track of all your DAOs, tasks, Roles, and Commitments across the DAO eco-system.",
+          "Completion of onboarding quest grants access to the next phase and unlocking of the dashboard",
       },
       complete: false,
-      validation: "CheckDAO",
+    },
+    {
+      button: {
+        link: "https://my.aut.id/",
+      },
+      success: {
+        icon: check.src,
+        title: "ĀutID Claimed",
+        subtitle: (
+          <>
+            ĀutID has <br /> been claimed
+          </>
+        ),
+      },
+      front: {
+        title: "Claim ĀutID",
+        icon: fingerprint.src,
+
+        subtitle: (
+          <>
+            Claim ĀutID and <br /> explore the dashboard
+          </>
+        ),
+      },
+      back: {
+        description:
+          "By claiming you unique ĀutID you will unlock the dashboard where you can explore your DAO members and their roles, quests & tasks and much more",
+      },
+      complete: false,
     },
   ],
 };

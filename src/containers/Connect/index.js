@@ -3,25 +3,13 @@ import Typography from "common/components/Typography";
 import Section from "common/components/Section";
 import { TryOutData } from "common/data";
 import GenesisImage from "common/assets/image/genesis.svg";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useState } from "react";
 import styled from "styled-components";
 import themeGet from "@styled-system/theme-get";
 import Button from "common/components/Button";
-import {
-  Web3AllowListProvider,
-  Web3AutDAORegistryProvider,
-  Web3DAOExpanderRegistryProvider,
-} from "@aut-labs-private/abi-types";
-import { ethers } from "ethers";
-
-// For AutDAOs:
-// contract: AutDAORegistry
-// function: function getAutDAOByDeployer(address deployer) public view returns(address[] memory)
-// it returns an array, it should not be empty.
-
-// For Expanded DAOs:
-// contract: DAOExpanderRegistry
-// function:function getDAOExpandersByDeployer(address deployer) public view returns(address[] memory)
+import { Web3AllowListProvider } from "@aut-labs-private/abi-types";
+import { useConnector, useEthers } from "@usedapp/core";
+import { getCache } from "api/index.api";
 
 const GenesisImageWrapper = styled("img")({
   width: "100%",
@@ -48,7 +36,6 @@ export const toHex = (num) => {
   const val = Number(num);
   return `0x${val.toString(16)}`;
 };
-
 
 const config = {
   name: "Mumbai (Polygon)",
@@ -94,73 +81,63 @@ export const EnableAndChangeNetwork = async (provider) => {
   }
 };
 
-const getTimeRemaining = (endtime) => {
-  let t = endtime - new Date().getTime();
-  let seconds = Math.floor((t / 1000) % 60);
-  let minutes = Math.floor((t / 1000 / 60) % 60);
-  let hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-  let days = Math.floor(t / (1000 * 60 * 60 * 24));
-  return {
-    total: t,
-    days: days,
-    hours: hours,
-    minutes: minutes,
-    seconds: seconds,
-  };
+const updatePhases = async (items, userAddress) => {
+  const cache = await getCache(userAddress);
+  return items.map((item, index) => {
+    const cacheItemFromList = cache?.list?.find((u) => u.phase === index + 1);
+    return {
+      ...item,
+      complete: cacheItemFromList?.status === 1,
+    };
+  });
 };
 
-const AutConnect = ({ onConnected, connectors }) => {
-  const { title, subtitle, ownerItems, memberItems } = TryOutData;
+const AutConnect = ({ onConnected, config, networks }) => {
+  const { title, mainSubtitle, ownerItems, memberItems, ownerSubtitle, memberSubtitle } = TryOutData;
   const [signing, setSigned] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
-  const [startCountDown, setStartCountdown] = useState(false);
-  const [countDownMsg, setCountdownMsg] = useState(null);
-  const timer = useRef(null);
+  const { activate } = useConnector();
+  const { activateBrowserWallet, switchNetwork } = useEthers();
 
-  const signMessage = async () => {
-    setStartCountdown(false);
-    setCountdownMsg(null);
-    setErrorMessage(null);
-
-    setLoading(true);
-    setSigned(true);
+  const activateNetwork = async () => {
+    const [network] = networks.filter((n) => !n.disabled);
+    const connector = config.connectors.metamask;
     try {
-      const [connector] = connectors[0];
-      await connector.activate();
-      const accounts = await connector.provider.request({
+      activateBrowserWallet({ type: "metamask" });
+      await activate(connector);
+      await switchNetwork(+network.chainId);
+      await EnableAndChangeNetwork(connector.provider.provider);
+
+      const provider = connector.provider.provider;
+      const accounts = await connector.provider.provider.request({
         method: "eth_requestAccounts",
       });
       const account = accounts[0];
-      await connector.provider.request({
+      return { connector, account, provider };
+    } catch (error) {
+      // handle
+    }
+    return {};
+  };
+
+  const viewMemberPhases = async () => {
+    setErrorMessage(null);
+    setLoading(true);
+    setSigned(true);
+    try {
+      const { account, provider } = await activateNetwork();
+      await provider.request({
         method: "personal_sign",
         params: ["Sign this message to access the content!", account],
       });
 
-      function isDateOnOrAfter4th() {
-        const today = new Date();
-        const forthOfJanuary = new Date(2023, 0, 4);
-        const isCorrectYear =
-          today.getFullYear() >= forthOfJanuary.getFullYear();
-        const isCorrectMonth = today.getMonth() >= forthOfJanuary.getMonth();
-        const isCorrectDay = today.getDay() >= forthOfJanuary.getDay();
-
-        return isCorrectYear && isCorrectMonth && isCorrectDay;
-      }
-
-      const isValid = isDateOnOrAfter4th();
-
-      if (!isValid) {
-        setErrorMessage(
-          "This phase didn't start yet, mark the date! 2023/01/04"
-        );
-        setStartCountdown(true);
-      }
-
       onConnected({
         connected: true,
-        items: memberItems,
+        subtitle: memberSubtitle,
+        userAddress: account,
+        items: await updatePhases(memberItems, account),
       });
     } catch (error) {
       if (error?.code === 4001) {
@@ -172,65 +149,31 @@ const AutConnect = ({ onConnected, connectors }) => {
     }
   };
 
-  const verifyOwnership = async () => {
+  const viewOwnerPhases = async () => {
     setLoading(true);
     setVerifying(true);
     try {
-      const [connector] = connectors[0];
-      await connector.activate();
-      await EnableAndChangeNetwork(connector.provider);
-      const accounts = await connector.provider.request({
-        method: "eth_requestAccounts",
+      const { account, connector, provider } = await activateNetwork();
+      await provider.request({
+        method: "personal_sign",
+        params: ["Sign this message to access the content!", account],
       });
-      const account = accounts[0];
-      const provider = new ethers.providers.Web3Provider(connector.provider);
-      const signer = provider.getSigner();
 
+      const signer = connector.provider.getSigner();
       const contract = Web3AllowListProvider(
         "0x3Aa3c3cd9361a39C651314261156bc7cdB52B618",
         {
           signer: () => signer,
         }
       );
-
-      const hasDeployedAnyDAO = async () => {
-        const autRegistry = Web3AutDAORegistryProvider(
-          "0x2A53276Fc6353CCb3CcEb4103535E004E6ca96F9",
-          {
-            signer: () => signer,
-          }
-        );
-
-        const daoExpanderRegistry = Web3DAOExpanderRegistryProvider(
-          "0xc3711e4a33e5237948F9CA2bdDe67f3dc980d3d5",
-          {
-            signer: () => signer,
-          }
-        );
-
-        const daos = await autRegistry.getAutDAOByDeployer(account);
-        const expanderDaos =
-          await daoExpanderRegistry.getDAOExpandersByDeployer(account);
-
-        return daos?.length > 0 && expanderDaos?.length > 0;
-      };
-
-      for (let item of ownerItems) {
-        if (item.validation === "CheckDAO") {
-          const hasAnyDao = await hasDeployedAnyDAO();
-          item.complete = hasAnyDao;
-        }
-      }
-
-      console.log(ownerItems, "ownerItems");
-
       const isAllowed = await contract.isAllowed(account);
       onConnected({
         connected: isAllowed,
-        items: ownerItems,
+        subtitle: ownerSubtitle,
+        userAddress: account,
+        items: await updatePhases(ownerItems, account),
       });
     } catch (error) {
-      console.log(error, "error");
       if (error?.code === 4001) {
         setErrorMessage(error.message);
       } else {
@@ -243,24 +186,6 @@ const AutConnect = ({ onConnected, connectors }) => {
       setVerifying(false);
     }
   };
-
-  useEffect(() => {
-    if (startCountDown) {
-      const forthOfJanuary = new Date(2023, 0, 4);
-      let countdown = getTimeRemaining(forthOfJanuary.getTime());
-      setCountdownMsg(
-        `${countdown.days} days, ${countdown.hours} hours, ${countdown.minutes} minutes and ${countdown.seconds} seconds left`
-      );
-      timer.current = setInterval(() => {
-        countdown = getTimeRemaining(forthOfJanuary.getTime());
-        setCountdownMsg(
-          `${countdown.days} days, ${countdown.hours} hours, ${countdown.minutes} minutes and ${countdown.seconds} seconds left`
-        );
-      }, 1000);
-    } else {
-      clearTimeout(timer.current);
-    }
-  }, [startCountDown, timer]);
 
   return (
     <Section
@@ -301,7 +226,7 @@ const AutConnect = ({ onConnected, connectors }) => {
             }}
             as="subtitle1"
           >
-            {subtitle}
+            {mainSubtitle}
           </Typography>
         </div>
 
@@ -332,7 +257,7 @@ const AutConnect = ({ onConnected, connectors }) => {
               size="normal"
               isLoading={verifying}
               disabled={loading}
-              onClick={verifyOwnership}
+              onClick={viewOwnerPhases}
               minWidth={{
                 _: "260px",
               }}
@@ -346,7 +271,7 @@ const AutConnect = ({ onConnected, connectors }) => {
               size="normal"
               isLoading={signing}
               disabled={loading}
-              onClick={signMessage}
+              onClick={viewMemberPhases}
               minWidth={{
                 _: "260px",
               }}
@@ -367,19 +292,7 @@ const AutConnect = ({ onConnected, connectors }) => {
           as="subtitle2"
         >
           {errorMessage}
-          <Typography
-            fontWeight="bold"
-            color="white"
-            textAlign="center"
-            zIndex="1"
-            p="0"
-            mt="1"
-            as="subtitle2"
-          >
-            {countDownMsg}
-          </Typography>
         </Typography>
-
         <GenesisImageWrapper src={GenesisImage.src} />
       </Container>
     </Section>

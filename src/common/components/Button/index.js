@@ -110,11 +110,7 @@ Button.propTypes = {
     "linkUnderline",
   ]),
 
-  size: PropTypes.oneOf([
-    "normal",
-    "chunky",
-    "square",
-  ]),
+  size: PropTypes.oneOf(["normal", "chunky", "square"]),
 
   /** primary || secondary || warning || error  change text and border color.
    *  And primaryWithBg || secondaryWithBg || warningWithBg || errorWithBg change text, border and background color */

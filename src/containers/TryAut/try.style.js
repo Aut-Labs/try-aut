@@ -15,6 +15,11 @@ export const BubbleImageWrapper = styled("div")`
     align-items: center;
     justify-content: center;
 
+
+    // .aut-card-flip.complete {
+    //   border: 3px solid #2e7d32;
+    // }
+
     img {
       width: 100%;
     }
@@ -31,6 +36,34 @@ export const BubbleImageWrapper = styled("div")`
     .inner-content {
       width: 480px;
       height: 480px;
+
+      .aut-card-flip {
+        width: 347px;
+        height: 347px;
+      }
+    }
+  }
+
+  ${themeGet("mediaQueries.xs")} {
+    width: 300px;
+    height: 300px;
+    .inner-content {
+      width: 480px;
+      height: 480px;
+
+      .aut-card-flip {
+        width: 347px;
+        height: 347px;
+      }
+    }
+  }
+
+  ${themeGet("mediaQueries.sm")} {
+    width: 350px;
+    height: 350px;
+    .inner-content {
+      width: 550px;
+      height: 550px;
 
       .aut-card-flip {
         width: 347px;
@@ -82,41 +115,21 @@ export const BlackHoleWrapper = styled("div")`
 `;
 
 export const Grid = styled("div")`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  grid-gap: 60px;
+  ${themeGet("mediaQueries.xs")} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    grid-gap: 170px;
+  }
 
   ${themeGet("mediaQueries.md")} {
     display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 80px;
-
-    grid-template-areas:
-      "first first first first"
-      "second second third third";
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-
-    .item-1 {
-      grid-area: first;
-    }
-
-    .item-2 {
-      grid-area: second;
-    }
-
-    .item-3 {
-      grid-area: third;
-    }
+    grid-gap: 0;
+    grid-template-areas: "first second third";
+    grid-template-columns: repeat(3, 1fr);
   }
 
   ${themeGet("mediaQueries.lg")} {
     grid-gap: 40px;
-  }
-
-  ${themeGet("mediaQueries.xs")} {
-    grid-gap: 0;
-    grid-template-areas: "first second third";
-    grid-template-columns: repeat(3, 1fr);
   }
 `;

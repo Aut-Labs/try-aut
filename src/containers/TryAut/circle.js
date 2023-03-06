@@ -27,11 +27,20 @@ const AutCardBack = styled("div")({
   width: "100%",
 });
 
-const AutCircle = ({ front, back, complete, current, index }) => {
+const AutCircle = ({
+  front,
+  back,
+  complete,
+  current,
+  button,
+  query,
+  index,
+  success,
+}) => {
   const [isFlipped, setFlipped] = useState(false);
 
-  const onMouseEnter = () => setFlipped(true)
-  const onMouseLeave = () => setFlipped(false)
+  const onMouseEnter = () => setFlipped(true);
+  const onMouseLeave = () => setFlipped(false);
 
   return (
     <div className="inner-content">
@@ -40,9 +49,11 @@ const AutCircle = ({ front, back, complete, current, index }) => {
         isFlipped={isFlipped}
         {...((complete || current) && {
           onMouseEnter,
-          onMouseLeave
+          onMouseLeave,
         })}
-        containerClassName={`${isFlipped ? "flipped" : ""}`}
+        containerClassName={`${isFlipped ? "flipped" : ""} ${
+          complete ? "complete" : ""
+        }`}
       >
         <AutCardFront
           className={`aut-card-front ${isFlipped ? "flipped" : ""}`}
@@ -50,13 +61,13 @@ const AutCircle = ({ front, back, complete, current, index }) => {
           <AutCardContainer className="aut-card-container front">
             <Typography
               fontWeight="normal"
-              fontFamlily="FractulRegular"
+              fontFamlily="var(--fractul-regular)"
               mt="0"
               mb="0"
               color="white"
               as="subtitle1"
             >
-              {index + 1}. {front.title}
+              {index + 1}. {complete ? success.title : front.title}
             </Typography>
             <Image
               height={{
@@ -71,18 +82,18 @@ const AutCircle = ({ front, back, complete, current, index }) => {
                 xxl: "40px",
               }}
               alt="circle-icon"
-              src={front.icon}
+              src={complete ? success.icon : front.icon}
             />
             <Typography
               fontWeight="normal"
               textAlign="center"
-              fontFamlily="FractulRegular"
+              fontFamlily="var(--fractul-regular)"
               mt="0"
               mb="0"
               color="white"
               as="subtitle2"
             >
-              {front.subtitle}
+              {complete ? success.subtitle : front.subtitle}
             </Typography>
           </AutCardContainer>
         </AutCardFront>
@@ -93,7 +104,7 @@ const AutCircle = ({ front, back, complete, current, index }) => {
               mt="0"
               textAlign="center"
               fontWeight="normal"
-              fontFamlily="FractulRegular"
+              fontFamlily="var(--fractul-regular)"
               maxWidth={{
                 _: "190px",
                 xxl: "260px",
@@ -110,15 +121,23 @@ const AutCircle = ({ front, back, complete, current, index }) => {
         colors="primary"
         variant="roundOutlined"
         disabled={complete || (!current && !complete)}
-        title={complete ? 'Completed' : 'Start'}
-        target="_blank"
+        title={complete ? "Completed" : "Start"}
+        {...(!complete &&
+          current && {
+            as: "a",
+            target: "_blank",
+            href: `${button?.link}/?${query}`,
+          })}
         size="normal"
         display="flex"
         alignItems="center"
         justifyContent="center"
         style={{
           position: "absolute",
-          bottom: "30px"
+          bottom: "30px",
+          // ...(complete && {
+          //   border: "3px solid #2e7d32"
+          // })
         }}
         mb="0"
         maxWidth={{

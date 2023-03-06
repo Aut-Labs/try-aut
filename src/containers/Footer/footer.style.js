@@ -15,7 +15,7 @@ import BubbleImage from "common/assets/image/bubble.svg";
 export const FooterSection = styled(Section)`
   overflow: hidden;
   position: relative;
-  margin-top: 120px;
+  margin-top: 160px;
   width: 100%;
 
   ${themeGet("mediaQueries.md")} {
