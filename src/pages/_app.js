@@ -40,13 +40,13 @@ export default function CustomApp({ Component, pageProps }) {
     <ThemeProvider theme={theme}>
       <>
         <Head>
-          <title>Āut Labs</title>
+          <title>Try Āut</title>
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
             key="viewport"
           />
-          <meta property="og:title" content="Āut Labs" />
+          <meta property="og:title" content="Try Āut" />
           <meta
             name="description"
             content="Do more with your DAO. Āut is a suite of DAO-native Tools to expand decentralized communities."
@@ -68,14 +68,12 @@ export default function CustomApp({ Component, pageProps }) {
             }
           `}
         </style>
-        <Modal>
-          <Sticky top={0} innerZ={200} activeClass="sticky-nav-active">
-            <DrawerProvider>
-              <Navbar />
-            </DrawerProvider>
-          </Sticky>
-          <Component {...pageProps} />
-        </Modal>
+        <Sticky top={0} innerZ={200} activeClass="sticky-nav-active">
+          <DrawerProvider>
+            <Navbar />
+          </DrawerProvider>
+        </Sticky>
+        <Component {...pageProps} />
       </>
     </ThemeProvider>
   );

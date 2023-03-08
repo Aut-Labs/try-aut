@@ -37,7 +37,7 @@ export const theme = {
     primary: {
       color: colors.offWhite,
       backgroundColor: colors.transparent,
-      borderColor: colors.offWhite,
+      borderColor: colors.divider,
       ".reusecore__loader": {
         borderColor: colors.offWhite,
       },

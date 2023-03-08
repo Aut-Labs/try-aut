@@ -5,8 +5,8 @@ import { BlackHoleWrapper, BubbleImageWrapper, Grid } from "./try.style";
 import { TryOutData } from "common/data";
 import AutCircle from "./circle";
 import { memo, useEffect, useState } from "react";
-import { getCache } from "api/index.api";
 import { useRouter } from "next/router";
+import { getCache } from "api/cache.api";
 
 const TryAut = ({ connectState }) => {
   const { title } = TryOutData;
@@ -47,7 +47,7 @@ const TryAut = ({ connectState }) => {
 
   useEffect(() => {
     const start = async () => {
-      const c = await getCache(connectState?.userAddress);
+      const c = await getCache("UserPhases");
       const updatedItems = items.map((item, index) => {
         const cacheItemFromList = c?.list?.find((u) => u.phase === index + 1);
         return {

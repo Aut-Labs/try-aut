@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { variant, alignItems, boxShadow, fontWeight } from "styled-system";
+import { variant, alignItems, boxShadow, fontWeight, minWidth } from "styled-system";
 import { buttonStyle, colorStyle, sizeStyle } from "../customVariant";
 import { themeGet } from "@styled-system/theme-get";
 import { base } from "../base";
@@ -159,6 +159,7 @@ const ButtonStyle = styled("button")`
   }
 
   ${alignItems}
+  ${minWidth}
   ${boxShadow}
   ${buttonStyle}
   ${colorStyle}

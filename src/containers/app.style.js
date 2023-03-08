@@ -108,6 +108,11 @@ const GlobalStyle = createGlobalStyle`
     font-family: ${themeGet("fonts.primary")};
   }
 
+  .customModal {
+    borderColor: ${themeGet("colors.divider")} !important;
+    transform: scale(1) !important;
+  }
+
   .scrollbar-container {
     ${themeGet("mediaQueries.md")} {
       &:before {

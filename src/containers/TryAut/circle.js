@@ -71,7 +71,13 @@ const AutCircle = ({
               {index + 1}. {complete ? success.title : front.title}
             </Typography>
             <Image
-              height={{
+              // height={{
+              //   _: "40px",
+              //   md: "50px",
+              //   xl: "60px",
+              //   xxl: "120px",
+              // }}
+              width={{
                 _: "40px",
                 md: "50px",
                 xl: "60px",

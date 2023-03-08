@@ -2,7 +2,7 @@
   "name": "try-aut",
   "version": "0.0.1",
   "private": true,
-  "description": "try-aut",
+  "description": "Try Aut",
   "author": "Aut Labs",
   "scripts": {
     "build": "next build",

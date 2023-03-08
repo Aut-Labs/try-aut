@@ -71,7 +71,7 @@ import expand from "common/assets/image/expand.svg";
 import invite from "common/assets/image/invite.svg";
 import fingerprint from "common/assets/image/fingerprint.svg";
 import setup from "common/assets/image/setup.svg";
-import check from "common/assets/image/check.svg";
+import check from "common/assets/image/check-all.png";
 
 export const TryOutData = {
   title: "Try Āut",

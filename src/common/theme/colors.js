@@ -17,6 +17,7 @@ const colors = {
   borderDisabled: '#959595',
   black: "#000000",
   white: "#ffffff",
+  divider: "rgba(241,245,249,.12)",
   transparent: "transparent",
 
   nightGradient: `linear-gradient(to right, #14c7ec, #192afc),

@@ -7,10 +7,11 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import AutSDK from "@aut-labs-private/sdk";
 import { getAppConfig } from "api/index.api";
 import { useEffect } from "react";
-import { Loading } from "common/components/ModalPopupWrapper";
 import { DAppProvider, MetamaskConnector } from "@usedapp/core";
 import { WalletConnectConnector } from "@usedapp/wallet-connect-connector";
 import { ethers } from "ethers";
+import AutLoading from "common/components/AutLoading";
+import { Modal } from "@redq/reuse-modal";
 
 const generateConfig = (networks) => {
   const readOnlyUrls = networks.reduce((prev, curr) => {
@@ -29,6 +30,7 @@ const generateConfig = (networks) => {
 
   return {
     readOnlyUrls,
+    fastMulticallEncoding: true,
     networks: networks
       .filter((n) => !n.disabled)
       .map((n) => ({
@@ -55,30 +57,8 @@ const Main = () => {
   const [config, setConfig] = useState(null);
   const [networks, setNetworks] = useState();
   const [error, setError] = useState(false);
-  // useEffect(() => {
-  //   if (connectors?.length) return;
-  //   getAppConfig().then(async (result) => {
-  //     const sdk = new AutSDK({
-  //       nftStorageApiKey:
-  //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDIwQkEyNDNhNTU1YmY4YzI0MzViNzVmMTk0NmFDNWQ2QTY4QUQzMjgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY0MzkwMjIzNDA2NywibmFtZSI6IlBhcnRuZXJzQXBwIn0.sG-6S0mNp0FQ_4SIimMChrMj4250ymEH58V09eXNY4o",
-  //     });
-  //     const { metaMaskConnector, walletConnectConnector } =
-  //       initializeConnectors(result);
-  //     const [metamask, metaMaskHooks] = metaMaskConnector;
-  //     const [walletConnect, walletConnectHooks] = walletConnectConnector;
-
-  //     const connectors = [
-  //       [metamask, metaMaskHooks],
-  //       [walletConnect, walletConnectHooks],
-  //     ];
-  //     setNetworks(result);
-  //     setConnectors(connectors);
-  //     setAppReady(true);
-  //   });
-  // }, [connectors]);
 
   useEffect(() => {
-    if (config) return;
     getAppConfig()
       .then(async (res) => {
         setNetworks(res);
@@ -91,7 +71,7 @@ const Main = () => {
       .catch(() => {
         setError(true);
       });
-  }, [config]);
+  }, []);
 
   return (
     <PerfectScrollbar
@@ -105,24 +85,26 @@ const Main = () => {
       }}
     >
       {isLoading || !config ? (
-        <Loading />
+        <AutLoading />
       ) : (
         <DAppProvider config={config}>
-          {!connectState?.connected && (
-            <AutConnect
-              config={config}
-              networks={networks}
-              setLoading={setLoading}
-              onConnected={(state) => setConnectState(state)}
-            />
-          )}
+          <Modal>
+            {!connectState?.connected && (
+              <AutConnect
+                config={config}
+                networks={networks}
+                setLoading={setLoading}
+                onConnected={(state) => setConnectState(state)}
+              />
+            )}
 
-          {connectState?.connected && (
-            <>
-              <TryAut connectState={connectState} />
-              <Footer />
-            </>
-          )}
+            {connectState?.connected && (
+              <>
+                <TryAut connectState={connectState} />
+                <Footer />
+              </>
+            )}
+          </Modal>
         </DAppProvider>
       )}
     </PerfectScrollbar>

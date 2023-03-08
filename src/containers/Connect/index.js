@@ -7,9 +7,9 @@ import { memo, useState } from "react";
 import styled from "styled-components";
 import themeGet from "@styled-system/theme-get";
 import Button from "common/components/Button";
-import { Web3AllowListProvider } from "@aut-labs-private/abi-types";
-import { useConnector, useEthers } from "@usedapp/core";
-import { getCache } from "api/index.api";
+import { openModal } from "@redq/reuse-modal";
+import Web3NetworkProvider from "common/ProviderFactory/components/Web3NetworkProvider";
+import { getCache } from "api/cache.api";
 
 const GenesisImageWrapper = styled("img")({
   width: "100%",
@@ -35,15 +35,6 @@ const GenesisImageWrapper = styled("img")({
 export const toHex = (num) => {
   const val = Number(num);
   return `0x${val.toString(16)}`;
-};
-
-const config = {
-  name: "Mumbai (Polygon)",
-  chainId: 80001,
-  network: "Mumbai",
-  disabled: false,
-  explorerUrls: ["https://explorer-mumbai.maticvigil.com/"],
-  rpcUrls: ["https://rpc-mumbai.maticvigil.com"],
 };
 
 export const EnableAndChangeNetwork = async (provider) => {
@@ -81,8 +72,8 @@ export const EnableAndChangeNetwork = async (provider) => {
   }
 };
 
-const updatePhases = async (items, userAddress) => {
-  const cache = await getCache(userAddress);
+const updatePhases = async (items) => {
+  const cache = await getCache("UserPhases");
   return items.map((item, index) => {
     const cacheItemFromList = cache?.list?.find((u) => u.phase === index + 1);
     return {
@@ -93,98 +84,79 @@ const updatePhases = async (items, userAddress) => {
 };
 
 const AutConnect = ({ onConnected, config, networks }) => {
-  const { title, mainSubtitle, ownerItems, memberItems, ownerSubtitle, memberSubtitle } = TryOutData;
-  const [signing, setSigned] = useState(false);
-  const [verifying, setVerifying] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const {
+    title,
+    mainSubtitle,
+    ownerItems,
+    memberItems,
+    ownerSubtitle,
+    memberSubtitle,
+  } = TryOutData;
   const [errorMessage, setErrorMessage] = useState(false);
-  const { activate } = useConnector();
-  const { activateBrowserWallet, switchNetwork } = useEthers();
 
-  const activateNetwork = async () => {
-    const [network] = networks.filter((n) => !n.disabled);
-    const connector = config.connectors.metamask;
-    try {
-      activateBrowserWallet({ type: "metamask" });
-      await activate(connector);
-      await switchNetwork(+network.chainId);
-      await EnableAndChangeNetwork(connector.provider.provider);
-
-      const provider = connector.provider.provider;
-      const accounts = await connector.provider.provider.request({
-        method: "eth_requestAccounts",
-      });
-      const account = accounts[0];
-      return { connector, account, provider };
-    } catch (error) {
-      // handle
-    }
-    return {};
-  };
 
   const viewMemberPhases = async () => {
-    setErrorMessage(null);
-    setLoading(true);
-    setSigned(true);
-    try {
-      const { account, provider } = await activateNetwork();
-      await provider.request({
-        method: "personal_sign",
-        params: ["Sign this message to access the content!", account],
-      });
-
-      onConnected({
-        connected: true,
-        subtitle: memberSubtitle,
-        userAddress: account,
-        items: await updatePhases(memberItems, account),
-      });
-    } catch (error) {
-      if (error?.code === 4001) {
-        setErrorMessage(error.message);
+    openPopup(false, async ({ connected, account }, errorMessage) => {
+      if (connected) {
+        onConnected({
+          connected: connected,
+          subtitle: memberSubtitle,
+          userAddress: account,
+          items: await updatePhases(memberItems),
+        });
       }
-    } finally {
-      setLoading(false);
-      setSigned(false);
-    }
+      if (errorMessage) {
+        setErrorMessage(errorMessage);
+      }
+    });
   };
 
   const viewOwnerPhases = async () => {
-    setLoading(true);
-    setVerifying(true);
-    try {
-      const { account, connector, provider } = await activateNetwork();
-      await provider.request({
-        method: "personal_sign",
-        params: ["Sign this message to access the content!", account],
-      });
-
-      const signer = connector.provider.getSigner();
-      const contract = Web3AllowListProvider(
-        "0x3Aa3c3cd9361a39C651314261156bc7cdB52B618",
-        {
-          signer: () => signer,
-        }
-      );
-      const isAllowed = await contract.isAllowed(account);
-      onConnected({
-        connected: isAllowed,
-        subtitle: ownerSubtitle,
-        userAddress: account,
-        items: await updatePhases(ownerItems, account),
-      });
-    } catch (error) {
-      if (error?.code === 4001) {
-        setErrorMessage(error.message);
-      } else {
-        setErrorMessage(
-          "Aw shucks, it looks like you’re not on the Allowlist for this round."
-        );
+    openPopup(true, async ({ connected, account }, errorMessage) => {
+      debugger;
+      if (connected) {
+        onConnected({
+          connected: connected,
+          subtitle: ownerSubtitle,
+          userAddress: account,
+          items: await updatePhases(ownerItems),
+        });
       }
-    } finally {
-      setLoading(false);
-      setVerifying(false);
-    }
+      if (errorMessage) {
+        setErrorMessage(errorMessage);
+      }
+    });
+  };
+
+  const openPopup = (shouldBeAllowListed, callback = () => null) => {
+    openModal({
+      config: {
+        className: "customModal",
+        style: {
+          transform: "scale(1)",
+          border: 0,
+          background: "red"
+        },
+        animationFrom: { transform: "scale(0.3)" }, // react-spring <Spring from={}> props value
+        animationTo: { transform: "scale(1)" }, //  react-spring <Spring to={}> props value
+        transition: {
+          mass: 1,
+          tension: 130,
+          friction: 26,
+        }, // react-spring config props
+        disableDragging: true,
+        width: 450,
+        height: 450,
+      },
+      overlayClassName: "customeOverlayClass",
+      closeOnClickOutside: false,
+      component: Web3NetworkProvider,
+      componentProps: {
+        networks,
+        shouldBeAllowListed,
+        onClose: callback,
+      },
+    });
   };
 
   return (
@@ -255,8 +227,6 @@ const AutConnect = ({ onConnected, config, networks }) => {
               title="DAO Owner"
               target="_blank"
               size="normal"
-              isLoading={verifying}
-              disabled={loading}
               onClick={viewOwnerPhases}
               minWidth={{
                 _: "260px",
@@ -269,8 +239,6 @@ const AutConnect = ({ onConnected, config, networks }) => {
               title="DAO Contributor"
               target="_blank"
               size="normal"
-              isLoading={signing}
-              disabled={loading}
               onClick={viewMemberPhases}
               minWidth={{
                 _: "260px",
