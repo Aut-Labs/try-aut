@@ -109,7 +109,7 @@ export const TryOutData = {
     },
     {
       button: {
-        link: "http://176.34.149.248:3333",
+        link: "https://dashboard-internal-test.aut.id",
         cacheParams: ["daoAddress"],
       },
       success: {
@@ -197,7 +197,7 @@ export const TryOutData = {
     },
     {
       button: {
-        link: "http://localhost:3001/quest",
+        link: "https://dashboard-internal-test.aut.id/quest",
         cacheParams: ["daoAddress", "onboardingQuestAddress", "questId"],
       },
       success: {
