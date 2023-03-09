@@ -7,6 +7,7 @@ import AutCircle from "./circle";
 import { memo, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getCache } from "api/cache.api";
+import AppTitle from "common/components/AppTitle";
 
 const TryAut = ({ connectState }) => {
   const { title } = TryOutData;
@@ -41,7 +42,7 @@ const TryAut = ({ connectState }) => {
 
     return new URLSearchParams({
       ...qParams,
-      ...cParams
+      ...cParams,
     });
   };
 
@@ -80,7 +81,7 @@ const TryAut = ({ connectState }) => {
         }}
       >
         <div className="top-part">
-          <Typography
+          <AppTitle
             textAlign="center"
             mb="10px"
             zIndex="1"
@@ -88,9 +89,7 @@ const TryAut = ({ connectState }) => {
               _: "140px",
             }}
             as="h1"
-          >
-            {title}
-          </Typography>
+          />
           <Typography
             textAlign="center"
             zIndex="1"

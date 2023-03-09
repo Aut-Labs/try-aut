@@ -2,7 +2,7 @@ import Container from "common/components/Container";
 import Typography from "common/components/Typography";
 import Section from "common/components/Section";
 import { TryOutData } from "common/data";
-import GenesisImage from "common/assets/image/genesis.svg";
+import GenesisImage from "common/assets/image/genesis.png";
 import { memo, useState } from "react";
 import styled from "styled-components";
 import themeGet from "@styled-system/theme-get";
@@ -10,66 +10,34 @@ import Button from "common/components/Button";
 import { openModal } from "@redq/reuse-modal";
 import Web3NetworkProvider from "common/ProviderFactory/components/Web3NetworkProvider";
 import { getCache } from "api/cache.api";
+import AppTitle from "common/components/AppTitle";
 
-const GenesisImageWrapper = styled("img")({
-  width: "100%",
-  zIndex: "-1",
-  position: "fixed",
-  left: "50%",
-  display: "none",
-  transform: "translateX(-50%)",
-  [themeGet("mediaQueries.md")]: {
-    display: "inherit",
-    height: "662px",
-    maxWidth: "662px",
-    bottom: "calc(662px / 2 * -1)",
-  },
-  [themeGet("mediaQueries.xxl")]: {
-    display: "inherit",
-    height: "892px",
-    maxWidth: "892px",
-    bottom: "calc(892px / 2 * -1)",
-  },
-});
+const GenesisImageWrapper = styled("img")`
+  width: 100%;
+  zindex: -1;
+  position: fixed;
+  left: 50%;
+  display: none;
+  transform: translateX(-50%);
+
+  ${themeGet("mediaQueries.md")} {
+    display: inherit;
+    height: 500px;
+    max-width: 662px;
+    bottom: calc(500px / 2 * -1);
+  }
+
+  ${themeGet("mediaQueries.xxl")} {
+    display: inherit;
+    height: 720px;
+    max-width: 892px;
+    bottom: calc(720px / 2 * -1);
+  }
+`;
 
 export const toHex = (num) => {
   const val = Number(num);
   return `0x${val.toString(16)}`;
-};
-
-export const EnableAndChangeNetwork = async (provider) => {
-  const params = [
-    {
-      chainId: toHex(config.chainId),
-      chainName: config.network,
-      rpcUrls: config.rpcUrls,
-      blockExplorerUrls: config.explorerUrls,
-    },
-  ];
-
-  const [{ chainId }] = params;
-
-  try {
-    await provider.request({ method: "eth_requestAccounts" });
-    await provider.request({
-      method: "wallet_switchEthereumChain",
-      params: [{ chainId }],
-    });
-  } catch (switchError) {
-    // This error code indicates that the chain has not been added to MetaMask.
-    if (switchError.code === 4902) {
-      try {
-        await provider.request({
-          method: "wallet_addEthereumChain",
-          params,
-        });
-      } catch (addError) {
-        throw new Error(addError);
-      }
-    } else {
-      throw new Error(switchError);
-    }
-  }
 };
 
 const updatePhases = async (items) => {
@@ -85,7 +53,6 @@ const updatePhases = async (items) => {
 
 const AutConnect = ({ onConnected, config, networks }) => {
   const {
-    title,
     mainSubtitle,
     ownerItems,
     memberItems,
@@ -93,7 +60,6 @@ const AutConnect = ({ onConnected, config, networks }) => {
     memberSubtitle,
   } = TryOutData;
   const [errorMessage, setErrorMessage] = useState(false);
-
 
   const viewMemberPhases = async () => {
     openPopup(false, async ({ connected, account }, errorMessage) => {
@@ -113,7 +79,6 @@ const AutConnect = ({ onConnected, config, networks }) => {
 
   const viewOwnerPhases = async () => {
     openPopup(true, async ({ connected, account }, errorMessage) => {
-      debugger;
       if (connected) {
         onConnected({
           connected: connected,
@@ -135,7 +100,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
         style: {
           transform: "scale(1)",
           border: 0,
-          background: "red"
+          background: "red",
         },
         animationFrom: { transform: "scale(0.3)" }, // react-spring <Spring from={}> props value
         animationTo: { transform: "scale(1)" }, //  react-spring <Spring to={}> props value
@@ -143,7 +108,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
           mass: 1,
           tension: 130,
           friction: 26,
-        }, // react-spring config props
+        },
         disableDragging: true,
         width: 450,
         height: 450,
@@ -174,7 +139,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
         }}
       >
         <div className="top-part">
-          <Typography
+          <AppTitle
             textAlign="center"
             mb="10px"
             zIndex="1"
@@ -182,9 +147,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
               _: "140px",
             }}
             as="h1"
-          >
-            {title}
-          </Typography>
+          />
           <Typography
             textAlign="center"
             zIndex="1"

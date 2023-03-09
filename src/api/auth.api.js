@@ -2,11 +2,9 @@ import axios from "axios";
 
 export const AUTH_TOKEN_KEY = "user-access-token";
 
-export const authoriseWithWeb3 = async (provider) => {
+export const authoriseWithWeb3 = async (signer) => {
   try {
-    const [account] = await provider.request({
-      method: "eth_requestAccounts",
-    });
+    const account = await signer.getAddress();
 
     const responseNonce = await axios.get(
       `https://api.skillwallet.id/api/autID/user/nonce/${account}`
@@ -14,10 +12,7 @@ export const authoriseWithWeb3 = async (provider) => {
 
     const nonce = responseNonce.data.nonce;
 
-    const signature = await provider.request({
-      method: "personal_sign",
-      params: [nonce, account],
-    });
+    const signature = await signer.signMessage(`${nonce}`);
 
     const jwtResponse = await axios.post(
       `https://api.skillwallet.id/api/autID/user/getToken`,

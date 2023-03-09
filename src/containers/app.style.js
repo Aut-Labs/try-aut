@@ -1,7 +1,6 @@
 import { themeGet } from "@styled-system/theme-get";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
-import AutLogo from "common/assets/image/noise.svg";
-import BubbleImage from "common/assets/image/bubble.svg";
+import AutLogo from "common/assets/image/noise.png";
 
 const Wobble_Vertical = keyframes`
   16.65% {
@@ -113,24 +112,6 @@ const GlobalStyle = createGlobalStyle`
     transform: scale(1) !important;
   }
 
-  .scrollbar-container {
-    ${themeGet("mediaQueries.md")} {
-      &:before {
-        content: " ";
-        display: block;
-        position: absolute;
-        filter: blur(50px);
-        -webkit-filter: blur(50px);
-        right: 0;
-        z-index: 9999;
-        top: -500px;
-        width: 600px;
-        height: 800px;
-        background-image: url(${BubbleImage.src});
-      }
-    }
-  }
-
   section {
     position: relative;
     &.snap {
@@ -140,8 +121,6 @@ const GlobalStyle = createGlobalStyle`
       }
     }
   }
-
-  
 
   .main-container {
     @media only screen and (min-width: 992px) {

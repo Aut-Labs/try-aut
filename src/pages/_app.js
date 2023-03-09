@@ -1,14 +1,9 @@
-import { Modal } from "@redq/reuse-modal";
 import React, { useEffect } from "react";
 import Head from "next/head";
-import Sticky from "react-stickynode";
-import { DrawerProvider } from "common/contexts/DrawerContext";
-import Navbar from "containers/Navbar";
 import { ThemeProvider } from "styled-components";
 import { theme } from "common/theme";
 import ResetCSS from "common/assets/css/style";
 import GlobalStyle from "containers/app.style";
-import "common/assets/css/rc-collapse.css";
 import localFont from "@next/font/local";
 
 export function reportWebVitals(metric) {
@@ -68,11 +63,6 @@ export default function CustomApp({ Component, pageProps }) {
             }
           `}
         </style>
-        <Sticky top={0} innerZ={200} activeClass="sticky-nav-active">
-          <DrawerProvider>
-            <Navbar />
-          </DrawerProvider>
-        </Sticky>
         <Component {...pageProps} />
       </>
     </ThemeProvider>

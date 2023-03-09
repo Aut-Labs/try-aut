@@ -49,9 +49,11 @@ const Web3NetworkProvider = ({
       setIsSigning(true);
       await activate(conn);
       await switchNetwork(+network.chainId);
-      // @ts-ignore
-      const provider = conn.provider.provider;
-      await EnableAndChangeNetwork(provider, network);
+
+      if (conn.name === 'metamask') {
+        const provider = conn.provider.provider;
+        await EnableAndChangeNetwork(provider, network);
+      }
 
       const signer = conn.provider.getSigner();
       const contract = Web3AllowListProvider(
@@ -64,7 +66,7 @@ const Web3NetworkProvider = ({
       if (shouldBeAllowListed) {
         const isAllowed = await contract.isAllowed(account);
         if (isAllowed) {
-          const isAuthorised = await authoriseWithWeb3(provider);
+          const isAuthorised = await authoriseWithWeb3(signer);
           closeDialog({
             connected: isAuthorised,
             account,
@@ -79,7 +81,7 @@ const Web3NetworkProvider = ({
           );
         }
       } else {
-        const isAuthorised = await authoriseWithWeb3(provider);
+        const isAuthorised = await authoriseWithWeb3(signer);
         closeDialog({
           connected: isAuthorised,
           account,

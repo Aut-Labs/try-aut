@@ -4,7 +4,7 @@ import Container from "common/components/Container";
 import { NavbarData } from "common/data";
 import PropTypes from "prop-types";
 import Logo from "common/components/UIElements/Logo";
-import Link from "next/link";
+import Button from "common/components/Button";
 
 const navbarStyle = {
   className: "sass_app_dark_navbar",
@@ -35,7 +35,7 @@ const logoStyles = {
   },
 };
 
-const Navbar = ({ row }) => {
+const Navbar = ({ row, onDisconnect, isAuthorised }) => {
   const { logo } = NavbarData;
 
   return (
@@ -66,6 +66,19 @@ const Navbar = ({ row }) => {
             logoStyle={logoStyles}
             className="sticky-logo nav-logo"
           />
+          {!!isAuthorised && (
+            <Button
+              colors="primary"
+              variant="roundOutlined"
+              title="Disconnect"
+              target="_blank"
+              size="normal"
+              onClick={onDisconnect}
+              minWidth={{
+                _: "220px",
+              }}
+            />
+          )}
         </Box>
       </Container>
     </NavbarWrapper>

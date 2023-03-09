@@ -4,6 +4,9 @@ import Footer from "containers/Footer";
 import AutConnect from "containers/Connect";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import PerfectScrollbar from "react-perfect-scrollbar";
+import Sticky from "react-stickynode";
+import { DrawerProvider } from "common/contexts/DrawerContext";
+import Navbar from "containers/Navbar";
 import AutSDK from "@aut-labs-private/sdk";
 import { getAppConfig } from "api/index.api";
 import { useEffect } from "react";
@@ -12,6 +15,9 @@ import { WalletConnectConnector } from "@usedapp/wallet-connect-connector";
 import { ethers } from "ethers";
 import AutLoading from "common/components/AutLoading";
 import { Modal } from "@redq/reuse-modal";
+import styled from "styled-components";
+import BubbleBottomLeft from "common/assets/image/bubble_bottom_left.png";
+import BubbleTopRight from "common/assets/image/bubble_top_right.png";
 
 const generateConfig = (networks) => {
   const readOnlyUrls = networks.reduce((prev, curr) => {
@@ -45,18 +51,38 @@ const generateConfig = (networks) => {
     connectors: {
       metamask: new MetamaskConnector(),
       walletConnect: new WalletConnectConnector({
+        rpc: networks.reduce((prev, curr) => {
+          // eslint-disable-next-line prefer-destructuring
+          prev[curr.chainId] = curr.rpcUrls[0];
+          return prev;
+        }, {}),
         infuraId: "d8df2cb7844e4a54ab0a782f608749dd",
       }),
     },
   };
 };
 
+const BottomLeftBubble = styled("img")({
+  position: "fixed",
+  width: "700px",
+  height: "700px",
+  left: "-350px",
+  bottom: "-350px",
+});
+
+const TopRightBubble = styled("img")({
+  position: "fixed",
+  width: "700px",
+  height: "700px",
+  top: "calc(-350px + 84px)",
+  right: "-350px",
+});
+
 const Main = () => {
   const [connectState, setConnectState] = useState({});
   const [isLoading, setLoading] = useState(true);
   const [config, setConfig] = useState(null);
   const [networks, setNetworks] = useState();
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     getAppConfig()
@@ -68,46 +94,59 @@ const Main = () => {
         });
         setLoading(false);
       })
-      .catch(() => {
-        setError(true);
-      });
+      .catch();
   }, []);
 
   return (
-    <PerfectScrollbar
-      options={{
-        suppressScrollX: true,
-        useBothWheelAxes: false,
-        swipeEasing: true,
-      }}
-      style={{
-        height: "100vh",
-      }}
-    >
+    <>
       {isLoading || !config ? (
         <AutLoading />
       ) : (
         <DAppProvider config={config}>
-          <Modal>
-            {!connectState?.connected && (
-              <AutConnect
-                config={config}
-                networks={networks}
-                setLoading={setLoading}
-                onConnected={(state) => setConnectState(state)}
+          <Sticky top={0} innerZ={200} activeClass="sticky-nav-active">
+            <DrawerProvider>
+              <Navbar
+                isAuthorised={connectState?.connected}
+                onDisconnect={() => {
+                  setConnectState({});
+                }}
               />
-            )}
+            </DrawerProvider>
+          </Sticky>
 
-            {connectState?.connected && (
-              <>
-                <TryAut connectState={connectState} />
-                <Footer />
-              </>
-            )}
-          </Modal>
+          <PerfectScrollbar
+            options={{
+              suppressScrollX: true,
+              useBothWheelAxes: false,
+              swipeEasing: true,
+            }}
+            style={{
+              height: "100vh",
+            }}
+          >
+            <BottomLeftBubble loading="lazy" src={BubbleBottomLeft.src} />
+            <TopRightBubble loading="lazy" src={BubbleTopRight.src} />
+            <Modal>
+              {!connectState?.connected && (
+                <AutConnect
+                  config={config}
+                  networks={networks}
+                  setLoading={setLoading}
+                  onConnected={(state) => setConnectState(state)}
+                />
+              )}
+
+              {connectState?.connected && (
+                <>  
+                  <TryAut connectState={connectState} />
+                  <Footer />
+                </>
+              )}
+            </Modal>
+          </PerfectScrollbar>
         </DAppProvider>
       )}
-    </PerfectScrollbar>
+    </>
   );
 };
 export default Main;

@@ -82,7 +82,6 @@ const Footer = () => {
   const { logo, copyright, widgets, mailchimpUrl } = FooterData;
   return (
     <FooterSection as="footer">
-      {/* <Bubble src={BubbleImage.src} /> */}
       <Container
         noGutter
         maxWidth={{
