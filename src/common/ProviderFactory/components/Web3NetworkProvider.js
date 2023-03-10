@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ConnectorBtn, { ConnectorTypes } from "./ConnectorBtn";
 import styled from "styled-components";
 import ModalPopupWrapper from "common/components/ModalPopupWrapper";
@@ -28,21 +28,53 @@ const Web3NetworkProvider = ({
 }) => {
   const [wallet, setWallet] = useState();
   const [isSigning, setIsSigning] = useState(false);
+  const [tryEagerConnect, setTryEagerConnect] = useState(false);
   const { connector, activate } = useConnector();
-  const { activateBrowserWallet, switchNetwork, chainId, isLoading, account } =
-    useEthers();
+  const {
+    activateBrowserWallet,
+    deactivate,
+    switchNetwork,
+    isLoading,
+    account,
+    chainId,
+  } = useEthers();
 
   const changeConnector = async (connectorType) => {
     setWallet(connectorType);
     activateBrowserWallet({ type: connectorType });
-    const config = networks.find(
-      (n) => n.chainId?.toString() === chainId?.toString()
-    );
-
-    if (config && connector.connector) {
-      await activateNetwork(config, connector.connector);
+    if (!connector?.connector) {
+      setTryEagerConnect(true);
+    } else {
+      await tryConnect();
     }
   };
+
+  const canConnectEagerly = useMemo(() => {
+    return !!tryEagerConnect && !!connector?.connector && account;
+  }, [connector, tryEagerConnect, account]);
+
+  // useEffect(() => {
+  //   deactivate();
+  // }, []);
+
+  const tryConnect = async () => {
+    const [config] = networks.filter((n) => !n.disabled);
+    // .find(
+    //   // (n) => n.chainId?.toString() === chainId?.toString()
+    //   (n) => n.chainId?.toString() === chainId?.toString()
+    // );
+    if (config && connector?.connector) {
+      await activateNetwork(config, connector.connector);
+    } else {
+      setTryEagerConnect(false);
+    }
+  };
+
+  useEffect(() => {
+    if (canConnectEagerly) {
+      tryConnect();
+    }
+  }, [canConnectEagerly]);
 
   const activateNetwork = async (network, conn) => {
     try {
@@ -50,7 +82,7 @@ const Web3NetworkProvider = ({
       await activate(conn);
       await switchNetwork(+network.chainId);
 
-      if (conn.name === 'metamask') {
+      if (conn.name === "metamask") {
         const provider = conn.provider.provider;
         await EnableAndChangeNetwork(provider, network);
       }
@@ -106,12 +138,14 @@ const Web3NetworkProvider = ({
         );
       }
     } finally {
+      setTryEagerConnect(false);
       setIsSigning(false);
     }
   };
 
   const closeDialog = (connected, errorMessage = null) => {
     closeModal();
+    setTryEagerConnect(false);
     onClose(connected, errorMessage);
   };
 
@@ -127,13 +161,13 @@ const Web3NetworkProvider = ({
           variant="h2"
         />
 
-        {(isLoading || isSigning) && (
+        {(isLoading || isSigning || tryEagerConnect) && (
           <div style={{ position: "relative", flex: 1 }}>
             <AutLoading />
           </div>
         )}
 
-        {!isLoading && !isSigning && (
+        {!isLoading && !isSigning && !tryEagerConnect && (
           <>
             {!wallet && (
               <Typography
@@ -175,7 +209,7 @@ const Web3NetworkProvider = ({
                   />
                 </>
               )}
-              {wallet && !isLoading && (
+              {/* {wallet && !isLoading && (
                 <NetworkSelectors
                   networks={networks}
                   onSelect={async (selectedNetwork) => {
@@ -191,7 +225,7 @@ const Web3NetworkProvider = ({
                     }
                   }}
                 />
-              )}
+              )} */}
             </DialogInnerContent>
           </>
         )}

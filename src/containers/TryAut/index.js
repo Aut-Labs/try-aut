@@ -48,22 +48,24 @@ const TryAut = ({ connectState }) => {
 
   useEffect(() => {
     const start = async () => {
-      const c = await getCache("UserPhases");
-      const updatedItems = items.map((item, index) => {
-        const cacheItemFromList = c?.list?.find((u) => u.phase === index + 1);
-        return {
-          ...item,
-          complete: cacheItemFromList?.status === 1,
-        };
-      });
-      setCache(c);
-      setItems(updatedItems);
+      try {
+        const c = await getCache("UserPhases");
+        const updatedItems = items.map((item, index) => {
+          const cacheItemFromList = c?.list?.find((u) => u.phase === index + 1);
+          return {
+            ...item,
+            complete: cacheItemFromList?.status === 1,
+          };
+        });
+        setCache(c);
+        setItems(updatedItems);
+      } catch (error) {}
     };
     start();
-    const timeout = setInterval(() => {
+    const interval = setInterval(() => {
       start();
     }, 5000);
-    return () => clearTimeout(timeout);
+    return () => clearInterval(interval);
   }, []);
 
   return (
