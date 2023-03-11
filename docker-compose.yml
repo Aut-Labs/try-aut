@@ -10,7 +10,4 @@ services:
     image: try_aut_nginx
     build: ./nginx
     ports:
-      - 3001:9080
-
-networks:
-  try_aut:
+      - 3002:9080
