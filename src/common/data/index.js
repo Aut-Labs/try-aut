@@ -168,7 +168,7 @@ export const TryOutData = {
   memberItems: [
     {
       button: {
-        link: "https://showcase.aut.id",
+        link: "http://176.34.149.248:4002",
         queryParams: ["daoAddress"],
       },
       success: {
