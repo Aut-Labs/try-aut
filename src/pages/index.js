@@ -18,6 +18,8 @@ import { Modal } from "@redq/reuse-modal";
 import styled from "styled-components";
 import BubbleBottomLeft from "common/assets/image/bubble_bottom_left.png";
 import BubbleTopRight from "common/assets/image/bubble_top_right.png";
+import themeGet from "@styled-system/theme-get";
+import Image from "common/components/Image";
 
 const generateConfig = (networks) => {
   const readOnlyUrls = networks.reduce((prev, curr) => {
@@ -62,21 +64,33 @@ const generateConfig = (networks) => {
   };
 };
 
-const BottomLeftBubble = styled("img")({
-  position: "fixed",
-  width: "700px",
-  height: "700px",
-  left: "-350px",
-  bottom: "-350px",
-});
+const BottomLeftBubble = styled(Image)`
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  left: -200px;
+  bottom: -200px;
+  ${[themeGet("mediaQueries.sm")]} {
+    width: 700px;
+    height: 700px;
+    left: -350px;
+    bottom: -350px
+  }
+`;
 
-const TopRightBubble = styled("img")({
-  position: "fixed",
-  width: "700px",
-  height: "700px",
-  top: "calc(-350px + 84px)",
-  right: "-350px",
-});
+const TopRightBubble = styled(Image)`
+  position: fixed;
+  width: 400px;
+  height: 400px;
+  top: -80px;
+  right: -200px;
+  ${[themeGet("mediaQueries.sm")]} {
+    width: 700px;
+    height: 700px;
+    top: -350px;
+    right: -350px
+  }
+`;
 
 const Main = () => {
   const [connectState, setConnectState] = useState({});
@@ -124,8 +138,8 @@ const Main = () => {
               height: "100vh",
             }}
           >
-            <BottomLeftBubble loading="lazy" src={BubbleBottomLeft.src} />
-            <TopRightBubble loading="lazy" src={BubbleTopRight.src} />
+            <BottomLeftBubble src={BubbleBottomLeft.src} />
+            <TopRightBubble src={BubbleTopRight.src} />
             <Modal>
               {!connectState?.connected && (
                 <AutConnect

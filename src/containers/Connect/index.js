@@ -35,6 +35,17 @@ const GenesisImageWrapper = styled("img")`
   }
 `;
 
+const ButtonWrapper = styled("div")`
+  display: flex;
+  grid-gap: 20px;
+  flex-direction: column;
+
+  ${themeGet("mediaQueries.sm")} {
+    flex-direction: row;
+  }
+`;
+
+
 export const toHex = (num) => {
   const val = Number(num);
   return `0x${val.toString(16)}`;
@@ -174,16 +185,10 @@ const AutConnect = ({ onConnected, config, networks }) => {
             color="white"
             as="subtitle1"
           >
-            I am
+            I am a
           </Typography>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gridGap: "20px",
-            }}
-          >
+          <ButtonWrapper>
             <Button
               colors="primary"
               variant="roundOutlined"
@@ -207,7 +212,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
                 _: "260px",
               }}
             />
-          </div>
+          </ButtonWrapper>
         </div>
 
         <Typography

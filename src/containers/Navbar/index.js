@@ -58,6 +58,10 @@ const Navbar = ({ row, onDisconnect, isAuthorised }) => {
             _: "center",
             sm: "space-between",
           }}
+          flexDirection={{
+            _: "column",
+            sm: "row",
+          }}
         >
           <Logo
             logoSrc={logo}
@@ -76,6 +80,9 @@ const Navbar = ({ row, onDisconnect, isAuthorised }) => {
               onClick={onDisconnect}
               minWidth={{
                 _: "220px",
+              }}
+              marginTop={{
+                _: "10px"
               }}
             />
           )}
