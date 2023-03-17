@@ -55,7 +55,7 @@ const Web3NetworkProvider = ({ shouldBeAllowListed = false, onClose }) => {
           variant="h2"
         />
 
-        {(isLoading || waitingUserConfirmation) && !errorMessage && (
+        {(isLoading || waitingUserConfirmation) && (
           <div style={{ position: "relative", flex: 1 }}>
             {waitingUserConfirmation && (
               <Typography
@@ -71,7 +71,7 @@ const Web3NetworkProvider = ({ shouldBeAllowListed = false, onClose }) => {
           </div>
         )}
 
-        {((!isLoading && !waitingUserConfirmation) || errorMessage) && (
+        {!isLoading && !waitingUserConfirmation && (
           <>
             <Typography
               m="0"
@@ -91,21 +91,20 @@ const Web3NetworkProvider = ({ shouldBeAllowListed = false, onClose }) => {
                 connectorType={ConnectorTypes.WalletConnect}
               />
             </DialogInnerContent>
+            {errorMessage && (
+              <ErrorWrapper>
+                <Typography
+                  m="0"
+                  textAlign="center"
+                  fontFamily="var(--fractul-regular)"
+                  color="error"
+                  as="body"
+                >
+                  {errorMessage}
+                </Typography>
+              </ErrorWrapper>
+            )}
           </>
-        )}
-
-        {errorMessage && (
-          <ErrorWrapper>
-            <Typography
-              m="0"
-              textAlign="center"
-              fontFamily="var(--fractul-regular)"
-              color="error"
-              as="body"
-            >
-              {errorMessage}
-            </Typography>
-          </ErrorWrapper>
         )}
       </>
     </ModalPopupWrapper>
