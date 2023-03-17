@@ -20,6 +20,7 @@ import BubbleBottomLeft from "common/assets/image/bubble_bottom_left.png";
 import BubbleTopRight from "common/assets/image/bubble_top_right.png";
 import themeGet from "@styled-system/theme-get";
 import Image from "common/components/Image";
+import ClaimAutId, { AutIDContextProvider } from "common/components/ClaimAutId";
 
 const generateConfig = (networks) => {
   const readOnlyUrls = networks.reduce((prev, curr) => {
@@ -38,7 +39,7 @@ const generateConfig = (networks) => {
 
   return {
     readOnlyUrls,
-    fastMulticallEncoding: true,
+    autoConnect: false,
     networks: networks
       .filter((n) => !n.disabled)
       .map((n) => ({
@@ -74,7 +75,7 @@ const BottomLeftBubble = styled(Image)`
     width: 700px;
     height: 700px;
     left: -350px;
-    bottom: -350px
+    bottom: -350px;
   }
 `;
 
@@ -88,7 +89,7 @@ const TopRightBubble = styled(Image)`
     width: 700px;
     height: 700px;
     top: -350px;
-    right: -350px
+    right: -350px;
   }
 `;
 
@@ -117,47 +118,52 @@ const Main = () => {
         <AutLoading />
       ) : (
         <DAppProvider config={config}>
-          <Sticky top={0} innerZ={200} activeClass="sticky-nav-active">
-            <DrawerProvider>
-              <Navbar
-                isAuthorised={connectState?.connected}
-                onDisconnect={() => {
-                  setConnectState({});
-                }}
-              />
-            </DrawerProvider>
-          </Sticky>
-
-          <PerfectScrollbar
-            options={{
-              suppressScrollX: true,
-              useBothWheelAxes: false,
-              swipeEasing: true,
-            }}
-            style={{
-              height: "100vh",
-            }}
-          >
-            <BottomLeftBubble src={BubbleBottomLeft.src} />
-            <TopRightBubble src={BubbleTopRight.src} />
-            <Modal>
-              {!connectState?.connected && (
-                <AutConnect
-                  config={config}
-                  networks={networks}
-                  setLoading={setLoading}
-                  onConnected={(state) => setConnectState(state)}
+          <AutIDContextProvider>
+            <Sticky top={0} innerZ={200} activeClass="sticky-nav-active">
+              <DrawerProvider>
+                <Navbar
+                  isAuthorised={connectState?.connected}
+                  onDisconnect={() => {
+                    setConnectState({});
+                  }}
                 />
-              )}
+              </DrawerProvider>
+            </Sticky>
 
-              {connectState?.connected && (
-                <>  
-                  <TryAut connectState={connectState} />
-                  <Footer />
-                </>
-              )}
-            </Modal>
-          </PerfectScrollbar>
+            <ClaimAutId />
+
+            <PerfectScrollbar
+              options={{
+                suppressScrollX: true,
+                useBothWheelAxes: false,
+                swipeEasing: true,
+              }}
+              style={{
+                height: "100vh",
+              }}
+            >
+              <BottomLeftBubble alt="bubble-left" src={BubbleBottomLeft.src} />
+              <TopRightBubble alt="bubble-right" src={BubbleTopRight.src} />
+              <Modal>
+                {!connectState?.connected && (
+                  <AutConnect
+                    config={config}
+                    networks={networks}
+                    setLoading={setLoading}
+                    onConnected={(state) => setConnectState(state)}
+                  />
+                )}
+
+                {connectState?.connected && (
+                  <>
+                    {/* <div id="daut-container"></div> */}
+                    <TryAut connectState={connectState} />
+                    <Footer />
+                  </>
+                )}
+              </Modal>
+            </PerfectScrollbar>
+          </AutIDContextProvider>
         </DAppProvider>
       )}
     </>

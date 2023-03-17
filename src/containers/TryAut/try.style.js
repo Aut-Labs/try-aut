@@ -14,15 +14,13 @@ export const BubbleImageWrapper = styled("div")`
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 
-
-    // .aut-card-flip.complete {
-    //   border: 3px solid #2e7d32;
-    // }
 
     img {
       width: 100%;
     }
+
     .aut-card-flip {
       display: flex;
       position: absolute;
@@ -41,6 +39,10 @@ export const BubbleImageWrapper = styled("div")`
         width: 347px;
         height: 347px;
       }
+
+      .aut-card-container.front {
+        padding-top: 40px;
+      }
     }
   }
 
@@ -54,6 +56,10 @@ export const BubbleImageWrapper = styled("div")`
       .aut-card-flip {
         width: 347px;
         height: 347px;
+      }
+
+      .aut-card-container.front {
+        padding-top: 85px;
       }
     }
   }
@@ -69,6 +75,10 @@ export const BubbleImageWrapper = styled("div")`
         width: 347px;
         height: 347px;
       }
+
+      .aut-card-container.front {
+        padding-top: 60px;
+      }
     }
   }
 
@@ -83,6 +93,10 @@ export const BubbleImageWrapper = styled("div")`
         width: 347px;
         height: 347px;
       }
+
+      .aut-card-container.front {
+        padding-top: 70px;
+      }
     }
   }
 
@@ -96,6 +110,10 @@ export const BubbleImageWrapper = styled("div")`
       .aut-card-flip {
         width: 506px;
         height: 506px;
+      }
+
+      .aut-card-container.front {
+        padding-top: 100px;
       }
     }
   }

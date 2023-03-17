@@ -16,7 +16,6 @@ export const NavbarData = {
 /* ------------------------------------ */
 import footerDiscord from "common/assets/image/discord-social.svg";
 import footerTwitter from "common/assets/image/twitter-social.svg";
-import footerDocs from "common/assets/image/docs.svg";
 import footerMirror from "common/assets/image/mirror-logo.svg";
 
 export const FooterData = {
@@ -73,22 +72,145 @@ import fingerprint from "common/assets/image/fingerprint.svg";
 import setup from "common/assets/image/setup.svg";
 import check from "common/assets/image/check-all.png";
 
+const ownerStartDate = new Date(); // Set start date to current date and time
+function ownerTimeLocks() {
+  const startDate = ownerStartDate;
+  const phaseOneDuration = 20 * 60 * 1000; // 20 minutes in milliseconds
+  const phaseTwoDuration = 20 * 60 * 1000; // 20 minutes in milliseconds
+  const phaseThreeDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+  const phaseOneEndDate = new Date(startDate.getTime() + phaseOneDuration);
+  const phaseTwoStartDate = new Date(phaseOneEndDate.getTime());
+  const phaseTwoEndDate = new Date(
+    phaseTwoStartDate.getTime() + phaseTwoDuration
+  );
+  const phaseThreeStartDate = new Date(phaseTwoEndDate.getTime());
+  const phaseThreeEndDate = new Date(
+    phaseThreeStartDate.getTime() + phaseThreeDuration
+  );
+
+  const currentDate = new Date(); // Get current date and time
+
+  if (currentDate >= startDate && currentDate < phaseOneEndDate) {
+    return {
+      phase: 1,
+      startDate: startDate.getTime(),
+      endDate: phaseOneEndDate.getTime(),
+    };
+  } else if (
+    currentDate >= phaseTwoStartDate &&
+    currentDate < phaseTwoEndDate
+  ) {
+    return {
+      phase: 2,
+      startDate: phaseTwoStartDate.getTime(),
+      endDate: phaseTwoEndDate.getTime(),
+    };
+  } else if (
+    currentDate >= phaseThreeStartDate &&
+    currentDate < phaseThreeEndDate
+  ) {
+    return {
+      phase: 3,
+      startDate: phaseThreeStartDate.getTime(),
+      endDate: phaseThreeEndDate.getTime(),
+    };
+  } else if (currentDate < startDate) {
+    console.log("The time lock has not started yet.");
+    return {
+      phase: 0,
+      startDate: currentDate,
+      endDate: startDate,
+    };
+  } else {
+    console.log("The time lock has ended");
+    return {
+      phase: -1,
+      startDate: currentDate,
+      endDate: currentDate,
+    };
+  }
+}
+const memberStartDate = new Date(); // Set start date to current date and time
+function memberTimeLocks() {
+  const startDate = memberStartDate;
+  const phaseOneDuration = 0 * 60 * 1000; // 20 minutes in milliseconds
+  const phaseTwoDuration = 20 * 60 * 1000; // 20 minutes in milliseconds
+  const phaseThreeDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+  const phaseOneEndDate = new Date(startDate.getTime() + phaseOneDuration);
+  const phaseTwoStartDate = new Date(phaseOneEndDate.getTime());
+  const phaseTwoEndDate = new Date(
+    phaseTwoStartDate.getTime() + phaseTwoDuration
+  );
+  const phaseThreeStartDate = new Date(phaseTwoEndDate.getTime());
+  const phaseThreeEndDate = new Date(
+    phaseThreeStartDate.getTime() + phaseThreeDuration
+  );
+
+  const currentDate = new Date(); // Get current date and time
+
+  if (currentDate >= startDate && currentDate < phaseOneEndDate) {
+    return {
+      phase: 1,
+      startDate: startDate.getTime(),
+      endDate: phaseOneEndDate.getTime(),
+    };
+  } else if (
+    currentDate >= phaseTwoStartDate &&
+    currentDate < phaseTwoEndDate
+  ) {
+    return {
+      phase: 2,
+      startDate: phaseTwoStartDate.getTime(),
+      endDate: phaseTwoEndDate.getTime(),
+    };
+  } else if (
+    currentDate >= phaseThreeStartDate &&
+    currentDate < phaseThreeEndDate
+  ) {
+    return {
+      phase: 3,
+      startDate: phaseThreeStartDate.getTime(),
+      endDate: phaseThreeEndDate.getTime(),
+    };
+  } else if (currentDate < startDate) {
+    console.log("The time lock has not started yet.");
+    return {
+      phase: 0,
+      startDate: currentDate,
+      endDate: startDate,
+    };
+  } else {
+    console.log("The time lock has ended");
+    return {
+      phase: -1,
+      startDate: currentDate,
+      endDate: currentDate,
+    };
+  }
+}
+
 export const TryOutData = {
   title: "Try Āut",
   mainSubtitle: "Join the Coordination Renaissance",
   ownerSubtitle: "Join the Coordination Renaissance - and expand your DAO.",
-  memberSubtitle: "Join the Coordination Renaissance - and participate in a DAO.",
+  ownerTimeLocks,
+  memberTimeLocks,
+  memberSubtitle:
+    "Join the Coordination Renaissance - and participate in a DAO.",
   ownerItems: [
     {
       button: {
+        type: "link",
         link: "https://playground.aut.id",
       },
       success: {
         icon: check.src,
-        title: "Expanded",
+        title: "Expand",
         subtitle: (
           <>
-            Your DAO was expanded
+            Expand your <br /> DAO's capabilities <br /> with Āut protocol.
           </>
         ),
       },
@@ -109,15 +231,46 @@ export const TryOutData = {
     },
     {
       button: {
+        type: "webcomponent",
         link: "https://dashboard-internal-test.aut.id",
         cacheParams: ["daoAddress"],
       },
       success: {
         icon: check.src,
-        title: "Setup Complete",
+        title: "Claim ĀutID",
         subtitle: (
           <>
-            Your Āut Dashboard <br /> is ready
+            Claim ĀutID and <br /> explore the dashboard
+          </>
+        ),
+      },
+      front: {
+        title: "Claim ĀutID",
+        icon: fingerprint.src,
+        subtitle: (
+          <>
+            Claim ĀutID and <br /> explore the dashboard
+          </>
+        ),
+      },
+      back: {
+        description:
+          "By claiming you unique ĀutID you will unlock the dashboard where you can explore your DAO members and their roles, quests & tasks and much more",
+      },
+      complete: false,
+    },
+    {
+      button: {
+        type: "link",
+        link: "https://dashboard-internal-test.aut.id",
+        cacheParams: ["daoAddress"],
+      },
+      success: {
+        icon: check.src,
+        title: "Setup Dashboard",
+        subtitle: (
+          <>
+            Set up your <br /> dashboard to manage <br /> quests and tasks.
           </>
         ),
       },
@@ -136,38 +289,11 @@ export const TryOutData = {
       },
       complete: false,
     },
-    {
-      button: {
-        link: "https://my.aut.id/",
-      },
-      success: {
-        icon: check.src,
-        title: "Invited",
-        subtitle: (
-          <>
-            Invitation was sent
-          </>
-        ),
-      },
-      front: {
-        title: "Send Invites",
-        icon: invite.src,
-        subtitle: (
-          <>
-            Invite members to <br /> join and participate <br /> in a quest
-          </>
-        ),
-      },
-      back: {
-        description:
-          "Invite members to join your DAO, and to complete onboarding quest.",
-      },
-      complete: false,
-    },
   ],
   memberItems: [
     {
       button: {
+        type: "link",
         link: "http://176.34.149.248:4002",
         queryParams: ["daoAddress"],
       },
@@ -185,7 +311,8 @@ export const TryOutData = {
         icon: invite.src,
         subtitle: (
           <>
-            Apply for a quest to <br />  accept the invitation <br /> from your DAO.
+            Apply for a quest to <br /> accept the invitation <br /> from your
+            DAO.
           </>
         ),
       },
@@ -197,6 +324,7 @@ export const TryOutData = {
     },
     {
       button: {
+        type: "link",
         link: "https://dashboard-internal-test.aut.id/quest",
         cacheParams: ["daoAddress", "onboardingQuestAddress", "questId"],
       },
@@ -226,6 +354,7 @@ export const TryOutData = {
     },
     {
       button: {
+        type: "webcomponent",
         link: "https://my.aut.id/",
       },
       success: {

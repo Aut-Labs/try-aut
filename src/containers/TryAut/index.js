@@ -2,16 +2,16 @@ import Container from "common/components/Container";
 import Typography from "common/components/Typography";
 import Section from "common/components/Section";
 import { BlackHoleWrapper, BubbleImageWrapper, Grid } from "./try.style";
-import { TryOutData } from "common/data";
 import AutCircle from "./circle";
-import { memo, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getCache } from "api/cache.api";
 import AppTitle from "common/components/AppTitle";
+import { AutIDContext } from "common/components/ClaimAutId";
 
 const TryAut = ({ connectState }) => {
-  const { title } = TryOutData;
   const router = useRouter();
+  const { dispatch } = useContext(AutIDContext);
   const [cache, setCache] = useState();
   const [items, setItems] = useState(connectState.items);
 
@@ -22,11 +22,45 @@ const TryAut = ({ connectState }) => {
     return items[index - 1]?.complete;
   };
 
-  const isCurrentActive = (index) => {
+  const isCurrentPhase = (index) => {
     if (!isPreviousComplete(index) && isFirst(index)) {
       return true;
     }
     return isPreviousComplete(index) && !items[index]?.complete;
+  };
+
+  const phaseStatuses = (index, complete) => {
+    const isCurrent = isCurrentPhase(index, complete);
+    const isCurrentComplete = !!complete;
+
+    let status = {
+      isCurrent,
+      isComplete: isCurrentComplete,
+    };
+
+    if (!isCurrentComplete) {
+      const currentTimelock = connectState.currentPhase();
+      const isInCurrentTimelock = currentTimelock?.phase === index + 1;
+      const isInPreviousTimelock = currentTimelock?.phase === index;
+      const notStarted = currentTimelock?.phase === 0;
+
+      if (isInCurrentTimelock) {
+        status.label = "Start";
+      } else if (isInPreviousTimelock && isPreviousComplete(index)) {
+        status.isCurrent = false;
+        status.unlocksIn = new Date(currentTimelock.endDate);
+      } else if (notStarted && isCurrent) {
+        status.isCurrent = false;
+        status.unlocksIn = new Date(currentTimelock.endDate);
+      } else {
+        status.isCurrent = false;
+        status.label = "Locked";
+      }
+      
+    } else if (isCurrentComplete) {
+      status.label = "Complete";
+    }
+    return status;
   };
 
   const buildQuery = ({ queryParams, cacheParams }) => {
@@ -50,6 +84,11 @@ const TryAut = ({ connectState }) => {
     const start = async () => {
       try {
         const c = await getCache("UserPhases");
+        dispatch({
+          type: "SET_DAO_ADDRESS",
+          payload: c?.daoAddress
+        });
+
         const updatedItems = items.map((item, index) => {
           const cacheItemFromList = c?.list?.find((u) => u.phase === index + 1);
           return {
@@ -113,19 +152,18 @@ const TryAut = ({ connectState }) => {
             <BlackHoleWrapper
               key={`item-${index}`}
               className={`item-${index + 1} ${complete ? "complete" : ""} ${
-                isCurrentActive(index) ? "current" : ""
+                phaseStatuses(index, complete)?.isCurrent ? "current" : ""
               }`}
             >
               <BubbleImageWrapper className="image-wrapper">
                 <AutCircle
-                  complete={complete}
-                  current={isCurrentActive(index)}
                   index={index}
                   success={success}
                   button={button}
                   query={buildQuery(button)}
                   front={front}
                   back={back}
+                  {...phaseStatuses(index, complete)}
                 />
               </BubbleImageWrapper>
             </BlackHoleWrapper>

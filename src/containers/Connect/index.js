@@ -11,6 +11,7 @@ import { openModal } from "@redq/reuse-modal";
 import Web3NetworkProvider from "common/ProviderFactory/components/Web3NetworkProvider";
 import { getCache } from "api/cache.api";
 import AppTitle from "common/components/AppTitle";
+import LockCountdown from "common/components/LockCountdown";
 
 const GenesisImageWrapper = styled("img")`
   width: 100%;
@@ -42,6 +43,7 @@ const ButtonWrapper = styled("div")`
 
   ${themeGet("mediaQueries.sm")} {
     flex-direction: row;
+    justify-content: center;
   }
 `;
 
@@ -69,6 +71,8 @@ const AutConnect = ({ onConnected, config, networks }) => {
     memberItems,
     ownerSubtitle,
     memberSubtitle,
+    ownerTimeLocks,
+    memberTimeLocks
   } = TryOutData;
   const [errorMessage, setErrorMessage] = useState(false);
 
@@ -77,6 +81,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
       if (connected) {
         onConnected({
           connected: connected,
+          currentPhase: memberTimeLocks,
           subtitle: memberSubtitle,
           userAddress: account,
           items: await updatePhases(memberItems),
@@ -93,6 +98,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
       if (connected) {
         onConnected({
           connected: connected,
+          currentPhase: ownerTimeLocks,
           subtitle: ownerSubtitle,
           userAddress: account,
           items: await updatePhases(ownerItems),
@@ -121,14 +127,13 @@ const AutConnect = ({ onConnected, config, networks }) => {
           friction: 26,
         },
         disableDragging: true,
-        width: 450,
-        height: 450,
+        width: 480,
+        height: 480,
       },
       overlayClassName: "customeOverlayClass",
       closeOnClickOutside: false,
       component: Web3NetworkProvider,
       componentProps: {
-        networks,
         shouldBeAllowListed,
         onClose: callback,
       },
@@ -229,7 +234,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
         >
           {errorMessage}
         </Typography>
-        <GenesisImageWrapper src={GenesisImage.src} />
+        <GenesisImageWrapper alt="genesis" src={GenesisImage.src} />
       </Container>
     </Section>
   );
