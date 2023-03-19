@@ -7,7 +7,6 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import Sticky from "react-stickynode";
 import { DrawerProvider } from "common/contexts/DrawerContext";
 import Navbar from "containers/Navbar";
-import AutSDK from "@aut-labs-private/sdk";
 import { getAppConfig } from "api/index.api";
 import { useEffect } from "react";
 import { DAppProvider, MetamaskConnector } from "@usedapp/core";
@@ -54,7 +53,7 @@ const generateConfig = (networks) => {
     connectors: {
       metamask: new MetamaskConnector(),
       walletConnect: new WalletConnectConnector({
-        rpc: networks.reduce((prev, curr) => {
+        rpc: networks.filter((n) => !n.disabled).reduce((prev, curr) => {
           // eslint-disable-next-line prefer-destructuring
           prev[curr.chainId] = curr.rpcUrls[0];
           return prev;
@@ -104,9 +103,6 @@ const Main = () => {
       .then(async (res) => {
         setNetworks(res);
         setConfig(generateConfig(res));
-        new AutSDK({
-          nftStorageApiKey: process.env.NEXT_PUBLIC_NFT_STORAGE_KEY,
-        });
         setLoading(false);
       })
       .catch();

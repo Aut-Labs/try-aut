@@ -10,8 +10,7 @@
     "update-env": "node ./setup-environment.js"
   },
   "dependencies": {
-    "@aut-labs-private/abi-types": "^0.0.4",
-    "@aut-labs-private/sdk": "^0.0.21",
+    "@aut-labs-private/abi-types": "^0.0.22",
     "@aut-labs/d-aut": "^1.0.17",
     "@leenguyen/react-flip-clock-countdown": "^1.4.0",
     "@lottiefiles/lottie-player": "^1.5.7",

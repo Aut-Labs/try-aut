@@ -1,4 +1,4 @@
-import { Web3AllowListProvider } from "@aut-labs-private/abi-types";
+import { Web3AllowlistProvider } from "@aut-labs-private/abi-types";
 import axios from "axios";
 
 export const AUTH_TOKEN_KEY = "user-access-token";
@@ -33,7 +33,7 @@ export const authoriseWithWeb3 = async (signer) => {
 export const isAllowListed = async (signer) => {
   try {
     const account = await signer.getAddress();
-    const contract = Web3AllowListProvider(
+    const contract = Web3AllowlistProvider(
       "0x3Aa3c3cd9361a39C651314261156bc7cdB52B618",
       {
         signer: () => signer,
