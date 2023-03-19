@@ -20,7 +20,7 @@ jobs:
           script: |
             #!/usr/bin/env bash
 
-            DIR_NAME='try-aut'
+            DIR_NAME='nova-showcase'
             TARGET='main'
 
             cd ~/$DIR_NAME || exit
@@ -54,7 +54,8 @@ jobs:
             sudo git pull origin main;
 
             # Docker
+            docker-compose -f docker-compose.prod.yml down
             docker rmi $(docker images -f "dangling=true" -q)
-            docker-compose -f docker-compose.yml up -d --build
+            docker-compose -f docker-compose.prod.yml up -d --build
 
             exit 0;

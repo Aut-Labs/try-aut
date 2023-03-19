@@ -6,8 +6,7 @@
   "author": "Aut Labs",
   "scripts": {
     "build": "next build",
-    "start": "next",
-    "update-env": "node ./setup-environment.js"
+    "start": "next"
   },
   "dependencies": {
     "@aut-labs-private/abi-types": "^0.0.22",

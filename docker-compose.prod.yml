@@ -1,0 +1,13 @@
+version: '3.9'
+services:
+  try_aut_prod: 
+    container_name: try_aut_prod
+    image: try_aut_prod
+    build: ./
+
+  try_aut_nginx_prod:
+    container_name: try_aut_nginx_prod
+    image: try_aut_nginx_prod
+    build: ./nginx/prod
+    ports:
+      - 3002:9080
