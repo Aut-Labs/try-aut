@@ -26,6 +26,13 @@ export const BubbleImageWrapper = styled("div")`
       position: absolute;
       border-radius: 50%;
     }
+
+    .aut-card-container.back {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   ${themeGet("mediaQueries.md")} {

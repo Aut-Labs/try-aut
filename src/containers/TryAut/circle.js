@@ -69,6 +69,7 @@ const AutCircle = ({
 
   return (
     <div className="inner-content">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img alt="black-hole" src={BlackHoleImage.src} />
       <Flipcard
         isFlipped={isFlipped}
