@@ -81,6 +81,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
       if (connected) {
         onConnected({
           connected: connected,
+          isOwner: false,
           currentPhase: memberTimeLocks,
           subtitle: memberSubtitle,
           userAddress: account,
@@ -98,6 +99,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
       if (connected) {
         onConnected({
           connected: connected,
+          isOwner: true,
           currentPhase: ownerTimeLocks,
           subtitle: ownerSubtitle,
           userAddress: account,

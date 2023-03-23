@@ -86,7 +86,10 @@ const TryAut = ({ connectState }) => {
         const c = await getCache("UserPhases");
         dispatch({
           type: "SET_DAO_ADDRESS",
-          payload: c?.daoAddress
+          payload: {
+            daoAddress: c?.daoAddress,
+            isOwner: connectState?.isOwner
+          },
         });
 
         const updatedItems = items.map((item, index) => {

@@ -84,7 +84,7 @@ export const BubbleImageWrapper = styled("div")`
       }
 
       .aut-card-container.front {
-        padding-top: 60px;
+        padding-top: 80px;
       }
     }
   }

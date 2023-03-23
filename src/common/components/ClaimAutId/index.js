@@ -19,7 +19,7 @@ function reducer(state, action) {
     case "SET_DAO_ADDRESS":
       return {
         ...state,
-        daoAddress: action.payload,
+        ...action.payload
       };
     default:
       return state;
@@ -42,16 +42,6 @@ const ClaimAutId = () => {
   useEffect(() => {
     if (!initWebcomponent) {
       setInitWebcomponent(true);
-      const onAutMinted = async () => {
-        try {
-          const cache = await getCache("UserPhases");
-          cache.list[1].status = 1;
-          await updateCache(cache);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      window.addEventListener("aut-minted", onAutMinted);
       const init = async () => {
         // const dautEl = document.getElementById("daut-container");
         const dAut = await import("@aut-labs/d-aut");
@@ -59,10 +49,23 @@ const ClaimAutId = () => {
       };
       init();
     }
+
+    const onAutMinted = async () => {
+      try {
+        const cache = await getCache("UserPhases");
+        const isOwner = value.state.isOwner;
+        
+        cache.list[isOwner ? 1 : 2].status = 1;
+        await updateCache(cache);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    window.addEventListener("aut-minted", onAutMinted);
     return () => {
       // window.removeEventListener("aut-minted", onAutMinted);
     };
-  }, [initWebcomponent]);
+  }, [initWebcomponent, value.state?.isOwner]);
 
   return (
     <d-aut
