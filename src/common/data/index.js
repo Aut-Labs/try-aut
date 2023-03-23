@@ -75,8 +75,8 @@ import check from "common/assets/image/check-all.png";
 const ownerStartDate = new Date(); // Set start date to current date and time
 function ownerTimeLocks() {
   const startDate = ownerStartDate;
-  const phaseOneDuration = 20 * 60 * 1000; // 20 minutes in milliseconds
-  const phaseTwoDuration = 20 * 60 * 1000; // 20 minutes in milliseconds
+  const phaseOneDuration = 2 * 60 * 1000; // 20 minutes in milliseconds
+  const phaseTwoDuration = 5 * 60 * 1000; // 20 minutes in milliseconds
   const phaseThreeDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
 
   const phaseOneEndDate = new Date(startDate.getTime() + phaseOneDuration);
