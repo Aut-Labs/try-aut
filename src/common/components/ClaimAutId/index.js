@@ -11,7 +11,7 @@ import { getCache, updateCache } from "api/cache.api";
 export const AutIDContext = createContext({});
 
 const initialState = {
-  daoAddress: false,
+  daoAddress: false
 };
 
 function reducer(state, action) {
@@ -40,32 +40,30 @@ const ClaimAutId = () => {
   const [initWebcomponent, setInitWebcomponent] = useState(false);
 
   useEffect(() => {
-    if (!initWebcomponent) {
+    if (Object.keys(value.state).includes('isOwner') && !initWebcomponent) {
       setInitWebcomponent(true);
       const init = async () => {
-        // const dautEl = document.getElementById("daut-container");
         const dAut = await import("@aut-labs/d-aut");
         dAut.Init();
       };
       init();
+      const onAutMinted = async () => {
+        try {
+          const cache = await getCache("UserPhases");
+          const isOwner = value.state.isOwner;
+          cache.list[isOwner ? 1 : 2].status = 1;
+          await updateCache(cache);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      window.addEventListener("aut-minted", onAutMinted);
     }
-
-    const onAutMinted = async () => {
-      try {
-        const cache = await getCache("UserPhases");
-        const isOwner = value.state.isOwner;
-        
-        cache.list[isOwner ? 1 : 2].status = 1;
-        await updateCache(cache);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    window.addEventListener("aut-minted", onAutMinted);
+    
     return () => {
       // window.removeEventListener("aut-minted", onAutMinted);
     };
-  }, [initWebcomponent, value.state?.isOwner]);
+  }, [initWebcomponent, value.state]);
 
   return (
     <d-aut
