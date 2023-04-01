@@ -11,7 +11,7 @@ import { getCache, updateCache } from "api/cache.api";
 export const AutIDContext = createContext({});
 
 const initialState = {
-  daoAddress: false
+  daoAddress: false,
 };
 
 function reducer(state, action) {
@@ -19,7 +19,7 @@ function reducer(state, action) {
     case "SET_DAO_ADDRESS":
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
     default:
       return state;
@@ -37,12 +37,18 @@ export const AutIDContextProvider = ({ children }) => {
 
 const ClaimAutId = () => {
   const value = useContext(AutIDContext);
+  const [allowedRole, setAllowedRole] = useState("");
   const [initWebcomponent, setInitWebcomponent] = useState(false);
 
   useEffect(() => {
-    if (Object.keys(value.state).includes('isOwner') && !initWebcomponent) {
+    if (Object.keys(value.state).includes("isOwner") && !initWebcomponent) {
       setInitWebcomponent(true);
       const init = async () => {
+        const isMember = !value.state.isOwner;
+        if (isMember) {
+          const cache = await getCache("UserPhases");
+          setAllowedRole(`${cache.questId}`);
+        }
         const dAut = await import("@aut-labs/d-aut");
         dAut.Init();
       };
@@ -59,7 +65,7 @@ const ClaimAutId = () => {
       };
       window.addEventListener("aut-minted", onAutMinted);
     }
-    
+
     return () => {
       // window.removeEventListener("aut-minted", onAutMinted);
     };
@@ -70,10 +76,11 @@ const ClaimAutId = () => {
       style={{
         position: "absolute",
       }}
+      flow-config='{"mode" : "tryAut", "customCongratsMessage": ""}'
+      allowed-role-id={allowedRole}
       dao-expander={value?.state?.daoAddress}
       id="d-aut"
       ipfs-gateway="https://ipfs.nftstorage.link/ipfs"
-      button-type="simple"
     />
   );
 };

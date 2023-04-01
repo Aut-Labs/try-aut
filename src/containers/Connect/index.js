@@ -11,15 +11,18 @@ import { openModal } from "@redq/reuse-modal";
 import Web3NetworkProvider from "common/ProviderFactory/components/Web3NetworkProvider";
 import { getCache } from "api/cache.api";
 import AppTitle from "common/components/AppTitle";
-import LockCountdown from "common/components/LockCountdown";
 
 const GenesisImageWrapper = styled("img")`
   width: 100%;
-  zindex: -1;
+  z-index: -1;
   position: fixed;
   left: 50%;
   display: none;
   transform: translateX(-50%);
+
+  img {
+    z-index: -1;
+  }
 
   ${themeGet("mediaQueries.md")} {
     display: inherit;
