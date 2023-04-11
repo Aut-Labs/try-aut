@@ -15,8 +15,8 @@ import { ethers } from "ethers";
 import AutLoading from "common/components/AutLoading";
 import { Modal } from "@redq/reuse-modal";
 import styled from "styled-components";
-import BubbleBottomLeft from "common/assets/image/bubble_bottom_left.png";
-import BubbleTopRight from "common/assets/image/bubble_top_right.png";
+import BubbleBottomLeft from "common/assets/image/bubble2.svg";
+import BubbleTopRight from "common/assets/image/bubble.svg";
 import themeGet from "@styled-system/theme-get";
 import Image from "common/components/Image";
 import ClaimAutId, { AutIDContextProvider } from "common/components/ClaimAutId";
@@ -53,11 +53,13 @@ const generateConfig = (networks) => {
     connectors: {
       metamask: new MetamaskConnector(),
       walletConnect: new WalletConnectConnector({
-        rpc: networks.filter((n) => !n.disabled).reduce((prev, curr) => {
-          // eslint-disable-next-line prefer-destructuring
-          prev[curr.chainId] = curr.rpcUrls[0];
-          return prev;
-        }, {}),
+        rpc: networks
+          .filter((n) => !n.disabled)
+          .reduce((prev, curr) => {
+            // eslint-disable-next-line prefer-destructuring
+            prev[curr.chainId] = curr.rpcUrls[0];
+            return prev;
+          }, {}),
         infuraId: "d8df2cb7844e4a54ab0a782f608749dd",
       }),
     },
@@ -70,6 +72,9 @@ const BottomLeftBubble = styled(Image)`
   height: 400px;
   left: -200px;
   bottom: -200px;
+  filter: blur(50px);
+  transform: rotate(-50deg);
+  -webkit-filter: blur(50px);
   ${[themeGet("mediaQueries.sm")]} {
     width: 700px;
     height: 700px;
@@ -84,6 +89,8 @@ const TopRightBubble = styled(Image)`
   height: 400px;
   top: -80px;
   right: -200px;
+  filter: blur(50px);
+  -webkit-filter: blur(50px);
   ${[themeGet("mediaQueries.sm")]} {
     width: 700px;
     height: 700px;
