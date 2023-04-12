@@ -72,29 +72,52 @@ import fingerprint from "common/assets/image/fingerprint.svg";
 import setup from "common/assets/image/setup.svg";
 import check from "common/assets/image/check-all.png";
 
-const ownerStartDate = new Date(); // Set start date to current date and time
-function ownerTimeLocks() {
-  const startDate = ownerStartDate;
-  const phaseOneDuration = 2 * 60 * 1000; // 2 minutes in milliseconds
-  const phaseTwoDuration = 10 * 60 * 1000; // 10 minutes in milliseconds
-  const phaseThreeDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
 
-  const phaseOneEndDate = new Date(startDate.getTime() + phaseOneDuration);
+function getOwnerPhases() {
+  const phaseOneStartDate = new Date('2023-04-13T07:00:00.000Z');
+  // set the time zone to CET
+  phaseOneStartDate.setUTCHours(7);
+  phaseOneStartDate.setMinutes(0);
+  phaseOneStartDate.setSeconds(0);
+  phaseOneStartDate.setMilliseconds(0);
+
+  const phaseOneDuration = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+  const phaseTwoDuration = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
+  const phaseThreeDuration = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+
+  const phaseOneEndDate = new Date(phaseOneStartDate.getTime() + phaseOneDuration);
   const phaseTwoStartDate = new Date(phaseOneEndDate.getTime());
-  const phaseTwoEndDate = new Date(
-    phaseTwoStartDate.getTime() + phaseTwoDuration
-  );
+  const phaseTwoEndDate = new Date(phaseTwoStartDate.getTime() + phaseTwoDuration);
   const phaseThreeStartDate = new Date(phaseTwoEndDate.getTime());
-  const phaseThreeEndDate = new Date(
-    phaseThreeStartDate.getTime() + phaseThreeDuration
-  );
+  const phaseThreeEndDate = new Date(phaseThreeStartDate.getTime() + phaseThreeDuration);
+
+  return {
+    phaseOneStartDate,
+    phaseOneEndDate,
+    phaseTwoStartDate,
+    phaseTwoEndDate,
+    phaseThreeStartDate,
+    phaseThreeEndDate
+  }
+}
+
+
+function ownerTimeLocks() {
+  const {
+    phaseOneStartDate,
+    phaseOneEndDate,
+    phaseTwoStartDate,
+    phaseTwoEndDate,
+    phaseThreeStartDate,
+    phaseThreeEndDate
+  } = getOwnerPhases()
 
   const currentDate = new Date(); // Get current date and time
 
-  if (currentDate >= startDate && currentDate < phaseOneEndDate) {
+  if (currentDate >= phaseOneStartDate && currentDate < phaseOneEndDate) {
     return {
       phase: 1,
-      startDate: startDate.getTime(),
+      startDate: phaseOneStartDate.getTime(),
       endDate: phaseOneEndDate.getTime(),
     };
   } else if (
@@ -115,12 +138,12 @@ function ownerTimeLocks() {
       startDate: phaseThreeStartDate.getTime(),
       endDate: phaseThreeEndDate.getTime(),
     };
-  } else if (currentDate < startDate) {
+  } else if (currentDate < phaseOneStartDate) {
     console.log("The time lock has not started yet.");
     return {
       phase: 0,
       startDate: currentDate,
-      endDate: startDate,
+      endDate: phaseOneStartDate,
     };
   } else {
     console.log("The time lock has ended");
@@ -131,29 +154,23 @@ function ownerTimeLocks() {
     };
   }
 }
-const memberStartDate = new Date(); // Set start date to current date and time
-function memberTimeLocks() {
-  const startDate = memberStartDate;
-  const phaseOneDuration = 2 * 60 * 1000; // 1 minutes in milliseconds
-  const phaseTwoDuration = 40 * 60 * 1000; // 40 minutes in milliseconds
-  const phaseThreeDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
 
-  const phaseOneEndDate = new Date(startDate.getTime() + phaseOneDuration);
-  const phaseTwoStartDate = new Date(phaseOneEndDate.getTime());
-  const phaseTwoEndDate = new Date(
-    phaseTwoStartDate.getTime() + phaseTwoDuration
-  );
-  const phaseThreeStartDate = new Date(phaseTwoEndDate.getTime());
-  const phaseThreeEndDate = new Date(
-    phaseThreeStartDate.getTime() + phaseThreeDuration
-  );
+function memberTimeLocks() {
+  const {phaseThreeEndDate: ownerPhaseThreeEndDate} = getOwnerPhases();
+
+  const phaseOneStartDate = new Date(ownerPhaseThreeEndDate.getTime() + 60 * 1000); // 1 minute after phase 3 ends
+  const phaseOneEndDate = new Date(phaseOneStartDate.getTime() + 6 * 60 * 60 * 1000 - 60 * 1000); // 5 hours and 59 minutes minus 1 minute
+  const phaseTwoStartDate = new Date(phaseOneEndDate.getTime() + 60 * 1000); // 1 minute after phase 1 ends
+  const phaseTwoEndDate = new Date(phaseTwoStartDate.getTime() + 40 * 60 * 1000);
+  const phaseThreeStartDate = new Date(phaseTwoEndDate.getTime() + 60 * 1000); // 1 minute after phase 2 ends
+  const phaseThreeEndDate = new Date(phaseThreeStartDate.getTime() + 30 * 60 * 1000);
 
   const currentDate = new Date(); // Get current date and time
 
-  if (currentDate >= startDate && currentDate < phaseOneEndDate) {
+  if (currentDate >= phaseOneStartDate && currentDate < phaseOneEndDate) {
     return {
       phase: 1,
-      startDate: startDate.getTime(),
+      startDate: phaseOneStartDate.getTime(),
       endDate: phaseOneEndDate.getTime(),
     };
   } else if (
@@ -174,12 +191,12 @@ function memberTimeLocks() {
       startDate: phaseThreeStartDate.getTime(),
       endDate: phaseThreeEndDate.getTime(),
     };
-  } else if (currentDate < startDate) {
+  } else if (currentDate < phaseOneStartDate) {
     console.log("The time lock has not started yet.");
     return {
       phase: 0,
       startDate: currentDate,
-      endDate: startDate,
+      endDate: phaseOneStartDate,
     };
   } else {
     console.log("The time lock has ended");
