@@ -47,7 +47,9 @@ const ClaimAutId = () => {
         const isMember = !value.state.isOwner;
         if (isMember) {
           const cache = await getCache("UserPhases");
-          setAllowedRole(`${cache.questId}`);
+          if (cache) {
+            setAllowedRole(`${cache.questId}`);
+          }
         }
         const dAut = await import("@aut-labs/d-aut");
         dAut.Init();

@@ -158,12 +158,16 @@ function ownerTimeLocks() {
 function memberTimeLocks() {
   const {phaseThreeEndDate: ownerPhaseThreeEndDate} = getOwnerPhases();
 
-  const phaseOneStartDate = new Date(ownerPhaseThreeEndDate.getTime() + 60 * 1000); // 1 minute after phase 3 ends
-  const phaseOneEndDate = new Date(phaseOneStartDate.getTime() + 6 * 60 * 60 * 1000 - 60 * 1000); // 5 hours and 59 minutes minus 1 minute
-  const phaseTwoStartDate = new Date(phaseOneEndDate.getTime() + 60 * 1000); // 1 minute after phase 1 ends
-  const phaseTwoEndDate = new Date(phaseTwoStartDate.getTime() + 40 * 60 * 1000);
-  const phaseThreeStartDate = new Date(phaseTwoEndDate.getTime() + 60 * 1000); // 1 minute after phase 2 ends
-  const phaseThreeEndDate = new Date(phaseThreeStartDate.getTime() + 30 * 60 * 1000);
+  const phaseOneDuration = 7 * 60 * 60 * 1000; // 7 hours in milliseconds
+  const phaseTwoDuration = 9 * 60 * 60 * 1000; // 9 hours in milliseconds
+  const phaseThreeDuration = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
+
+  const phaseOneStartDate = new Date(ownerPhaseThreeEndDate.getTime());
+  const phaseOneEndDate = new Date(phaseOneStartDate.getTime() + phaseOneDuration);
+  const phaseTwoStartDate = new Date(phaseOneEndDate.getTime());
+  const phaseTwoEndDate = new Date(phaseTwoStartDate.getTime() + phaseTwoDuration);
+  const phaseThreeStartDate = new Date(phaseTwoEndDate.getTime());
+  const phaseThreeEndDate = new Date(phaseThreeStartDate.getTime() + phaseThreeDuration);
 
   const currentDate = new Date(); // Get current date and time
 
