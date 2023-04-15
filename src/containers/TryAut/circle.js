@@ -1,11 +1,14 @@
 import Image from "common/components/Image";
 import Flipcard from "common/components/FlipCard/FlipCard";
 import styled from "styled-components";
-import { memo, useState } from "react";
+import { memo, useContext, useState } from "react";
 import Typography from "common/components/Typography";
 import BlackHoleImage from "common/assets/image/black-hole.svg";
 import Button from "common/components/Button";
 import LockCountdown from "common/components/LockCountdown";
+import Link from "common/components/Link";
+import { AutIDContext } from "common/components/ClaimAutId";
+import { trimAddress } from "common/utils/misc";
 
 const dispatchEvent = (name, payload = null) => {
   const event = new CustomEvent(name, {
@@ -60,6 +63,7 @@ const AutCircle = ({
   index,
   success,
 }) => {
+  const value = useContext(AutIDContext);
   const [isFlipped, setFlipped] = useState(false);
 
   const onMouseEnter = () => setFlipped(true);
@@ -104,13 +108,28 @@ const AutCircle = ({
                 xxl: "120px",
               }}
               my={{
-                _: "20px",
-                md: "30px",
-                xxl: "40px",
+                _: "10px",
+                md: "20px",
+                xxl: "30px",
               }}
               alt="circle-icon"
               src={isComplete ? success.icon : front.icon}
             />
+            {front?.showDao && value?.state?.daoAddress && (
+              <Link textDecoration="underline" legacyBehavior href={`https://mumbai.polygonscan.com/address/${value?.state?.daoAddress}`}>
+                <Button
+                  title={trimAddress(value?.state?.daoAddress)}
+                  variant="text"
+                  colors="nav"
+                  style={{
+                    textDecoration:"underline"
+                  }}
+                  as="a"
+                  target="_blank"
+                  href={`https://mumbai.polygonscan.com/address/${value?.state?.daoAddress}`}
+                />
+              </Link>
+            )}
             <Typography
               fontWeight="normal"
               textAlign="center"
@@ -172,7 +191,7 @@ const AutCircle = ({
                         variant="roundOutlined"
                         title="Claim AutId"
                         onClick={() => {
-                          dispatchEvent("aut-open")
+                          dispatchEvent("aut-open");
                         }}
                         size="normal"
                         display="flex"

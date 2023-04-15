@@ -72,9 +72,8 @@ import fingerprint from "common/assets/image/fingerprint.svg";
 import setup from "common/assets/image/setup.svg";
 import check from "common/assets/image/check-all.png";
 
-
 function getOwnerPhases() {
-  const phaseOneStartDate = new Date('2023-04-13T07:00:00.000Z');
+  const phaseOneStartDate = new Date("2023-04-13T07:00:00.000Z");
   // set the time zone to CET
   phaseOneStartDate.setUTCHours(7);
   phaseOneStartDate.setMinutes(0);
@@ -85,22 +84,63 @@ function getOwnerPhases() {
   const phaseTwoDuration = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
   const phaseThreeDuration = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
 
-  const phaseOneEndDate = new Date(phaseOneStartDate.getTime() + phaseOneDuration);
+  const phaseOneEndDate = new Date(
+    phaseOneStartDate.getTime() + phaseOneDuration
+  );
   const phaseTwoStartDate = new Date(phaseOneEndDate.getTime());
-  const phaseTwoEndDate = new Date(phaseTwoStartDate.getTime() + phaseTwoDuration);
+  const phaseTwoEndDate = new Date(
+    phaseTwoStartDate.getTime() + phaseTwoDuration
+  );
   const phaseThreeStartDate = new Date(phaseTwoEndDate.getTime());
-  const phaseThreeEndDate = new Date(phaseThreeStartDate.getTime() + phaseThreeDuration);
+  const phaseThreeEndDate = new Date(
+    phaseThreeStartDate.getTime() + phaseThreeDuration
+  );
 
   return {
+    phaseOneDuration,
+    phaseTwoDuration,
+    phaseThreeDuration,
     phaseOneStartDate,
     phaseOneEndDate,
     phaseTwoStartDate,
     phaseTwoEndDate,
     phaseThreeStartDate,
-    phaseThreeEndDate
-  }
+    phaseThreeEndDate,
+  };
 }
 
+function getMemberPhases() {
+  const { phaseThreeEndDate: ownerPhaseThreeEndDate } = getOwnerPhases();
+
+  const phaseOneDuration = 7 * 60 * 60 * 1000; // 7 hours in milliseconds
+  const phaseTwoDuration = 9 * 60 * 60 * 1000; // 9 hours in milliseconds
+  const phaseThreeDuration = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
+
+  const phaseOneStartDate = new Date(ownerPhaseThreeEndDate.getTime());
+  const phaseOneEndDate = new Date(
+    phaseOneStartDate.getTime() + phaseOneDuration
+  );
+  const phaseTwoStartDate = new Date(phaseOneEndDate.getTime());
+  const phaseTwoEndDate = new Date(
+    phaseTwoStartDate.getTime() + phaseTwoDuration
+  );
+  const phaseThreeStartDate = new Date(phaseTwoEndDate.getTime());
+  const phaseThreeEndDate = new Date(
+    phaseThreeStartDate.getTime() + phaseThreeDuration
+  );
+
+  return {
+    phaseOneDuration,
+    phaseTwoDuration,
+    phaseThreeDuration,
+    phaseOneStartDate,
+    phaseOneEndDate,
+    phaseTwoStartDate,
+    phaseTwoEndDate,
+    phaseThreeStartDate,
+    phaseThreeEndDate,
+  };
+}
 
 function ownerTimeLocks() {
   const {
@@ -109,8 +149,8 @@ function ownerTimeLocks() {
     phaseTwoStartDate,
     phaseTwoEndDate,
     phaseThreeStartDate,
-    phaseThreeEndDate
-  } = getOwnerPhases()
+    phaseThreeEndDate,
+  } = getOwnerPhases();
 
   const currentDate = new Date(); // Get current date and time
 
@@ -156,18 +196,14 @@ function ownerTimeLocks() {
 }
 
 function memberTimeLocks() {
-  const {phaseThreeEndDate: ownerPhaseThreeEndDate} = getOwnerPhases();
-
-  const phaseOneDuration = 7 * 60 * 60 * 1000; // 7 hours in milliseconds
-  const phaseTwoDuration = 9 * 60 * 60 * 1000; // 9 hours in milliseconds
-  const phaseThreeDuration = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
-
-  const phaseOneStartDate = new Date(ownerPhaseThreeEndDate.getTime());
-  const phaseOneEndDate = new Date(phaseOneStartDate.getTime() + phaseOneDuration);
-  const phaseTwoStartDate = new Date(phaseOneEndDate.getTime());
-  const phaseTwoEndDate = new Date(phaseTwoStartDate.getTime() + phaseTwoDuration);
-  const phaseThreeStartDate = new Date(phaseTwoEndDate.getTime());
-  const phaseThreeEndDate = new Date(phaseThreeStartDate.getTime() + phaseThreeDuration);
+  const {
+    phaseOneStartDate,
+    phaseOneEndDate,
+    phaseTwoStartDate,
+    phaseTwoEndDate,
+    phaseThreeStartDate,
+    phaseThreeEndDate,
+  } = getMemberPhases();
 
   const currentDate = new Date(); // Get current date and time
 
@@ -236,6 +272,7 @@ export const TryOutData = {
         ),
       },
       front: {
+        showDao: true,
         title: "Expand",
         icon: expand.src,
         subtitle: (
