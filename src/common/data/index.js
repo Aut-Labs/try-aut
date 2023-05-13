@@ -73,7 +73,7 @@ import setup from "common/assets/image/setup.svg";
 import check from "common/assets/image/check-all.png";
 
 function getOwnerPhases() {
-  const phaseOneStartDate = new Date("2023-05-09T07:00:00.000Z");
+  const phaseOneStartDate = new Date("2023-05-15T07:00:00.000Z");
   // set the time zone to CET
   phaseOneStartDate.setUTCHours(7);
   phaseOneStartDate.setMinutes(0);
@@ -378,6 +378,7 @@ export const TryOutData = {
         description:
           "Click on the Start to access Nova Showcase, where you can explore all the available DAOs and choose to apply for any quest of a given DAO.",
       },
+      stayUnlockedUntilPhase: 2,
       complete: false,
     },
     {

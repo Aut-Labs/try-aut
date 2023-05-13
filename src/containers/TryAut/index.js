@@ -29,7 +29,7 @@ const TryAut = ({ connectState }) => {
     return isPreviousComplete(index) && !items[index]?.complete;
   };
 
-  const phaseStatuses = (index, complete) => {
+  const phaseStatuses = (index, complete, stayUnlockedUntilPhase) => {
     const isCurrent = isCurrentPhase(index, complete);
     const isCurrentComplete = !!complete;
 
@@ -46,6 +46,9 @@ const TryAut = ({ connectState }) => {
 
       if (isInCurrentTimelock) {
         status.label = "Start";
+        if (!isFirst(index) && !isPreviousComplete(index)) {
+          status.label = "Locked";
+        }
       } else if (isInPreviousTimelock && isPreviousComplete(index)) {
         status.isCurrent = false;
         status.unlocksIn = new Date(currentTimelock.endDate);
@@ -55,10 +58,15 @@ const TryAut = ({ connectState }) => {
       } else {
         status.isCurrent = false;
         status.label = "Locked";
+        const canStayUnlocked = currentTimelock?.phase === stayUnlockedUntilPhase;
+        if (canStayUnlocked) {
+          status.isCurrent = true;
+          status.label = "Start";
+        }
       }
       
     } else if (isCurrentComplete) {
-      status.label = "Complete";
+      status.label = "Completed";
     }
     return status;
   };
@@ -151,11 +159,11 @@ const TryAut = ({ connectState }) => {
           </Typography>
         </div>
         <Grid className="wrapper">
-          {items.map(({ front, back, complete, button, success }, index) => (
+          {items.map(({ front, back, complete, button, success, stayUnlockedUntilPhase }, index) => (
             <BlackHoleWrapper
               key={`item-${index}`}
               className={`item-${index + 1} ${complete ? "complete" : ""} ${
-                phaseStatuses(index, complete)?.isCurrent ? "current" : ""
+                phaseStatuses(index, complete, stayUnlockedUntilPhase)?.isCurrent ? "current" : ""
               }`}
             >
               <BubbleImageWrapper className="image-wrapper">
@@ -166,7 +174,7 @@ const TryAut = ({ connectState }) => {
                   query={buildQuery(button)}
                   front={front}
                   back={back}
-                  {...phaseStatuses(index, complete)}
+                  {...phaseStatuses(index, complete, stayUnlockedUntilPhase)}
                 />
               </BubbleImageWrapper>
             </BlackHoleWrapper>
