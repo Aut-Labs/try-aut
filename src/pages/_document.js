@@ -32,7 +32,7 @@ export default class CustomDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta name="author" content="Aut" />
+          <meta name="author" content="Āut" />
           <link
             href="/favicon-light.ico"
             rel="icon"

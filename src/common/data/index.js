@@ -73,7 +73,7 @@ import setup from "common/assets/image/setup.svg";
 import check from "common/assets/image/check-all.png";
 
 function getOwnerPhases() {
-  const phaseOneStartDate = new Date("2023-05-15T07:00:00.000Z");
+  const phaseOneStartDate = new Date("2023-05-16T07:00:00.000Z");
   // set the time zone to CET
   phaseOneStartDate.setUTCHours(7);
   phaseOneStartDate.setMinutes(0);
