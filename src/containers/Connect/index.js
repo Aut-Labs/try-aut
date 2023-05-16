@@ -202,7 +202,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
             <Button
               colors="primary"
               variant="roundOutlined"
-              title="DAO Owner"
+              title="DAO Operator"
               target="_blank"
               size="normal"
               onClick={viewOwnerPhases}
