@@ -11,6 +11,10 @@ import { openModal } from "@redq/reuse-modal";
 import Web3NetworkProvider from "common/ProviderFactory/components/Web3NetworkProvider";
 import { getCache } from "api/cache.api";
 import AppTitle from "common/components/AppTitle";
+import {
+  Web3QuestOnboardingPluginProvider,
+  Web3QuestPluginProvider,
+} from "@aut-labs-private/abi-types";
 
 const GenesisImageWrapper = styled("img")`
   width: 100%;
@@ -50,7 +54,6 @@ const ButtonWrapper = styled("div")`
   }
 `;
 
-
 export const toHex = (num) => {
   const val = Number(num);
   return `0x${val.toString(16)}`;
@@ -75,13 +78,44 @@ const AutConnect = ({ onConnected, config, networks }) => {
     ownerSubtitle,
     memberSubtitle,
     ownerTimeLocks,
-    memberTimeLocks
+    memberTimeLocks,
   } = TryOutData;
   const [errorMessage, setErrorMessage] = useState(false);
 
+  const hasMemberCompletedQuest = async (provider, account) => {
+    const cache = await getCache("UserPhases");
+    const [phaseOne, phaseTwo] = cache.list || [];
+    if (phaseOne?.status === 1 && phaseTwo?.status === 0) {
+      try {
+        const contract = Web3QuestOnboardingPluginProvider(
+          cache?.onboardingQuestAddress,
+          {
+            signer: () => provider.getSigner(),
+          }
+        );
+        const questsPluginAddress = await contract.getQuestsPluginAddress();
+        const questContract = Web3QuestPluginProvider(questsPluginAddress, {
+          signer: () => provider.getSigner(),
+        });
+        const hasCompletedAQuest = await questContract.hasCompletedAQuest(
+          account,
+          cache.questId
+        );
+        const cacheResult = await getCache(CacheTypes.UserPhases);
+        if (hasCompletedAQuest) {
+          cacheResult.list[1].status = 1;
+          await updateCache(cacheResult);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   const viewMemberPhases = async () => {
-    openPopup(false, async ({ connected, account }, errorMessage) => {
+    openPopup(false, async ({ connected, account, provider }, errorMessage) => {
       if (connected) {
+        await hasMemberCompletedQuest(provider, account);
         onConnected({
           connected: connected,
           isOwner: false,
