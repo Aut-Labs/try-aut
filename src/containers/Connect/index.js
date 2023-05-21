@@ -9,7 +9,7 @@ import themeGet from "@styled-system/theme-get";
 import Button from "common/components/Button";
 import { openModal } from "@redq/reuse-modal";
 import Web3NetworkProvider from "common/ProviderFactory/components/Web3NetworkProvider";
-import { getCache } from "api/cache.api";
+import { getCache, updateCache } from "api/cache.api";
 import AppTitle from "common/components/AppTitle";
 import {
   Web3QuestOnboardingPluginProvider,
@@ -101,7 +101,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
           account,
           cache.questId
         );
-        const cacheResult = await getCache(CacheTypes.UserPhases);
+        const cacheResult = await getCache("UserPhases");
         if (hasCompletedAQuest) {
           cacheResult.list[1].status = 1;
           await updateCache(cacheResult);
