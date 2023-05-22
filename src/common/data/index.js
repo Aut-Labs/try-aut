@@ -315,6 +315,7 @@ export const TryOutData = {
         description:
           "By claiming you unique ĀutID you will unlock the dashboard where you can explore your DAO members and their roles, quests & tasks and much more",
       },
+      stayUnlockedUntilPhase: 3,
       complete: false,
     },
     {
