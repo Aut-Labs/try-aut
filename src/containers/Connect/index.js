@@ -84,7 +84,9 @@ const AutConnect = ({ onConnected, config, networks }) => {
 
   const hasMemberCompletedQuest = async (provider, account) => {
     const cache = await getCache("UserPhases");
-    const [phaseOne, phaseTwo] = cache.list || [];
+    if (!cache) return;
+
+    const [phaseOne, phaseTwo] = cache?.list || [];
     if (phaseOne?.status === 1 && phaseTwo?.status === 0) {
       try {
         const contract = Web3QuestOnboardingPluginProvider(
