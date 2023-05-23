@@ -385,8 +385,8 @@ export const TryOutData = {
     {
       button: {
         type: "link",
-        link: "https://dashboard-internal-test.aut.id/quest",
-        cacheParams: ["daoAddress", "onboardingQuestAddress", "questId"],
+        link: "http://176.34.149.248:4002",
+        queryParams: ["daoAddress"],
       },
       success: {
         icon: check.src,
