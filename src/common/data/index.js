@@ -73,7 +73,7 @@ import setup from "common/assets/image/setup.svg";
 import check from "common/assets/image/check-all.png";
 
 function getOwnerPhases() {
-  const phaseOneStartDate = new Date("2023-05-22T07:00:00.000Z");
+  const phaseOneStartDate = new Date("2023-05-26T07:00:00.000Z");
   // set the time zone to CET
   phaseOneStartDate.setUTCHours(7);
   phaseOneStartDate.setMinutes(0);
@@ -353,7 +353,7 @@ export const TryOutData = {
     {
       button: {
         type: "link",
-        link: "http://176.34.149.248:4002",
+        link: "https://nova-internal-test.aut.id/",
         queryParams: ["daoAddress"],
       },
       success: {
@@ -385,8 +385,8 @@ export const TryOutData = {
     {
       button: {
         type: "link",
-        link: "http://176.34.149.248:4002",
-        queryParams: ["daoAddress"],
+        link: "https://nova-internal-test.aut.id/",
+        cacheParams: ["daoAddress"],
       },
       success: {
         icon: check.src,
