@@ -285,6 +285,7 @@ export const TryOutData = {
         description:
           "With Āut protocol, you can expand your DAO's capabilities add roles and streamline your community management on the dashboard",
       },
+      stayUnlockedUntilPhase: 2,
       complete: false,
     },
     {
@@ -315,7 +316,7 @@ export const TryOutData = {
         description:
           "By claiming you unique ĀutID you will unlock the dashboard where you can explore your DAO members and their roles, quests & tasks and much more",
       },
-      stayUnlockedUntilPhase: 3,
+      // stayUnlockedUntilPhase: 3,
       complete: false,
     },
     {
