@@ -72,13 +72,13 @@ import fingerprint from "common/assets/image/fingerprint.svg";
 import setup from "common/assets/image/setup.svg";
 import check from "common/assets/image/check-all.png";
 
-function getOwnerPhases() {
-  const phaseOneStartDate = new Date("2023-05-26T07:00:00.000Z");
+function getOwnerPhases(startDate) {
+  const phaseOneStartDate = startDate;
   // set the time zone to CET
-  phaseOneStartDate.setUTCHours(7);
-  phaseOneStartDate.setMinutes(0);
-  phaseOneStartDate.setSeconds(0);
-  phaseOneStartDate.setMilliseconds(0);
+  // phaseOneStartDate.setUTCHours(7);
+  // phaseOneStartDate.setMinutes(0);
+  // phaseOneStartDate.setSeconds(0);
+  // phaseOneStartDate.setMilliseconds(0);
 
   const phaseOneDuration = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
   const phaseTwoDuration = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
@@ -109,8 +109,9 @@ function getOwnerPhases() {
   };
 }
 
-function getMemberPhases() {
-  const { phaseThreeEndDate: ownerPhaseThreeEndDate } = getOwnerPhases();
+function getMemberPhases(startDate) {
+  const { phaseThreeEndDate: ownerPhaseThreeEndDate } =
+    getOwnerPhases(startDate);
 
   const phaseOneDuration = 7 * 60 * 60 * 1000; // 7 hours in milliseconds
   const phaseTwoDuration = 9 * 60 * 60 * 1000; // 9 hours in milliseconds
@@ -142,7 +143,7 @@ function getMemberPhases() {
   };
 }
 
-function ownerTimeLocks() {
+function ownerTimeLocks(startDate) {
   const {
     phaseOneStartDate,
     phaseOneEndDate,
@@ -150,7 +151,7 @@ function ownerTimeLocks() {
     phaseTwoEndDate,
     phaseThreeStartDate,
     phaseThreeEndDate,
-  } = getOwnerPhases();
+  } = getOwnerPhases(startDate);
 
   const currentDate = new Date(); // Get current date and time
 
@@ -195,7 +196,15 @@ function ownerTimeLocks() {
   }
 }
 
-function memberTimeLocks() {
+function memberTimeLocks(startDate, hasStarted = false) {
+  if (!hasStarted) {
+    const phaseOneDuration = 7 * 60 * 60 * 1000; // 7 hours in milliseconds
+    return {
+      phase: 1,
+      startDate: new Date(),
+      endDate: new Date(new Date() + phaseOneDuration),
+    };
+  }
   const {
     phaseOneStartDate,
     phaseOneEndDate,
@@ -203,7 +212,7 @@ function memberTimeLocks() {
     phaseTwoEndDate,
     phaseThreeStartDate,
     phaseThreeEndDate,
-  } = getMemberPhases();
+  } = getMemberPhases(startDate);
 
   const currentDate = new Date(); // Get current date and time
 
