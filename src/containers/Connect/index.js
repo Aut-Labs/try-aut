@@ -82,8 +82,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
   } = TryOutData;
   const [errorMessage, setErrorMessage] = useState(false);
 
-  const hasMemberCompletedQuest = async (provider, account) => {
-    const cache = await getCache("UserPhases");
+  const hasMemberCompletedQuest = async (provider, account, cache) => {
     if (!cache) return;
 
     const [phaseOne, phaseTwo] = cache?.list || [];
@@ -117,11 +116,14 @@ const AutConnect = ({ onConnected, config, networks }) => {
   const viewMemberPhases = async () => {
     openPopup(false, async ({ connected, account, provider }, errorMessage) => {
       if (connected) {
-        await hasMemberCompletedQuest(provider, account);
+        const cache = await getCache("UserPhases");
+        await hasMemberCompletedQuest(provider, account, cache);
+        const startDate = cache?.startDate ? new Date(cache?.startDate) : new Date();
+        const memberTimeLocksFn = () => memberTimeLocks(startDate, !!cache?.startDate);
         onConnected({
           connected: connected,
           isOwner: false,
-          currentPhase: memberTimeLocks,
+          currentPhase: memberTimeLocksFn,
           subtitle: memberSubtitle,
           userAddress: account,
           items: await updatePhases(memberItems),
@@ -136,10 +138,13 @@ const AutConnect = ({ onConnected, config, networks }) => {
   const viewOwnerPhases = async () => {
     openPopup(true, async ({ connected, account }, errorMessage) => {
       if (connected) {
+        const cache = await getCache("UserPhases");
+        const startDate = cache?.createdAt ? new Date(cache?.createdAt) : new Date();
+        const ownerTimeLocksFn = () => ownerTimeLocks(startDate);
         onConnected({
           connected: connected,
           isOwner: true,
-          currentPhase: ownerTimeLocks,
+          currentPhase: ownerTimeLocksFn,
           subtitle: ownerSubtitle,
           userAddress: account,
           items: await updatePhases(ownerItems),
