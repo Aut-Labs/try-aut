@@ -118,9 +118,8 @@ const AutConnect = ({ onConnected, config, networks }) => {
       if (connected) {
         const cache = await getCache("UserPhases");
         await hasMemberCompletedQuest(provider, account, cache);
-        const startDate = cache?.createdAt ? new Date(cache?.createdAt) : new Date();
-        debugger;
-        const memberTimeLocksFn = () => memberTimeLocks(startDate, !!cache?.createdAt);
+        const startDate = cache?.startDate ? new Date(cache?.startDate) : new Date();
+        const memberTimeLocksFn = () => memberTimeLocks(startDate, !!cache?.startDate);
         onConnected({
           connected: connected,
           isOwner: false,
