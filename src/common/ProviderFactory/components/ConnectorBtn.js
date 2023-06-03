@@ -13,7 +13,7 @@ export const ConnectorTypes = {
 const btnConfig = {
   [ConnectorTypes.Metamask]: {
     label: "Metamask",
-    icon: <Image src={MetamaskLogo.src} alt="Aut Logo" />,
+    icon: <Image src={MetamaskLogo.src} alt="Āut Logo" />,
   },
   [ConnectorTypes.WalletConnect]: {
     label: "WalletConnect",

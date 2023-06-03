@@ -2,15 +2,15 @@
   "name": "try-aut",
   "version": "0.0.1",
   "private": true,
-  "description": "Try Aut",
-  "author": "Aut Labs",
+  "description": "Try Āut",
+  "author": "Āut Labs",
   "scripts": {
     "build": "next build",
     "start": "next"
   },
   "dependencies": {
-    "@aut-labs-private/abi-types": "^0.0.22",
-    "@aut-labs/d-aut": "^1.0.22",
+    "@aut-labs-private/abi-types": "^0.0.34",
+    "@aut-labs/d-aut": "^1.0.27",
     "@leenguyen/react-flip-clock-countdown": "^1.4.0",
     "@lottiefiles/lottie-player": "^1.5.7",
     "@lottiefiles/react-lottie-player": "^3.4.7",
