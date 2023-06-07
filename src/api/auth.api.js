@@ -8,7 +8,7 @@ export const authoriseWithWeb3 = async (signer) => {
     const account = await signer.getAddress();
 
     const responseNonce = await axios.get(
-      `https://api.skillwallet.id/api/autID/user/nonce/${account}`
+      `https://dev-api.aut.id/api/autID/user/nonce/${account}`
     );
 
     const nonce = responseNonce.data.nonce;
@@ -16,7 +16,7 @@ export const authoriseWithWeb3 = async (signer) => {
     const signature = await signer.signMessage(`${nonce}`);
 
     const jwtResponse = await axios.post(
-      `https://api.skillwallet.id/api/autID/user/getToken`,
+      `https://dev-api.aut.id/api/autID/user/getToken`,
       {
         address: account,
         signature,
