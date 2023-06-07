@@ -8,7 +8,7 @@ export const authoriseWithWeb3 = async (signer) => {
     const account = await signer.getAddress();
 
     const responseNonce = await axios.get(
-      `https://dev-api.aut.id/api/autID/user/nonce/${account}`
+      `${process.env.NEXT_PUBLIC_API_URL}/autID/user/nonce/${account}`
     );
 
     const nonce = responseNonce.data.nonce;
@@ -16,7 +16,7 @@ export const authoriseWithWeb3 = async (signer) => {
     const signature = await signer.signMessage(`${nonce}`);
 
     const jwtResponse = await axios.post(
-      `https://dev-api.aut.id/api/autID/user/getToken`,
+      `${process.env.NEXT_PUBLIC_API_URL}/autID/user/getToken`,
       {
         address: account,
         signature,
