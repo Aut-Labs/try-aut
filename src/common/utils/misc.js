@@ -15,7 +15,7 @@ export const toHex = (num) => {
 };
 
 export const autUrls = () => {
-  if (process.env === "development") {
+  if (process.env.NODE_ENV === "development") {
     return {
       tryAut: "https://try-internal.aut.id/",
       novaDashboard: "https://nova-internal.aut.id/",
