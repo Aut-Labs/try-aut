@@ -182,6 +182,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
       componentProps: {
         shouldBeAllowListed,
         onClose: callback,
+        networks
       },
     });
   };

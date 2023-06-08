@@ -20,9 +20,12 @@ const useDeferredPromise = () => {
   };
 
   return { defer, deferRef: deferRef.current };
-}
+};
 
-export const useAutWalletConnect = ({ shouldBeAllowListed = false }) => {
+export const useAutWalletConnect = ({
+  shouldBeAllowListed = false,
+  networks,
+}) => {
   const { defer, deferRef } = useDeferredPromise();
   const [isSigning, setIsSigning] = useState(false);
   const [connectError, setErrorMessage] = useState("");
@@ -49,7 +52,10 @@ export const useAutWalletConnect = ({ shouldBeAllowListed = false }) => {
       const signer = provider.getSigner();
 
       if (shouldBeAllowListed) {
-        const isAllowed = await isAllowListed(signer);
+        const selectedNetwork = networks.find(
+          (n) => n.chainId === network.chainId
+        );
+        const isAllowed = await isAllowListed(signer, selectedNetwork.contracts.allowListAddress);
         const isAuthorised = isAllowed && (await authoriseWithWeb3(signer));
         deferredPromise.resolve({
           provider,
