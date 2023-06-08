@@ -71,6 +71,7 @@ import invite from "common/assets/image/invite.svg";
 import fingerprint from "common/assets/image/fingerprint.svg";
 import setup from "common/assets/image/setup.svg";
 import check from "common/assets/image/check-all.png";
+import { autUrls } from "common/utils/misc";
 
 function getOwnerPhases(startDate) {
   const phaseOneStartDate = startDate;
@@ -257,6 +258,8 @@ function memberTimeLocks(startDate, hasStarted = false) {
   }
 }
 
+const urls = autUrls();
+
 export const TryOutData = {
   title: "Try Āut",
   mainSubtitle: "Join the Coordination Renaissance",
@@ -269,7 +272,7 @@ export const TryOutData = {
     {
       button: {
         type: "link",
-        link: "https://playground.aut.id",
+        link: urls.expander,
       },
       success: {
         icon: check.src,
@@ -300,7 +303,7 @@ export const TryOutData = {
     {
       button: {
         type: "webcomponent",
-        link: "https://dashboard-internal-test.aut.id",
+        link: urls.novaDashboard,
         cacheParams: ["daoAddress"],
       },
       success: {
@@ -331,7 +334,7 @@ export const TryOutData = {
     {
       button: {
         type: "link",
-        link: "https://dashboard-internal-test.aut.id",
+        link: urls.novaDashboard,
         cacheParams: ["daoAddress"],
       },
       success: {
@@ -363,7 +366,7 @@ export const TryOutData = {
     {
       button: {
         type: "link",
-        link: "https://nova-internal-test.aut.id/",
+        link: urls.showcase,
         queryParams: ["daoAddress"],
       },
       success: {
@@ -395,7 +398,7 @@ export const TryOutData = {
     {
       button: {
         type: "link",
-        link: "https://nova-internal-test.aut.id/",
+        link: urls.showcase,
         cacheParams: ["daoAddress"],
       },
       success: {
@@ -425,7 +428,7 @@ export const TryOutData = {
     {
       button: {
         type: "webcomponent",
-        link: "https://my.aut.id/",
+        link: urls.myAut,
       },
       success: {
         icon: check.src,
