@@ -79,6 +79,7 @@ const ClaimAutId = () => {
         position: "absolute",
       }}
       flow-config='{"mode" : "tryAut", "customCongratsMessage": ""}'
+      use-dev={process.env.NODE_ENV === "development" ? "true" : "false"}
       allowed-role-id={allowedRole}
       dao-expander={value?.state?.daoAddress}
       id="d-aut"
