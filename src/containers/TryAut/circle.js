@@ -4,11 +4,15 @@ import styled from "styled-components";
 import { memo, useContext, useState } from "react";
 import Typography from "common/components/Typography";
 import BlackHoleImage from "common/assets/image/black-hole.svg";
+import Copy from "common/assets/image/copy.svg";
 import Button from "common/components/Button";
 import LockCountdown from "common/components/LockCountdown";
 import Link from "common/components/Link";
 import { AutIDContext } from "common/components/ClaimAutId";
-import { trimAddress } from "common/utils/misc";
+import { autUrls, trimAddress, trimLink } from "common/utils/misc";
+import { ic_content_copy_outline } from "react-icons-kit/md/ic_content_copy_outline";
+import { Icon } from "react-icons-kit";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const dispatchEvent = (name, payload = null) => {
   const event = new CustomEvent(name, {
@@ -57,6 +61,7 @@ const AutCircle = ({
   label,
   unlocksIn,
   isComplete,
+  userProfile,
   isCurrent,
   button,
   query,
@@ -66,8 +71,11 @@ const AutCircle = ({
   const value = useContext(AutIDContext);
   const [isFlipped, setFlipped] = useState(false);
 
+  console.log(front, back, value);
+
   const onMouseEnter = () => setFlipped(true);
   const onMouseLeave = () => setFlipped(false);
+  const urls = autUrls();
 
   // const timelocks = useMemo(() => ownerTimeLocks());
 
@@ -115,21 +123,7 @@ const AutCircle = ({
               alt="circle-icon"
               src={isComplete ? success.icon : front.icon}
             />
-            {front?.showDao && value?.state?.daoAddress && (
-              <Link textDecoration="underline" legacyBehavior href={`https://mumbai.polygonscan.com/address/${value?.state?.daoAddress}`}>
-                <Button
-                  title={trimAddress(value?.state?.daoAddress)}
-                  variant="text"
-                  colors="nav"
-                  style={{
-                    textDecoration:"underline"
-                  }}
-                  as="a"
-                  target="_blank"
-                  href={`https://mumbai.polygonscan.com/address/${value?.state?.daoAddress}`}
-                />
-              </Link>
-            )}
+
             <Typography
               fontWeight="normal"
               textAlign="center"
@@ -141,6 +135,112 @@ const AutCircle = ({
             >
               {isComplete ? success.subtitle : front.subtitle}
             </Typography>
+            {front?.showDao && value?.state?.daoAddress && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    height: "50px",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Link
+                    textDecoration="underline"
+                    legacyBehavior
+                    href={`https://mumbai.polygonscan.com/address/${value?.state?.daoAddress}`}
+                  >
+                    <Button
+                      title={trimAddress(value?.state?.daoAddress)}
+                      variant="text"
+                      colors="nav"
+                      style={{
+                        textDecoration: "underline",
+                      }}
+                      as="a"
+                      target="_blank"
+                      href={`https://mumbai.polygonscan.com/address/${value?.state?.daoAddress}`}
+                    />
+                  </Link>
+                </div>
+                <CopyToClipboard text={value?.state?.daoAddress}>
+                  <div
+                    style={{
+                      color: "white",
+                      height: "50px",
+                      width: "50px",
+                      marginLeft: "5px",
+                      background: "transparent",
+                      display: "flex",
+                      flexDirection: "column",
+                      textAlign: "center",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      position: "relative",
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: "absolute",
+                        right: "15px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <Icon
+                        color="white"
+                        size={25}
+                        icon={ic_content_copy_outline}
+                      />
+                    </div>
+                  </div>
+                </CopyToClipboard>
+              </div>
+            )}
+            {front?.showMyAut &&
+              (userProfile?.name || userProfile?.address) && (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      height: "50px",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Link
+                      textDecoration="underline"
+                      legacyBehavior
+                      href={`${urls.myAut}${
+                        userProfile?.name || userProfile?.address
+                      }`}
+                    >
+                      <Button
+                        title={trimLink(
+                          `${urls.myAut}${
+                            userProfile?.name || userProfile?.address
+                          }`
+                        )}
+                        variant="text"
+                        colors="nav"
+                        style={{
+                          textTransform: "none",
+                          textDecoration: "underline",
+                        }}
+                        as="a"
+                        target="_blank"
+                        href={`${urls.myAut}${
+                          userProfile?.name || userProfile?.address
+                        }`}
+                      />
+                    </Link>
+                  </div>
+                </>
+              )}
           </AutCardContainer>
         </AutCardFront>
         <AutCardBack className="aut-card-back">

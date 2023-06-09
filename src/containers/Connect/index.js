@@ -9,7 +9,7 @@ import themeGet from "@styled-system/theme-get";
 import Button from "common/components/Button";
 import { openModal } from "@redq/reuse-modal";
 import Web3NetworkProvider from "common/ProviderFactory/components/Web3NetworkProvider";
-import { getCache, updateCache } from "api/cache.api";
+import { getCache, getUser, updateCache } from "api/cache.api";
 import AppTitle from "common/components/AppTitle";
 import {
   Web3QuestOnboardingPluginProvider,
@@ -119,6 +119,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
     openPopup(false, async ({ connected, account, provider }, errorMessage) => {
       if (connected) {
         const cache = await getCache("UserPhases");
+        const userProfile = await getUser(cache?.address);
         await hasMemberCompletedQuest(provider, account, cache);
         const startDate = cache?.startDate
           ? new Date(cache?.startDate)
@@ -130,6 +131,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
           isOwner: false,
           currentPhase: memberTimeLocksFn,
           subtitle: memberSubtitle,
+          userProfile,
           title: memberTitle,
           userAddress: account,
           items: await updatePhases(memberItems),
@@ -145,6 +147,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
     openPopup(true, async ({ connected, account }, errorMessage) => {
       if (connected) {
         const cache = await getCache("UserPhases");
+        const userProfile = await getUser(cache?.address);
         const startDate = cache?.createdAt
           ? new Date(cache?.createdAt)
           : new Date();
@@ -156,6 +159,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
           subtitle: ownerSubtitle,
           title: ownerTitle,
           userAddress: account,
+          userProfile,
           items: await updatePhases(ownerItems),
         });
       }

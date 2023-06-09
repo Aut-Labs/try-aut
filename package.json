@@ -38,6 +38,7 @@
     "react-aria-menubutton": "^7.0.2",
     "react-collapsible": "^2.8.4",
     "react-cookie-consent": "^8.0.1",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.26.0",
     "react-icons-kit": "^2.0.0",

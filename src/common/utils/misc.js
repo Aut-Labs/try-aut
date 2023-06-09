@@ -8,6 +8,17 @@ export const trimAddress = (address) => {
   right = right.substr(right.length - 4);
   return `${left}...${right}`.toUpperCase();
 };
+export const trimLink = (address) => {
+  if (!address) {
+    return "";
+  }
+
+  if (address?.length <= 35) {
+    return address;
+  }
+
+  return `${address.substr(0, 32)}...`;
+};
 
 export const toHex = (num) => {
   const val = Number(num);

@@ -313,6 +313,7 @@ export const TryOutData = {
         subtitle: <>You claimed your ĀutID.</>,
       },
       front: {
+        showMyAut: true,
         title: "Claim",
         icon: fingerprint.src,
         subtitle: (

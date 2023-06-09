@@ -188,6 +188,7 @@ const TryAut = ({ connectState }) => {
                 <BubbleImageWrapper className="image-wrapper">
                   <AutCircle
                     index={index}
+                    userProfile={connectState?.userProfile}
                     success={success}
                     button={button}
                     query={buildQuery(button)}
