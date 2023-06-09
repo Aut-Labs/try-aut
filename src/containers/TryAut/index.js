@@ -58,13 +58,13 @@ const TryAut = ({ connectState }) => {
       } else {
         status.isCurrent = false;
         status.label = "Locked";
-        const canStayUnlocked = currentTimelock?.phase === stayUnlockedUntilPhase;
+        const canStayUnlocked =
+          currentTimelock?.phase === stayUnlockedUntilPhase;
         if (canStayUnlocked) {
           status.isCurrent = true;
           status.label = "Start";
         }
       }
-      
     } else if (isCurrentComplete) {
       status.label = "Completed";
     }
@@ -96,7 +96,7 @@ const TryAut = ({ connectState }) => {
           type: "SET_DAO_ADDRESS",
           payload: {
             daoAddress: c?.daoAddress,
-            isOwner: connectState?.isOwner
+            isOwner: connectState?.isOwner,
           },
         });
 
@@ -133,7 +133,7 @@ const TryAut = ({ connectState }) => {
         }}
       >
         <div className="top-part">
-          <AppTitle
+          <Typography
             textAlign="center"
             mb="10px"
             zIndex="1"
@@ -141,7 +141,12 @@ const TryAut = ({ connectState }) => {
               _: "140px",
             }}
             as="h1"
-          />
+            fontFamily="var(--fractul-alt-bold))"
+            color="white"
+            whiteSpace="nowrap"
+          >
+            {connectState?.title}
+          </Typography>
           <Typography
             textAlign="center"
             zIndex="1"
@@ -159,26 +164,41 @@ const TryAut = ({ connectState }) => {
           </Typography>
         </div>
         <Grid className="wrapper">
-          {items.map(({ front, back, complete, button, success, stayUnlockedUntilPhase }, index) => (
-            <BlackHoleWrapper
-              key={`item-${index}`}
-              className={`item-${index + 1} ${complete ? "complete" : ""} ${
-                phaseStatuses(index, complete, stayUnlockedUntilPhase)?.isCurrent ? "current" : ""
-              }`}
-            >
-              <BubbleImageWrapper className="image-wrapper">
-                <AutCircle
-                  index={index}
-                  success={success}
-                  button={button}
-                  query={buildQuery(button)}
-                  front={front}
-                  back={back}
-                  {...phaseStatuses(index, complete, stayUnlockedUntilPhase)}
-                />
-              </BubbleImageWrapper>
-            </BlackHoleWrapper>
-          ))}
+          {items.map(
+            (
+              {
+                front,
+                back,
+                complete,
+                button,
+                success,
+                stayUnlockedUntilPhase,
+              },
+              index
+            ) => (
+              <BlackHoleWrapper
+                key={`item-${index}`}
+                className={`item-${index + 1} ${complete ? "complete" : ""} ${
+                  phaseStatuses(index, complete, stayUnlockedUntilPhase)
+                    ?.isCurrent
+                    ? "current"
+                    : ""
+                }`}
+              >
+                <BubbleImageWrapper className="image-wrapper">
+                  <AutCircle
+                    index={index}
+                    success={success}
+                    button={button}
+                    query={buildQuery(button)}
+                    front={front}
+                    back={back}
+                    {...phaseStatuses(index, complete, stayUnlockedUntilPhase)}
+                  />
+                </BubbleImageWrapper>
+              </BlackHoleWrapper>
+            )
+          )}
         </Grid>
       </Container>
     </Section>

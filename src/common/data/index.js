@@ -261,7 +261,9 @@ function memberTimeLocks(startDate, hasStarted = false) {
 const urls = autUrls();
 
 export const TryOutData = {
-  title: "Try Āut",
+  // title: "Try Āut",
+  memberTitle: "Try Āut - Contributor",
+  ownerTitle: "Try Āut - Contributor",
   mainSubtitle: "Join the Coordination Renaissance",
   ownerSubtitle: "Join the Coordination Renaissance - and expand your DAO.",
   ownerTimeLocks,
@@ -277,11 +279,7 @@ export const TryOutData = {
       success: {
         icon: check.src,
         title: "Expand",
-        subtitle: (
-          <>
-            Expand your <br /> DAO's capabilities <br /> with Āut protocol.
-          </>
-        ),
+        subtitle: <>You launched your Nova.</>,
       },
       front: {
         showDao: true,
@@ -289,13 +287,16 @@ export const TryOutData = {
         icon: expand.src,
         subtitle: (
           <>
-            Expand your <br /> DAO's capabilities <br /> with Āut protocol.
+            Launch your Nova, add <br />
+            Member’s Roles & Interaction <br /> to your DAO.
+            <br />
+            And Coordinate!
           </>
         ),
       },
       back: {
         description:
-          "With Āut protocol, you can expand your DAO's capabilities add roles and streamline your community management on the dashboard",
+          "Nova is a standard that expands the concept of DAO, bringing Members’ Roles & Interactions at Contract level.",
       },
       stayUnlockedUntilPhase: 2,
       complete: false,
@@ -308,25 +309,23 @@ export const TryOutData = {
       },
       success: {
         icon: check.src,
-        title: "Claim ĀutID",
-        subtitle: (
-          <>
-            Claim ĀutID and <br /> explore the dashboard
-          </>
-        ),
+        title: "Claim",
+        subtitle: <>You claimed your ĀutID.</>,
       },
       front: {
-        title: "Claim ĀutID",
+        title: "Claim",
         icon: fingerprint.src,
         subtitle: (
           <>
-            Claim ĀutID and <br /> explore the dashboard
+            Take your rightful Role <br />
+            & Commitment <br />
+            in your brand-new Nova.
           </>
         ),
       },
       back: {
         description:
-          "By claiming you unique ĀutID you will unlock the dashboard where you can explore your DAO members and their roles, quests & tasks and much more",
+          "The ĀutID lets you claim a functional Role in your Nova. It’s also the 1st SBT that ties together Members & the Communities they’re part of to build sybil-resistent, portable reputation.",
       },
       // stayUnlockedUntilPhase: 3,
       complete: false,
@@ -339,7 +338,7 @@ export const TryOutData = {
       },
       success: {
         icon: check.src,
-        title: "Setup Dashboard",
+        title: "Onboard",
         subtitle: (
           <>
             Set up your <br /> dashboard to manage <br /> quests and tasks.
@@ -347,17 +346,19 @@ export const TryOutData = {
         ),
       },
       front: {
-        title: "Setup Dashboard",
+        title: "Onboard",
         icon: setup.src,
         subtitle: (
           <>
-            Set up your <br /> dashboard to manage <br /> quests and tasks.
+            Create & Launch an <br />
+            Onboarding Quest for the <br />
+            Roles in your Community!
           </>
         ),
       },
       back: {
         description:
-          "Create and manage quest for each community role, and create tasks for for each quest for members to complete their onboarding",
+          "The Dashboard is the Operating System of your Nova. Create Role-based Quests, add modules, and fully on-chain, scaled Operations for your community to coordinate and capture value.",
       },
       complete: false,
     },
@@ -383,8 +384,8 @@ export const TryOutData = {
         icon: invite.src,
         subtitle: (
           <>
-            Apply for a quest to <br /> accept the invitation <br /> from your
-            DAO.
+            Check the Nova Showcase <br />
+            and choose the next-gen DAO <br /> you want to be part of.
           </>
         ),
       },
@@ -411,11 +412,15 @@ export const TryOutData = {
         ),
       },
       front: {
-        title: "Onboard",
+        title: "Participate",
         icon: invite.src,
         subtitle: (
           <>
-            Complete all tasks to <br /> complete onboarding quest
+            Take a Quest, prove your value,
+            <br />
+            and gain your seat
+            <br />
+            in the Community.
           </>
         ),
       },
@@ -440,12 +445,14 @@ export const TryOutData = {
         ),
       },
       front: {
-        title: "Claim ĀutID",
+        title: "Claim",
         icon: fingerprint.src,
 
         subtitle: (
           <>
-            Claim ĀutID and <br /> explore the dashboard
+            Claim your ĀutID: the universal, <br />
+            non-transferable passport <br />
+            to the DAO ecosystem.
           </>
         ),
       },

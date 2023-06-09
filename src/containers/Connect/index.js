@@ -75,6 +75,8 @@ const AutConnect = ({ onConnected, config, networks }) => {
     mainSubtitle,
     ownerItems,
     memberItems,
+    memberTitle,
+    ownerTitle,
     ownerSubtitle,
     memberSubtitle,
     ownerTimeLocks,
@@ -118,13 +120,17 @@ const AutConnect = ({ onConnected, config, networks }) => {
       if (connected) {
         const cache = await getCache("UserPhases");
         await hasMemberCompletedQuest(provider, account, cache);
-        const startDate = cache?.startDate ? new Date(cache?.startDate) : new Date();
-        const memberTimeLocksFn = () => memberTimeLocks(startDate, !!cache?.startDate);
+        const startDate = cache?.startDate
+          ? new Date(cache?.startDate)
+          : new Date();
+        const memberTimeLocksFn = () =>
+          memberTimeLocks(startDate, !!cache?.startDate);
         onConnected({
           connected: connected,
           isOwner: false,
           currentPhase: memberTimeLocksFn,
           subtitle: memberSubtitle,
+          title: memberTitle,
           userAddress: account,
           items: await updatePhases(memberItems),
         });
@@ -139,13 +145,16 @@ const AutConnect = ({ onConnected, config, networks }) => {
     openPopup(true, async ({ connected, account }, errorMessage) => {
       if (connected) {
         const cache = await getCache("UserPhases");
-        const startDate = cache?.createdAt ? new Date(cache?.createdAt) : new Date();
+        const startDate = cache?.createdAt
+          ? new Date(cache?.createdAt)
+          : new Date();
         const ownerTimeLocksFn = () => ownerTimeLocks(startDate);
         onConnected({
           connected: connected,
           isOwner: true,
           currentPhase: ownerTimeLocksFn,
           subtitle: ownerSubtitle,
+          title: ownerTitle,
           userAddress: account,
           items: await updatePhases(ownerItems),
         });
@@ -182,7 +191,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
       componentProps: {
         shouldBeAllowListed,
         onClose: callback,
-        networks
+        networks,
       },
     });
   };
@@ -237,7 +246,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
             color="white"
             as="subtitle1"
           >
-            I am a
+            I am
           </Typography>
 
           <ButtonWrapper>

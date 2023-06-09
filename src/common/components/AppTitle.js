@@ -10,14 +10,15 @@ const AppTitle = (props) => {
       whiteSpace="nowrap"
       {...props}
     >
-      Try{" "}
+      
       <strong
         style={{
           fontFamily: "var(--fractul-alt-bold)",
         }}
       >
-        Āut
+        Try Āut
       </strong>
+      
     </Typography>
   );
 };
