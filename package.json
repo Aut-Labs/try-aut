@@ -9,7 +9,7 @@
     "start": "next"
   },
   "dependencies": {
-    "@aut-labs-private/abi-types": "^0.0.36",
+    "@aut-labs-private/abi-types": "^0.0.37",
     "@aut-labs/d-aut": "^1.0.32",
     "@leenguyen/react-flip-clock-countdown": "^1.4.0",
     "@lottiefiles/lottie-player": "^1.5.7",
