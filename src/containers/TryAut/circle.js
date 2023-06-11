@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { memo, useContext, useState } from "react";
 import Typography from "common/components/Typography";
 import BlackHoleImage from "common/assets/image/black-hole.svg";
-import Copy from "common/assets/image/copy.svg";
 import Button from "common/components/Button";
 import LockCountdown from "common/components/LockCountdown";
 import Link from "common/components/Link";
@@ -13,6 +12,7 @@ import { autUrls, trimAddress, trimLink } from "common/utils/misc";
 import { ic_content_copy_outline } from "react-icons-kit/md/ic_content_copy_outline";
 import { Icon } from "react-icons-kit";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import Tooltip from "rc-tooltip";
 
 const dispatchEvent = (name, payload = null) => {
   const event = new CustomEvent(name, {
@@ -72,6 +72,18 @@ const AutCircle = ({
   const [isFlipped, setFlipped] = useState(false);
 
   console.log(front, back, value);
+  const [copied, setCopied] = useState(false);
+
+  function clickCopy(copied) {
+    if (copied === true) {
+      setCopied(true);
+      setTimeout(() => {
+        setCopied(false);
+      }, 3000);
+    } else {
+      return null;
+    }
+  }
 
   const onMouseEnter = () => setFlipped(true);
   const onMouseLeave = () => setFlipped(false);
@@ -168,7 +180,10 @@ const AutCircle = ({
                     />
                   </Link>
                 </div>
-                <CopyToClipboard text={value?.state?.daoAddress}>
+                <CopyToClipboard
+                  text={value?.state?.daoAddress}
+                  onCopy={() => clickCopy(true)}
+                >
                   <div
                     style={{
                       color: "white",
@@ -191,17 +206,23 @@ const AutCircle = ({
                         cursor: "pointer",
                       }}
                     >
-                      <Icon
-                        color="white"
-                        size={25}
-                        icon={ic_content_copy_outline}
-                      />
+                      <Tooltip
+                        placement="top"
+                        overlay={copied ? "Copied!" : "Copy Address"}
+                      >
+                        <Icon
+                          color="white"
+                          size={25}
+                          icon={ic_content_copy_outline}
+                        />
+                      </Tooltip>
                     </div>
                   </div>
                 </CopyToClipboard>
               </div>
             )}
             {front?.showMyAut &&
+              isComplete &&
               (userProfile?.name || userProfile?.address) && (
                 <>
                   <div

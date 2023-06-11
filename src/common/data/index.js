@@ -71,6 +71,11 @@ import invite from "common/assets/image/invite.svg";
 import fingerprint from "common/assets/image/fingerprint.svg";
 import setup from "common/assets/image/setup.svg";
 import check from "common/assets/image/check-all.png";
+import joinIcon from "common/assets/image/contributor-join-1.svg";
+import participateIcon from "common/assets/image/contributor-participate-2.svg";
+import claimIcon from "common/assets/image/contributor-claim-3.svg";
+
+
 import { autUrls } from "common/utils/misc";
 
 function getOwnerPhases(startDate) {
@@ -382,7 +387,7 @@ export const TryOutData = {
       },
       front: {
         title: "Join",
-        icon: invite.src,
+        icon: joinIcon.src,
         subtitle: (
           <>
             Check the Nova Showcase <br />
@@ -414,7 +419,7 @@ export const TryOutData = {
       },
       front: {
         title: "Participate",
-        icon: invite.src,
+        icon: participateIcon.src,
         subtitle: (
           <>
             Take a Quest, prove your value,
@@ -447,7 +452,7 @@ export const TryOutData = {
       },
       front: {
         title: "Claim",
-        icon: fingerprint.src,
+        icon: claimIcon.src,
 
         subtitle: (
           <>
