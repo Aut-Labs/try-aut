@@ -75,20 +75,14 @@ import joinIcon from "common/assets/image/contributor-join-1.svg";
 import participateIcon from "common/assets/image/contributor-participate-2.svg";
 import claimIcon from "common/assets/image/contributor-claim-3.svg";
 
-
 import { autUrls } from "common/utils/misc";
 
 function getOwnerPhases(startDate) {
   const phaseOneStartDate = startDate;
-  // set the time zone to CET
-  // phaseOneStartDate.setUTCHours(7);
-  // phaseOneStartDate.setMinutes(0);
-  // phaseOneStartDate.setSeconds(0);
-  // phaseOneStartDate.setMilliseconds(0);
 
-  const phaseOneDuration = 15 * 60 * 1000; // 15 minutes in milliseconds
-  const phaseTwoDuration = 10 * 60 * 1000; // 10 minutes in milliseconds
-  const phaseThreeDuration = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+  const phaseOneDuration = 48 * 60 * 60 * 1000; // 48 hours in milliseconds
+  const phaseTwoDuration = 48 * 60 * 60 * 1000; // 48 hours in milliseconds
+  const phaseThreeDuration = 72 * 60 * 60 * 1000; // 72 hours in milliseconds
 
   const phaseOneEndDate = new Date(
     phaseOneStartDate.getTime() + phaseOneDuration
@@ -119,9 +113,9 @@ function getMemberPhases(startDate) {
   const { phaseThreeEndDate: ownerPhaseThreeEndDate } =
     getOwnerPhases(startDate);
 
-  const phaseOneDuration = 15 * 60 * 1000; // 15 minutes in milliseconds
-  const phaseTwoDuration = 1 * 60 * 60 * 1000; // 1 hour in milliseconds
-  const phaseThreeDuration = 1 * 60 * 60 * 1000; // 1 hour in milliseconds
+  const phaseOneDuration = 48 * 60 * 60 * 1000; // 48 hours in milliseconds
+  const phaseTwoDuration = 48 * 60 * 60 * 1000; // 48 hours in milliseconds
+  const phaseThreeDuration = 72 * 60 * 60 * 1000; // 72 hours in milliseconds
 
   const phaseOneStartDate = new Date(ownerPhaseThreeEndDate.getTime());
   const phaseOneEndDate = new Date(
