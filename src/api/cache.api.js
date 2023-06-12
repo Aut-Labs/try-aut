@@ -56,7 +56,7 @@ export const getUser = async (userAddress) => {
       `${process.env.NEXT_PUBLIC_API_URL}/autID/${userAddress}?network=mumbai`
     );
     const { metadataUri } = res.data;
-    const profile = await axios.get(ipfsCIDToHttpUrl(metadataUri));
+    const profile = await axios.get(ipfsCIDToHttpUrl(metadataUri, process.env.NEXT_PUBLIC_IPFS_URL));
     return {
       address: userAddress,
       ...(profile?.data || {}),
