@@ -250,7 +250,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
             color="white"
             as="subtitle1"
           >
-            I am
+            I am a...
           </Typography>
 
           <ButtonWrapper>
