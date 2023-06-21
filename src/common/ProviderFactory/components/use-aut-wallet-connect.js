@@ -109,7 +109,7 @@ export const useAutWalletConnect = ({
   };
 
   const errorMessage = useMemo(
-    () => connectError || error,
+    () => connectError || error?.message,
     [error, connectError]
   );
 
