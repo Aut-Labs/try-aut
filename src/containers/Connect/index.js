@@ -124,8 +124,11 @@ const AutConnect = ({ onConnected, config, networks }) => {
         const startDate = cache?.startDate
           ? new Date(cache?.startDate)
           : new Date();
+        const endDate = cache?.endDate
+          ? new Date(Number(cache?.endDate))
+          : new Date();
         const memberTimeLocksFn = () =>
-          memberTimeLocks(startDate, !!cache?.startDate);
+          memberTimeLocks(startDate, endDate, !!cache?.startDate);
         onConnected({
           connected: connected,
           isOwner: false,

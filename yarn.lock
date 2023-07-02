@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@aut-labs-private/abi-types@^0.0.37":
-  version "0.0.37"
-  resolved "https://registry.npmjs.org/@aut-labs-private/abi-types/-/abi-types-0.0.37.tgz"
-  integrity sha512-/tLSahfBK2KzDry2dFhcRM2z1ixVqM/VQOupx+6VB8BdK6X9vSzQC+emGdmEah/UNlqUjHpZORz3uWLeOBs7cg==
+"@aut-labs-private/abi-types@^0.0.38":
+  version "0.0.38"
+  resolved "https://registry.npmjs.org/@aut-labs-private/abi-types/-/abi-types-0.0.38.tgz"
+  integrity sha512-Olqcu21AIswkcoFThhAMa+5Pxa3FxmgWu6UkSBkKZ283v8Ly2K9c5LAfEZ9J1g+DVrF69AllYTmfdQkthpDH1Q==
 
 "@aut-labs/d-aut@^1.0.34":
   version "1.0.34"

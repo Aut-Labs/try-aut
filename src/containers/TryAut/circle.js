@@ -71,7 +71,6 @@ const AutCircle = ({
   const value = useContext(AutIDContext);
   const [isFlipped, setFlipped] = useState(false);
 
-  console.log(front, back, value);
   const [copied, setCopied] = useState(false);
 
   function clickCopy(copied) {

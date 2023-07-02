@@ -109,23 +109,19 @@ function getOwnerPhases(startDate) {
   };
 }
 
-function getMemberPhases(startDate) {
-  const { phaseThreeEndDate: ownerPhaseThreeEndDate } =
-    getOwnerPhases(startDate);
+function getMemberPhases(startDate, endDate) {
+  
+  const phaseOneDuration = 2 * 24 * 60 * 60 * 1000; // 2 days in milliseconds
+  const phaseOneStartDate = new Date(startDate.getTime() - phaseOneDuration);
+  
+  const phaseTwoDuration = endDate.getTime() - startDate.getTime();
+  
+  const phaseThreeDuration = 48 * 60 * 60 * 1000; // 48 hours in milliseconds
 
-  const phaseOneDuration = 48 * 60 * 60 * 1000; // 48 hours in milliseconds
-  const phaseTwoDuration = 48 * 60 * 60 * 1000; // 48 hours in milliseconds
-  const phaseThreeDuration = 72 * 60 * 60 * 1000; // 72 hours in milliseconds
-
-  const phaseOneStartDate = new Date(ownerPhaseThreeEndDate.getTime());
-  const phaseOneEndDate = new Date(
-    phaseOneStartDate.getTime() + phaseOneDuration
-  );
-  const phaseTwoStartDate = new Date(phaseOneEndDate.getTime());
-  const phaseTwoEndDate = new Date(
-    phaseTwoStartDate.getTime() + phaseTwoDuration
-  );
-  const phaseThreeStartDate = new Date(phaseTwoEndDate.getTime());
+  const phaseOneEndDate = new Date(startDate.getTime());
+  const phaseTwoStartDate = new Date(startDate.getTime());
+  const phaseTwoEndDate = new Date(endDate.getTime());
+  const phaseThreeStartDate = new Date(endDate.getTime());
   const phaseThreeEndDate = new Date(
     phaseThreeStartDate.getTime() + phaseThreeDuration
   );
@@ -196,7 +192,7 @@ function ownerTimeLocks(startDate) {
   }
 }
 
-function memberTimeLocks(startDate, hasStarted = false) {
+function memberTimeLocks(startDate, endDate, hasStarted = false) {
   if (!hasStarted) {
     const phaseOneDuration = 7 * 60 * 60 * 1000; // 7 hours in milliseconds
     return {
@@ -212,7 +208,7 @@ function memberTimeLocks(startDate, hasStarted = false) {
     phaseTwoEndDate,
     phaseThreeStartDate,
     phaseThreeEndDate,
-  } = getMemberPhases(startDate);
+  } = getMemberPhases(startDate, endDate);
 
   const currentDate = new Date(); // Get current date and time
 
@@ -262,7 +258,7 @@ const urls = autUrls();
 export const TryOutData = {
   // title: "Try Āut",
   memberTitle: "Try Āut - Contributor",
-  ownerTitle: "Try Āut - Contributor",
+  ownerTitle: "Try Āut - Operator",
   mainSubtitle: "Join the Coordination Renaissance",
   ownerSubtitle: "Join the Coordination Renaissance - and expand your DAO.",
   ownerTimeLocks,
@@ -298,6 +294,7 @@ export const TryOutData = {
           "Nova is a standard that expands the concept of DAO, bringing Members’ Roles & Interactions at Contract level.",
       },
       stayUnlockedUntilPhase: 2,
+      disabledTimeLock: true,
       complete: false,
     },
     {
@@ -328,6 +325,7 @@ export const TryOutData = {
           "The ĀutID lets you claim a functional Role in your Nova. It’s also the 1st SBT that ties together Members & the Communities they’re part of to build sybil-resistent, portable reputation.",
       },
       // stayUnlockedUntilPhase: 3,
+      disabledTimeLock: true,
       complete: false,
     },
     {
@@ -360,6 +358,7 @@ export const TryOutData = {
         description:
           "The Dashboard is the Operating System of your Nova. Create Role-based Quests, add modules, and fully on-chain, scaled Operations for your community to coordinate and capture value.",
       },
+      disabledTimeLock: true,
       complete: false,
     },
   ],

@@ -29,7 +29,7 @@ const TryAut = ({ connectState }) => {
     return isPreviousComplete(index) && !items[index]?.complete;
   };
 
-  const phaseStatuses = (index, complete, stayUnlockedUntilPhase) => {
+  const phaseStatuses = (index, complete, stayUnlockedUntilPhase, disabledTimeLock) => {
     const isCurrent = isCurrentPhase(index, complete);
     const isCurrentComplete = !!complete;
 
@@ -37,6 +37,17 @@ const TryAut = ({ connectState }) => {
       isCurrent,
       isComplete: isCurrentComplete,
     };
+
+    if (disabledTimeLock) {
+      if (isCurrentComplete) {
+        status.label = "Completed";
+      } else if (isCurrent) {
+        status.label = "Start";
+      } else {
+        status.label = "Locked";
+      }
+      return status
+    }
 
     if (!isCurrentComplete) {
       const currentTimelock = connectState.currentPhase();
@@ -173,13 +184,14 @@ const TryAut = ({ connectState }) => {
                 button,
                 success,
                 stayUnlockedUntilPhase,
+                disabledTimeLock
               },
               index
             ) => (
               <BlackHoleWrapper
                 key={`item-${index}`}
                 className={`item-${index + 1} ${complete ? "complete" : ""} ${
-                  phaseStatuses(index, complete, stayUnlockedUntilPhase)
+                  phaseStatuses(index, complete, stayUnlockedUntilPhase, disabledTimeLock)
                     ?.isCurrent
                     ? "current"
                     : ""
@@ -194,7 +206,7 @@ const TryAut = ({ connectState }) => {
                     query={buildQuery(button)}
                     front={front}
                     back={back}
-                    {...phaseStatuses(index, complete, stayUnlockedUntilPhase)}
+                    {...phaseStatuses(index, complete, stayUnlockedUntilPhase, disabledTimeLock)}
                   />
                 </BubbleImageWrapper>
               </BlackHoleWrapper>
