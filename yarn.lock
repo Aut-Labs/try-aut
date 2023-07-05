@@ -15,10 +15,15 @@
   resolved "https://registry.npmjs.org/@aut-labs-private/abi-types/-/abi-types-0.0.38.tgz"
   integrity sha512-Olqcu21AIswkcoFThhAMa+5Pxa3FxmgWu6UkSBkKZ283v8Ly2K9c5LAfEZ9J1g+DVrF69AllYTmfdQkthpDH1Q==
 
-"@aut-labs/d-aut@^1.0.34":
-  version "1.0.34"
-  resolved "https://registry.npmjs.org/@aut-labs/d-aut/-/d-aut-1.0.34.tgz"
-  integrity sha512-ErIKy1sKp7F8cVz0kCRN1J5jV221ZQcAuj0+GCVg5v1F9qowxYxbrAJ5+B0QqidVOC83R5vTQYzHcnb8gmvM4A==
+"@aut-labs-private/sdk-biconomy@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.npmjs.org/@aut-labs-private/sdk-biconomy/-/sdk-biconomy-0.0.4.tgz"
+  integrity sha512-dIWDer6CjCb2Xmri3RZH9L4SrAL3/dTY6hDjnPkvMnD+ESw1iBs+3Pw+y0SRha1XrzYhOn5sId+WuXlSkJFtsw==
+
+"@aut-labs/d-aut@^1.0.35":
+  version "1.0.35"
+  resolved "https://registry.npmjs.org/@aut-labs/d-aut/-/d-aut-1.0.35.tgz"
+  integrity sha512-9NPZplQBrQnJ1e9ymOWbsmHWNDh+cJ+TYR5iKEUKAopUsoT9SppcB1wPkNMXWsHv4IYDPiSlQ+qtm/ptLck4/A==
 
 "@babel/code-frame@^7.18.6":
   version "7.18.6"

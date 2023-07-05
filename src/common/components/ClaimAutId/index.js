@@ -51,8 +51,11 @@ const ClaimAutId = () => {
             setAllowedRole(`${cache.questId}`);
           }
         }
+        const biconomyRef = await import("@aut-labs-private/sdk-biconomy");
         const dAut = await import("@aut-labs/d-aut");
-        dAut.Init();
+        dAut.Init({
+          biconomy: biconomyRef.SDKBiconomyWrapper,
+        });
       };
       init();
       const onAutMinted = async () => {
@@ -79,7 +82,9 @@ const ClaimAutId = () => {
         position: "absolute",
       }}
       flow-config='{"mode" : "tryAut", "customCongratsMessage": ""}'
-      use-dev={process.env.NEXT_PUBLIC_NODE_ENV === "development" ? "true" : "false"}
+      use-dev={
+        process.env.NEXT_PUBLIC_NODE_ENV === "development" ? "true" : "false"
+      }
       allowed-role-id={allowedRole}
       dao-expander={value?.state?.daoAddress}
       id="d-aut"
