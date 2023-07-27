@@ -1,4 +1,4 @@
-import { Web3AllowlistProvider } from "@aut-labs-private/abi-types";
+import { Web3AllowlistProvider } from "@aut-labs/abi-types";
 import axios from "axios";
 
 export const AUTH_TOKEN_KEY = "user-access-token";

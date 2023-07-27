@@ -51,7 +51,7 @@ const ClaimAutId = () => {
             setAllowedRole(`${cache.questId}`);
           }
         }
-        const biconomyRef = await import("@aut-labs-private/sdk-biconomy");
+        const biconomyRef = await import("@aut-labs/sdk-biconomy");
         const dAut = await import("@aut-labs/d-aut");
         dAut.Init({
           biconomy: biconomyRef.SDKBiconomyWrapper,

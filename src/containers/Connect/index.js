@@ -14,7 +14,7 @@ import AppTitle from "common/components/AppTitle";
 import {
   Web3QuestOnboardingPluginProvider,
   Web3QuestPluginProvider,
-} from "@aut-labs-private/abi-types";
+} from "@aut-labs/abi-types";
 
 const GenesisImageWrapper = styled("img")`
   width: 100%;
