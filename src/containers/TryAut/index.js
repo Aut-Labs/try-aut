@@ -84,19 +84,29 @@ const TryAut = ({ connectState }) => {
 
   const buildQuery = ({ queryParams, cacheParams }) => {
     const qParams = (queryParams || []).reduce((prev, curr) => {
-      prev[curr] = router.query[curr];
+      if (router.query[curr]) {
+        prev[curr] = router.query[curr];
+      }
       return prev;
     }, {});
-
+  
     const cParams = (cacheParams || []).reduce((prev, curr) => {
-      prev[curr] = (cache || {})[curr];
+      if (cache && cache[curr]) {
+        prev[curr] = cache[curr];
+      }
       return prev;
     }, {});
-
-    return new URLSearchParams({
+  
+    const combinedParams = {
       ...qParams,
       ...cParams,
-    });
+    };
+  
+    if (Object.keys(combinedParams).length === 0) {
+      return '';
+    }
+  
+    return `/${new URLSearchParams(combinedParams).toString()}`;
   };
 
   useEffect(() => {
