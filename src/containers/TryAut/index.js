@@ -6,7 +6,6 @@ import AutCircle from "./circle";
 import { memo, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getCache } from "api/cache.api";
-import AppTitle from "common/components/AppTitle";
 import { AutIDContext } from "common/components/ClaimAutId";
 
 const TryAut = ({ connectState }) => {
@@ -112,7 +111,7 @@ const TryAut = ({ connectState }) => {
   useEffect(() => {
     const start = async () => {
       try {
-        const c = await getCache("UserPhases");
+        const c = await getCache("UserPhases", connectState?.userAddress);
         dispatch({
           type: "SET_DAO_ADDRESS",
           payload: {

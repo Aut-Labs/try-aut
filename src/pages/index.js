@@ -9,9 +9,6 @@ import { DrawerProvider } from "common/contexts/DrawerContext";
 import Navbar from "containers/Navbar";
 import { getAppConfig } from "api/index.api";
 import { useEffect } from "react";
-import { DAppProvider, MetamaskConnector } from "@usedapp/core";
-import { WalletConnectConnector } from "@usedapp/wallet-connect-connector";
-import { ethers } from "ethers";
 import AutLoading from "common/components/AutLoading";
 import { Modal } from "@redq/reuse-modal";
 import styled from "styled-components";
@@ -20,51 +17,8 @@ import BubbleTopRight from "common/assets/image/bubble.svg";
 import themeGet from "@styled-system/theme-get";
 import Image from "common/components/Image";
 import ClaimAutId, { AutIDContextProvider } from "common/components/ClaimAutId";
-
-const generateConfig = (networks) => {
-  const readOnlyUrls = networks.reduce((prev, curr) => {
-    if (!curr.disabled) {
-      const network = {
-        name: "mumbai",
-        chainId: 80001,
-        _defaultProvider: (providers) =>
-          new providers.JsonRpcProvider(curr.rpcUrls[0]),
-      };
-      const provider = ethers.getDefaultProvider(network);
-      prev[curr.chainId] = provider;
-    }
-    return prev;
-  }, {});
-
-  return {
-    readOnlyUrls,
-    autoConnect: false,
-    networks: networks
-      .filter((n) => !n.disabled)
-      .map((n) => ({
-        isLocalChain: false,
-        isTestChain: process.env.NEXT_PUBLIC_NETWORK_ENV === "testing",
-        chainId: n.chainId,
-        chainName: n.network,
-        rpcUrl: n.rpcUrls[0],
-        nativeCurrency: n.nativeCurrency,
-      })),
-    gasLimitBufferPercentage: 50000,
-    connectors: {
-      metamask: new MetamaskConnector(),
-      walletConnect: new WalletConnectConnector({
-        rpc: networks
-          .filter((n) => !n.disabled)
-          .reduce((prev, curr) => {
-            // eslint-disable-next-line prefer-destructuring
-            prev[curr.chainId] = curr.rpcUrls[0];
-            return prev;
-          }, {}),
-        infuraId: "d8df2cb7844e4a54ab0a782f608749dd",
-      }),
-    },
-  };
-};
+import { generateNetworkConfig } from "common/ProviderFactory/setup.config";
+import { WagmiConfig } from "wagmi";
 
 const BottomLeftBubble = styled(Image)`
   position: fixed;
@@ -109,7 +63,8 @@ const Main = () => {
     getAppConfig()
       .then(async (res) => {
         setNetworks(res);
-        setConfig(generateConfig(res));
+        const [network] = res.filter((d) => !d.disabled);
+        setConfig(generateNetworkConfig(network));
         setLoading(false);
       })
       .catch();
@@ -120,7 +75,7 @@ const Main = () => {
       {isLoading || !config ? (
         <AutLoading />
       ) : (
-        <DAppProvider config={config}>
+        <WagmiConfig config={config}>
           <AutIDContextProvider>
             <Sticky top={0} innerZ={200} activeClass="sticky-nav-active">
               <DrawerProvider>
@@ -167,7 +122,7 @@ const Main = () => {
               </Modal>
             </PerfectScrollbar>
           </AutIDContextProvider>
-        </DAppProvider>
+        </WagmiConfig>
       )}
     </>
   );

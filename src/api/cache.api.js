@@ -18,15 +18,15 @@ function ipfsCIDToHttpUrl(url, nftStorageUrl) {
   return url;
 }
 
-export const getCache = async (cacheKey) => {
-  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+export const getCache = async (cacheKey, address) => {
+  // const token = localStorage.getItem(AUTH_TOKEN_KEY);
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/autID/cache/getCache/${cacheKey}`,
-    {
-      headers: {
-        Authorization: token,
-      },
-    }
+    `${process.env.NEXT_PUBLIC_API_URL}/autID/cache/getCache/${cacheKey}?address=${address}`,
+    // {
+    //   headers: {
+    //     Authorization: token,
+    //   },
+    // }
   );
   return res?.data || null;
 };
@@ -70,28 +70,28 @@ export const getUser = async (userAddress) => {
 };
 
 export const updateCache = async (cache) => {
-  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  // const token = localStorage.getItem(AUTH_TOKEN_KEY);
   const res = await axios.post(
     `${process.env.NEXT_PUBLIC_API_URL}/autID/cache/addOrUpdateCache/${cache.cacheKey}`,
     cache,
-    {
-      headers: {
-        Authorization: token,
-      },
-    }
+    // {
+    //   headers: {
+    //     Authorization: token,
+    //   },
+    // }
   );
   return res?.data || null;
 };
 
-export const deleteCache = async (cacheKey) => {
-  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+export const deleteCache = async (cacheKey, address) => {
+  // const token = localStorage.getItem(AUTH_TOKEN_KEY);
   const res = await axios.delete(
-    `${process.env.NEXT_PUBLIC_API_URL}/autID/cache/deleteCache/${cacheKey}`,
-    {
-      headers: {
-        Authorization: token,
-      },
-    }
+    `${process.env.NEXT_PUBLIC_API_URL}/autID/cache/deleteCache/${cacheKey}?address=${address}`,
+    // {
+    //   headers: {
+    //     Authorization: token,
+    //   },
+    // }
   );
   return res?.data || null;
 };

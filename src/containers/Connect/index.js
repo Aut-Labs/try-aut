@@ -11,10 +11,13 @@ import { openModal } from "@redq/reuse-modal";
 import Web3NetworkProvider from "common/ProviderFactory/components/Web3NetworkProvider";
 import { getCache, getUser, updateCache } from "api/cache.api";
 import AppTitle from "common/components/AppTitle";
+import { useEthersSigner } from "common/ProviderFactory/ethers";
+import { useAccount, useChainId } from "wagmi";
 import {
   Web3QuestOnboardingPluginProvider,
   Web3QuestPluginProvider,
 } from "@aut-labs/abi-types";
+import { isAllowListed } from "api/auth.api";
 
 const GenesisImageWrapper = styled("img")`
   width: 100%;
@@ -59,8 +62,9 @@ export const toHex = (num) => {
   return `0x${val.toString(16)}`;
 };
 
-const updatePhases = async (items) => {
-  const cache = await getCache("UserPhases");
+const updatePhases = async (items, address) => {
+  const cache = await getCache("UserPhases", address);
+
   return items.map((item, index) => {
     const cacheItemFromList = cache?.list?.find((u) => u.phase === index + 1);
     return {
@@ -71,6 +75,11 @@ const updatePhases = async (items) => {
 };
 
 const AutConnect = ({ onConnected, config, networks }) => {
+  const { connector, isConnected, address } = useAccount();
+  const [loadingOwnerBtn, setLoadingOwnerBtn] = useState(false);
+  const [loadingMemberBtn, setLoadingMemberBtn] = useState(false);
+  const chainId = useChainId();
+  const signer = useEthersSigner({ chainId: chainId });
   const {
     mainSubtitle,
     ownerItems,
@@ -83,62 +92,70 @@ const AutConnect = ({ onConnected, config, networks }) => {
     memberTimeLocks,
   } = TryOutData;
   const [errorMessage, setErrorMessage] = useState(false);
-
-  const hasMemberCompletedQuest = async (provider, account, cache) => {
-    if (!cache) return;
-
-    const [phaseOne, phaseTwo] = cache?.list || [];
-    if (phaseOne?.status === 1 && phaseTwo?.status === 0) {
-      try {
-        const contract = Web3QuestOnboardingPluginProvider(
-          cache?.onboardingQuestAddress,
-          {
-            signer: () => provider.getSigner(),
-          }
-        );
-        const questsPluginAddress = await contract.getQuestsPluginAddress();
-        const questContract = Web3QuestPluginProvider(questsPluginAddress, {
-          signer: () => provider.getSigner(),
-        });
-        const hasCompletedAQuest = await questContract.hasCompletedAQuest(
-          account,
-          cache.questId
-        );
-        const cacheResult = await getCache("UserPhases");
-        if (hasCompletedAQuest) {
-          cacheResult.list[1].status = 1;
-          await updateCache(cacheResult);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
-
   const viewMemberPhases = async () => {
-    openPopup(false, async ({ connected, account, provider }, errorMessage) => {
+    setLoadingMemberBtn(true);
+    const hasMemberCompletedQuest = async (account, cache) => {
+      if (!cache) return;
+
+      const [phaseOne, phaseTwo] = cache?.list || [];
+      if (phaseOne?.status === 1 && phaseTwo?.status === 0) {
+        try {
+          const contract = Web3QuestOnboardingPluginProvider(
+            cache?.onboardingQuestAddress,
+            {
+              signer: () => signer,
+            }
+          );
+          const questsPluginAddress = await contract.getQuestsPluginAddress();
+          const questContract = Web3QuestPluginProvider(questsPluginAddress, {
+            signer: () => signer,
+          });
+          const hasCompletedAQuest = await questContract.hasCompletedAQuest(
+            account,
+            cache.questId
+          );
+          const cacheResult = await getCache("UserPhases", account);
+          if (hasCompletedAQuest) {
+            cacheResult.list[1].status = 1;
+            await updateCache(cacheResult);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    const start = async (account) => {
+      const cache = await getCache("UserPhases", account);
+      const userProfile = await getUser(cache?.address);
+      await hasMemberCompletedQuest(account, cache);
+      const startDate = cache?.startDate
+        ? new Date(cache?.startDate)
+        : new Date();
+      const endDate = cache?.endDate
+        ? new Date(Number(cache?.endDate))
+        : new Date();
+      const memberTimeLocksFn = () =>
+        memberTimeLocks(startDate, endDate, !!cache?.startDate);
+      onConnected({
+        connected: true,
+        isOwner: false,
+        currentPhase: memberTimeLocksFn,
+        subtitle: memberSubtitle,
+        userProfile,
+        title: memberTitle,
+        userAddress: account,
+        items: await updatePhases(memberItems, account),
+      });
+      setLoadingMemberBtn(false);
+    };
+
+    if (connector?.ready && isConnected) {
+      return start(address);
+    }
+
+    openPopup(false, async ({ connected, account }, errorMessage) => {
       if (connected) {
-        const cache = await getCache("UserPhases");
-        const userProfile = await getUser(cache?.address);
-        await hasMemberCompletedQuest(provider, account, cache);
-        const startDate = cache?.startDate
-          ? new Date(cache?.startDate)
-          : new Date();
-        const endDate = cache?.endDate
-          ? new Date(Number(cache?.endDate))
-          : new Date();
-        const memberTimeLocksFn = () =>
-          memberTimeLocks(startDate, endDate, !!cache?.startDate);
-        onConnected({
-          connected: connected,
-          isOwner: false,
-          currentPhase: memberTimeLocksFn,
-          subtitle: memberSubtitle,
-          userProfile,
-          title: memberTitle,
-          userAddress: account,
-          items: await updatePhases(memberItems),
-        });
+        start(account);
       }
       if (errorMessage) {
         setErrorMessage(errorMessage);
@@ -147,24 +164,48 @@ const AutConnect = ({ onConnected, config, networks }) => {
   };
 
   const viewOwnerPhases = async () => {
-    openPopup(true, async ({ connected, account }, errorMessage) => {
+    setLoadingOwnerBtn(true);
+    let errorMsg = "";
+    const [network] = networks.filter((d) => !d.disabled);
+    let isAllowed = false;
+    if (isConnected) {
+      try {
+        isAllowed = await isAllowListed(
+          signer,
+          network.contracts.allowListAddress
+        );
+      } catch (error) {
+        errorMsg = error?.message;
+      }
+    }
+
+    const start = async (account) => {
+      const cache = await getCache("UserPhases", account);
+      const userProfile = await getUser(cache?.address);
+      const startDate = cache?.createdAt
+        ? new Date(cache?.createdAt)
+        : new Date();
+      const ownerTimeLocksFn = () => ownerTimeLocks(startDate);
+      onConnected({
+        connected: true,
+        isOwner: true,
+        currentPhase: ownerTimeLocksFn,
+        subtitle: ownerSubtitle,
+        title: ownerTitle,
+        userAddress: account,
+        userProfile,
+        items: await updatePhases(ownerItems, account),
+      });
+      setLoadingOwnerBtn(false);
+    };
+
+    if (connector?.ready && isConnected && isAllowed) {
+      return start(address);
+    }
+
+    openPopup(errorMsg, async ({ connected, account }, errorMessage) => {
       if (connected) {
-        const cache = await getCache("UserPhases");
-        const userProfile = await getUser(cache?.address);
-        const startDate = cache?.createdAt
-          ? new Date(cache?.createdAt)
-          : new Date();
-        const ownerTimeLocksFn = () => ownerTimeLocks(startDate);
-        onConnected({
-          connected: connected,
-          isOwner: true,
-          currentPhase: ownerTimeLocksFn,
-          subtitle: ownerSubtitle,
-          title: ownerTitle,
-          userAddress: account,
-          userProfile,
-          items: await updatePhases(ownerItems),
-        });
+        start(account);
       }
       if (errorMessage) {
         setErrorMessage(errorMessage);
@@ -172,7 +213,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
     });
   };
 
-  const openPopup = (shouldBeAllowListed, callback = () => null) => {
+  const openPopup = (errorMessage, callback = () => null) => {
     openModal({
       config: {
         className: "customModal",
@@ -196,7 +237,7 @@ const AutConnect = ({ onConnected, config, networks }) => {
       closeOnClickOutside: false,
       component: Web3NetworkProvider,
       componentProps: {
-        shouldBeAllowListed,
+        errorMessage,
         onClose: callback,
         networks,
       },
@@ -261,6 +302,8 @@ const AutConnect = ({ onConnected, config, networks }) => {
               colors="primary"
               variant="roundOutlined"
               title="DAO Operator"
+              isLoading={loadingOwnerBtn}
+              disabled={loadingOwnerBtn || loadingMemberBtn}
               target="_blank"
               size="normal"
               onClick={viewOwnerPhases}
@@ -273,6 +316,8 @@ const AutConnect = ({ onConnected, config, networks }) => {
               colors="primary"
               variant="roundOutlined"
               title="DAO Contributor"
+              isLoading={loadingMemberBtn}
+              disabled={loadingOwnerBtn || loadingMemberBtn}
               target="_blank"
               size="normal"
               onClick={viewMemberPhases}

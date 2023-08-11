@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { getCache, updateCache } from "api/cache.api";
+import { useAccount } from "wagmi";
 
 export const AutIDContext = createContext({});
 
@@ -37,6 +38,7 @@ export const AutIDContextProvider = ({ children }) => {
 
 const ClaimAutId = () => {
   const value = useContext(AutIDContext);
+  const { address } = useAccount();
   const [allowedRole, setAllowedRole] = useState("");
   const [initWebcomponent, setInitWebcomponent] = useState(false);
 
@@ -46,7 +48,7 @@ const ClaimAutId = () => {
       const init = async () => {
         const isMember = !value.state.isOwner;
         if (isMember) {
-          const cache = await getCache("UserPhases");
+          const cache = await getCache("UserPhases", address);
           if (cache) {
             setAllowedRole(`${cache.questId}`);
           }
@@ -60,7 +62,7 @@ const ClaimAutId = () => {
       init();
       const onAutMinted = async () => {
         try {
-          const cache = await getCache("UserPhases");
+          const cache = await getCache("UserPhases", address);
           const isOwner = value.state.isOwner;
           cache.list[isOwner ? 1 : 2].status = 1;
           await updateCache(cache);
@@ -74,7 +76,7 @@ const ClaimAutId = () => {
     return () => {
       // window.removeEventListener("aut-minted", onAutMinted);
     };
-  }, [initWebcomponent, value.state]);
+  }, [initWebcomponent, value.state, address]);
 
   return (
     <d-aut
