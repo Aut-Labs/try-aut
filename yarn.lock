@@ -12,10 +12,10 @@
   resolved "https://registry.npmjs.org/@aut-labs/abi-types/-/abi-types-0.0.39.tgz"
   integrity sha512-xVx/r/REzDTCZacwTKG3mt9aw6yJWO8UWDcfNeVWbKm0vFszipRA9ExzSNp2HJhWlmUAlGlLyIxjEKm9JWMosA==
 
-"@aut-labs/d-aut@^1.0.56-dev":
-  version "1.0.56-dev"
-  resolved "https://registry.npmjs.org/@aut-labs/d-aut/-/d-aut-1.0.56-dev.tgz"
-  integrity sha512-n3NmiSwvEB/DYCIDBcvXryTFHxXJf7bgzxi+R+Adp+oS36431APtWB7EyDH6e+Axe4/6f2YNldIDTAwjmI4X/w==
+"@aut-labs/d-aut@^1.0.57-dev":
+  version "1.0.57-dev"
+  resolved "https://registry.npmjs.org/@aut-labs/d-aut/-/d-aut-1.0.57-dev.tgz"
+  integrity sha512-nx5wzTgntHhGlWM5Wm2dm2d3ACQavTUSMiwGRTgda/033cNtepGeRcX8HOMFGszokmpFfUworqGjikBV/6806Q==
 
 "@aut-labs/sdk-biconomy@^0.0.2":
   version "0.0.2"
